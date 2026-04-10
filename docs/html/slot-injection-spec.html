@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Slot Injection Training Spec</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0c0b0f;
+  --bg-raised: #15141a;
+  --bg-card: #1c1b22;
+  --bg-code: #1a1920;
+  --border: #2a2930;
+  --border-accent: #3d3a47;
+  --text: #c8c5d0;
+  --text-dim: #8a8794;
+  --text-bright: #eae8f0;
+  --accent: #d4a054;
+  --accent-dim: #b8873d;
+  --accent-glow: rgba(212, 160, 84, 0.08);
+  --green: #6abf7b;
+  --red: #d46a6a;
+  --red-glow: rgba(212, 106, 106, 0.08);
+  --blue: #6a9fd4;
+  --purple: #a06ad4;
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-mono: 'DM Mono', 'SF Mono', 'Fira Code', monospace;
+  --font-body: 'DM Mono', monospace;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* Layout */
+.layout { display: flex; min-height: 100vh; }
+.sidebar {
+  width: 260px;
+  background: var(--bg-raised);
+  border-right: 1px solid var(--border);
+  padding: 24px 0;
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  overflow-y: auto;
+  z-index: 100;
+}
+.sidebar-header {
+  padding: 0 20px 20px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 16px;
+}
+.sidebar-header h2 {
+  font-family: var(--font-display);
+  font-size: 15px;
+  color: var(--accent);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+.sidebar-header .sub {
+  font-size: 11px;
+  color: var(--text-dim);
+  margin-top: 4px;
+}
+.sidebar nav a {
+  display: block;
+  padding: 7px 20px;
+  color: var(--text-dim);
+  text-decoration: none;
+  font-size: 12px;
+  transition: all 0.15s;
+  border-left: 2px solid transparent;
+}
+.sidebar nav a:hover {
+  color: var(--text);
+  background: var(--accent-glow);
+}
+.sidebar nav a.active {
+  color: var(--accent);
+  border-left-color: var(--accent);
+  background: var(--accent-glow);
+}
+.sidebar nav .section-label {
+  padding: 16px 20px 6px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-dim);
+  opacity: 0.6;
+}
+.sidebar-links {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+.sidebar-links a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 20px;
+  color: var(--text-dim);
+  text-decoration: none;
+  font-size: 12px;
+  transition: all 0.15s;
+}
+.sidebar-links a:hover { color: var(--accent); }
+.sidebar-links a .arrow { font-size: 10px; opacity: 0.5; }
+
+.main {
+  margin-left: 260px;
+  flex: 1;
+  max-width: 900px;
+  padding: 0 48px 80px;
+}
+
+/* Hero */
+.hero {
+  padding: 64px 0 48px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 48px;
+}
+.hero-badge {
+  display: inline-block;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+  background: var(--accent-glow);
+  border: 1px solid var(--accent-dim);
+  padding: 4px 12px;
+  border-radius: 20px;
+  margin-bottom: 20px;
+}
+.hero h1 {
+  font-family: var(--font-display);
+  font-size: 36px;
+  font-weight: 400;
+  color: var(--text-bright);
+  margin-bottom: 8px;
+  letter-spacing: -0.01em;
+}
+.hero h1 span { color: var(--accent); }
+.hero .hero-subtitle {
+  font-family: var(--font-display);
+  font-size: 18px;
+  color: var(--text-dim);
+  font-weight: 300;
+  margin-bottom: 16px;
+}
+.hero .hero-desc {
+  font-size: 13px;
+  color: var(--text-dim);
+  max-width: 640px;
+  line-height: 1.7;
+  margin-bottom: 20px;
+}
+.hero-meta {
+  display: flex;
+  gap: 24px;
+  font-size: 12px;
+  color: var(--text-dim);
+}
+.hero-meta strong { color: var(--text); font-weight: 500; }
+
+/* Section headers */
+.section { margin-bottom: 56px; scroll-margin-top: 24px; }
+.section h2 {
+  font-family: var(--font-display);
+  font-size: 24px;
+  color: var(--text-bright);
+  font-weight: 400;
+  margin-bottom: 8px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.section h3 {
+  font-family: var(--font-display);
+  font-size: 17px;
+  color: var(--text-bright);
+  font-weight: 400;
+  margin: 28px 0 12px;
+}
+.section h4 {
+  font-size: 14px;
+  color: var(--accent);
+  font-weight: 500;
+  margin: 20px 0 8px;
+}
+.section p {
+  font-size: 13px;
+  color: var(--text);
+  line-height: 1.7;
+  margin-bottom: 14px;
+  max-width: 700px;
+}
+.section ul, .section ol {
+  margin: 0 0 14px 20px;
+  font-size: 13px;
+  line-height: 1.7;
+}
+.section li { margin-bottom: 4px; }
+.section strong { color: var(--text-bright); font-weight: 500; }
+
+/* Code blocks */
+pre {
+  background: var(--bg-code);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px 20px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--text);
+  overflow-x: auto;
+  margin-bottom: 16px;
+}
+pre .kw { color: var(--accent); }
+pre .str { color: var(--green); }
+pre .cm { color: var(--text-dim); }
+code {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  background: var(--bg-code);
+  padding: 2px 6px;
+  border-radius: 3px;
+  color: var(--accent);
+}
+
+/* Tables */
+.table-wrap {
+  overflow-x: auto;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+.table-wrap table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+.table-wrap thead { background: var(--bg-raised); }
+.table-wrap th {
+  text-align: left;
+  padding: 10px 16px;
+  color: var(--accent);
+  font-weight: 500;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border-bottom: 1px solid var(--border);
+}
+.table-wrap td {
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+}
+.table-wrap tr:last-child td { border-bottom: none; }
+.table-wrap tr:hover td { background: var(--accent-glow); }
+.table-wrap td strong { color: var(--text-bright); }
+.table-wrap td code { font-size: 11px; }
+
+/* Callout */
+.callout {
+  background: var(--accent-glow);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 8px 8px 0;
+  padding: 16px 20px;
+  margin-bottom: 20px;
+}
+.callout p {
+  margin-bottom: 0;
+  font-size: 13px;
+  color: var(--text);
+}
+.callout strong { color: var(--accent); }
+
+/* Problem callout cards (red tint) */
+.problem-card {
+  background: var(--red-glow);
+  border: 1px solid rgba(212, 106, 106, 0.25);
+  border-left: 3px solid var(--red);
+  border-radius: 0 8px 8px 0;
+  padding: 20px 22px;
+  margin-bottom: 20px;
+}
+.problem-card .problem-title {
+  font-family: var(--font-display);
+  font-size: 16px;
+  color: var(--red);
+  font-weight: 400;
+  margin-bottom: 6px;
+}
+.problem-card .problem-subtitle {
+  font-size: 12px;
+  color: var(--text-dim);
+  margin-bottom: 12px;
+}
+.problem-card pre {
+  background: rgba(0, 0, 0, 0.3);
+  border-color: rgba(212, 106, 106, 0.15);
+  margin-bottom: 10px;
+}
+.problem-card .root-cause {
+  font-size: 12px;
+  color: var(--text);
+  line-height: 1.7;
+}
+.problem-card .root-cause strong { color: var(--red); }
+
+/* System prompt highlight */
+.system-prompt-block {
+  background: var(--bg-card);
+  border: 2px solid var(--accent-dim);
+  border-radius: 12px;
+  padding: 0;
+  margin-bottom: 24px;
+  box-shadow: 0 0 40px rgba(212, 160, 84, 0.04);
+  overflow: hidden;
+}
+.system-prompt-block .prompt-label {
+  display: block;
+  padding: 10px 20px;
+  font-size: 11px;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  border-bottom: 1px solid var(--border);
+  font-weight: 500;
+  background: var(--bg-raised);
+}
+.system-prompt-block pre {
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  margin: 0;
+  padding: 20px;
+  font-size: 12px;
+}
+
+/* JSON example blocks */
+.json-example {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+.json-example .json-label {
+  display: block;
+  padding: 10px 16px;
+  font-size: 11px;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  border-bottom: 1px solid var(--border);
+  font-weight: 500;
+  background: var(--bg-raised);
+}
+.json-example pre {
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  margin: 0;
+  padding: 16px 20px;
+  font-size: 12px;
+}
+
+/* Training principles list */
+.principle-list {
+  list-style: none;
+  margin: 0 0 20px 0;
+  padding: 0;
+}
+.principle-list li {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-bottom: 8px;
+  font-size: 13px;
+  line-height: 1.6;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+.principle-list li .num {
+  color: var(--accent);
+  font-weight: 500;
+  font-size: 14px;
+  min-width: 20px;
+  flex-shrink: 0;
+}
+
+/* Footer */
+.footer {
+  margin-top: 64px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--text-dim);
+  text-align: center;
+}
+
+/* Mobile */
+.menu-toggle {
+  display: none;
+  position: fixed;
+  top: 12px; left: 12px;
+  z-index: 200;
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
+  color: var(--accent);
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  cursor: pointer;
+}
+@media (max-width: 860px) {
+  .menu-toggle { display: block; }
+  .sidebar { transform: translateX(-100%); transition: transform 0.2s; }
+  .sidebar.open { transform: translateX(0); }
+  .main { margin-left: 0; padding: 0 20px 60px; }
+  .hero h1 { font-size: 26px; }
+}
+</style>
+</head>
+<body>
+
+<button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')" aria-label="Toggle menu">Menu</button>
+
+<div class="layout">
+
+<!-- Sidebar -->
+<aside class="sidebar">
+  <div class="sidebar-header">
+    <h2>Slot Injection</h2>
+    <div class="sub">Technical Specification</div>
+  </div>
+  <nav>
+    <div class="section-label">Sections</div>
+    <a href="#what-this-is">What This Is</a>
+    <a href="#target-models">Target Models</a>
+    <a href="#business-context">Business Context</a>
+    <a href="#problems">The Problems We're Solving</a>
+    <a href="#solution">The Solution</a>
+    <a href="#slot-schema">13-Slot Schema</a>
+    <a href="#system-prompt">System Prompt Format</a>
+    <a href="#examples">Training Examples</a>
+    <a href="#edge-cases">Edge Cases</a>
+    <a href="#principles">Training Principles</a>
+    <a href="#file-format">File Format</a>
+    <div class="sidebar-links">
+      <div class="section-label">Related Docs</div>
+      <a href="fine-tuning-guide.html"><span class="arrow">&#8594;</span> Fine-Tuning Guide</a>
+      <a href="seed-training-pipeline.html"><span class="arrow">&#8594;</span> Training Explorer</a>
+      <a href="phases.html"><span class="arrow">&#8594;</span> Phases</a>
+      <a href="training-methodology.html"><span class="arrow">&#8594;</span> Methodology</a>
+    </div>
+  </nav>
+</aside>
+
+<!-- Main Content -->
+<div class="main">
+
+<!-- Hero -->
+<div class="hero">
+  <div class="hero-badge">Technical Spec</div>
+  <h1>Slot Injection <span>Training</span></h1>
+  <div class="hero-subtitle">Structured context injection for local LLM phone agents</div>
+  <p class="hero-desc">This spec defines training data for fine-tuning local LLMs to work as a phone receptionist. The model receives structured slot data (collected caller information) in the system prompt and must produce appropriate responses based on what's already known.</p>
+  <div class="hero-meta">
+    <span>Slots: <strong>13 fields</strong></span>
+    <span>States: <strong>8 phases</strong></span>
+    <span>Target: <strong>~100 examples</strong></span>
+  </div>
+</div>
+
+<!-- What This Is -->
+<div class="section" id="what-this-is">
+  <h2>What This Is</h2>
+  <p>Each LLM call includes a <code>[SLOTS]</code> block in the system prompt with the current state of all collected information. The model learns to USE these values in its response (read them back, don't re-ask) and to follow the <code>[TASK]</code> instruction for the current phase.</p>
+  <p>The trainer generates ~100 training examples, each a single turn: <strong>system prompt</strong> (with [SLOTS] + [STATE] + [TASK]) &rarr; <strong>user message</strong> &rarr; <strong>expected assistant response</strong>.</p>
+</div>
+
+<!-- Target Models -->
+<div class="section" id="target-models">
+  <h2>Target Models</h2>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Model</th><th>HuggingFace ID</th><th>Chat Template</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Phi4-mini 3.8B</strong></td>
+          <td><code>microsoft/phi-4-mini-instruct</code></td>
+          <td><code>&lt;|system|&gt;...&lt;|end|&gt;\n&lt;|user|&gt;...&lt;|end|&gt;\n&lt;|assistant|&gt;...&lt;|end|&gt;</code></td>
+        </tr>
+        <tr>
+          <td><strong>Mistral 7B</strong></td>
+          <td><code>mistralai/Mistral-7B-Instruct-v0.3</code></td>
+          <td><code>[INST] {system}\n{user} [/INST] {assistant}</code></td>
+        </tr>
+        <tr>
+          <td><strong>Gemma4 E2B</strong></td>
+          <td><code>google/gemma-4-e2b-it</code></td>
+          <td><code>&lt;start_of_turn&gt;user\n{user}&lt;end_of_turn&gt;\n&lt;start_of_turn&gt;model\n{assistant}&lt;end_of_turn&gt;</code></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>Fine-Tuning Command (MLX on Mac M3 Pro, 36GB)</h4>
+  <pre><span class="cm"># MLX LoRA fine-tuning</span>
+pip install mlx-lm
+mlx_lm.lora \
+  <span class="kw">--model</span> microsoft/phi-4-mini-instruct \
+  <span class="kw">--train</span> <span class="kw">--data</span> data/training/phi4/ \
+  <span class="kw">--batch-size</span> 4 <span class="kw">--lora-layers</span> 8 <span class="kw">--epochs</span> 3 \
+  <span class="kw">--learning-rate</span> 1e-5 \
+  <span class="kw">--output</span> models/smith-phi4-lora</pre>
+</div>
+
+<!-- Business Context -->
+<div class="section" id="business-context">
+  <h2>Business Context</h2>
+  <ul>
+    <li><strong>Business:</strong> Smith Plumbing (plumber, Austin TX area)</li>
+    <li><strong>Services:</strong> drain cleaning, leak repair, toilet repair, water heater, faucet, pipe, installation, emergency</li>
+    <li><strong>Hours:</strong> Monday&ndash;Friday 8am&ndash;5pm, Saturday 9am&ndash;1pm</li>
+    <li><strong>Booking flow:</strong> caller describes problem &rarr; pick a time &rarr; give name/address &rarr; address validated &rarr; confirm &rarr; book</li>
+    <li><strong>Address validation:</strong> an external API fuzzy-matches voice-garbled addresses (e.g., "Bryan Hall Drive" &rarr; "Bryonhall Drive")</li>
+    <li><strong>Tone:</strong> warm, casual, brief (1&ndash;2 sentences). Like a friendly neighbor, not a corporate script.</li>
+  </ul>
+</div>
+
+<!-- The Problems -->
+<div class="section" id="problems">
+  <h2>The Problems We're Solving</h2>
+  <p>Without slot context, the LLM sees only conversation history and has to re-infer all collected facts every turn. This causes three recurring failures in production calls:</p>
+
+  <div class="problem-card">
+    <div class="problem-title">Problem 1: Model re-asks for information it already has</div>
+    <div class="problem-subtitle">Real call log (2026-04-09 19:42)</div>
+    <pre>Caller: "My name is David Marr. My address is 2711 Brian Hall Drive, Austin, Texas 78745."
+Bot:    "Thank you, David! You're all set for Friday at 3:00 p.m."  <span class="cm">&larr; skipped address readback</span>
+Caller: "Did you check my address?"
+Bot:    "Yes, I checked the address provided during our conversation."  <span class="cm">&larr; didn't repeat it</span>
+Caller: "What address do you have on file?"
+Bot:    "I have an opening tomorrow at three o'clock. Does that work for you?"  <span class="cm">&larr; COMPLETELY FORGOT</span></pre>
+    <div class="root-cause"><strong>Root cause:</strong> The model received conversation history but no structured data about what was collected. It had no way to know <code>service_address = "2711 Brian Hall Drive"</code> was in the system &mdash; it would need to parse it from the history, which small models (3.8B&ndash;7B) do unreliably.</div>
+  </div>
+
+  <div class="problem-card">
+    <div class="problem-title">Problem 2: Model gives wrong response for the conversation phase</div>
+    <div class="problem-subtitle">Real call log (2026-04-09 19:41)</div>
+    <pre>Caller: "Hi, I have a problem with my toilet. It keeps on flushing every one hour."
+Bot:    "We're open Monday through Friday, eight AM to five PM, and Saturdays nine to one."</pre>
+    <div class="root-cause"><strong>Root cause:</strong> The word "hour" in the caller's plumbing description triggered the business-hours response. The model didn't know it was in the GREETING&rarr;PROBLEM_DETERMINATION phase where service issues take priority. With a <code>[STATE: GREETING]</code> and <code>[TASK: Acknowledge the issue]</code> tag, the model would know to respond about the toilet, not about business hours.</div>
+  </div>
+
+  <div class="problem-card">
+    <div class="problem-title">Problem 3: Model doesn't read back the validated address</div>
+    <div class="problem-subtitle">Real call log (2026-04-09 20:15)</div>
+    <pre>[Address validator returned: "2711, Bryonhall Drive, Austin, Texas, 78745"]
+Bot: "I found 2711, Bryonhall Drive, Austin, Texas, 78745. Is that the right address?"
+Caller: "Yes."
+Bot: "Got it! When would you like to schedule your service?"  <span class="cm">&larr; FORGOT time was already set</span></pre>
+    <div class="root-cause"><strong>Root cause:</strong> The <code>confirm</code> LLM sub-state didn't have access to the slots. It didn't know <code>date_time = "Friday at 4:00 PM"</code> and <code>selected_slot = "Friday at 4:00 PM"</code> were already confirmed. With slot context, it would have said: "Great! So that's toilet repair at 2711 Bryonhall Drive on Friday at four. Thanks for calling!"</div>
+  </div>
+</div>
+
+<!-- The Solution -->
+<div class="section" id="solution">
+  <h2>The Solution: Slot Context Injection</h2>
+  <p>Pass all collected slot values as a structured <code>[SLOTS]</code> block in the system prompt, plus a <code>[STATE]</code> tag and <code>[TASK]</code> instruction. The model always knows:</p>
+  <ol>
+    <li><strong>What's been collected</strong> &mdash; never re-asks</li>
+    <li><strong>What phase we're in</strong> &mdash; gives the right type of response</li>
+    <li><strong>What to do next</strong> &mdash; explicit task instruction per turn</li>
+  </ol>
+</div>
+
+<!-- 13-Slot Schema -->
+<div class="section" id="slot-schema">
+  <h2>Complete Slot Schema (13 slots)</h2>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>#</th><th>Slot</th><th>Type</th><th>When Filled</th><th>Example Value</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td><code>issue_type</code></td><td>enum</td><td>PROBLEM_DETERMINATION</td><td>toilet, leak_repair, drain_cleaning, water_heater, faucet, pipe, installation, emergency, other</td></tr>
+        <tr><td>2</td><td><code>issue_description</code></td><td>string</td><td>PROBLEM_DETERMINATION</td><td>"keeps flushing every hour"</td></tr>
+        <tr><td>3</td><td><code>urgency_level</code></td><td>enum</td><td>PROBLEM_DETERMINATION</td><td>low, medium, high, emergency</td></tr>
+        <tr><td>4</td><td><code>customer_name</code></td><td>string</td><td>any phase</td><td>"David Marr"</td></tr>
+        <tr><td>5</td><td><code>callback_number</code></td><td>string</td><td>FINALIZE</td><td>"512-555-1234"</td></tr>
+        <tr><td>6</td><td><code>service_address</code></td><td>string</td><td>FINALIZE</td><td>"2711 Bryan Hall Drive" (raw STT input)</td></tr>
+        <tr><td>7</td><td><code>validated_address</code></td><td>string</td><td>FINALIZE</td><td>"2711 Bryonhall Drive, Austin, TX 78745" (from address validator)</td></tr>
+        <tr><td>8</td><td><code>address_confidence</code></td><td>enum</td><td>FINALIZE</td><td>exact, high, medium, low, unvalidated</td></tr>
+        <tr><td>9</td><td><code>preferred_time_windows</code></td><td>string</td><td>INTERNAL_SCHEDULING</td><td>"Friday afternoon"</td></tr>
+        <tr><td>10</td><td><code>date_time</code></td><td>string</td><td>INTERNAL_SCHEDULING</td><td>"Friday at 4:00 PM"</td></tr>
+        <tr><td>11</td><td><code>selected_slot</code></td><td>string</td><td>PROPOSE_SCHEDULING</td><td>"Friday at 4:00 PM"</td></tr>
+        <tr><td>12</td><td><code>confirmation_status</code></td><td>enum</td><td>FINALIZE/GOODBYE</td><td>pending, confirmed, failed, cancelled</td></tr>
+        <tr><td>13</td><td><code>address_postcode</code></td><td>string</td><td>FINALIZE</td><td>"78745"</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Internal slots (prefixed with <code>_</code>) are NOT shown to the model: <code>_address_validation</code>, <code>_address_validation_failed</code>, <code>_reset_sub_state</code>.</p>
+</div>
+
+<!-- System Prompt Format -->
+<div class="section" id="system-prompt">
+  <h2>System Prompt Format</h2>
+
+  <div class="system-prompt-block">
+    <span class="prompt-label">System Prompt Template</span>
+    <pre>You are a friendly phone receptionist for Smith Plumbing. Keep responses
+brief &mdash; one to two short sentences. Be warm and casual, like talking
+to a neighbor.
+
+<span class="kw">[SLOTS]</span>
+- issue_type: <span class="str">toilet</span>
+- issue_description: <span class="str">keeps flushing every hour</span>
+- urgency_level: <span class="str">low</span>
+- customer_name: <span class="str">David Marr</span>
+- date_time: <span class="str">Friday at 4:00 PM</span>
+- selected_slot: <span class="str">Friday at 4:00 PM</span>
+- service_address: <span class="str">2711 Bryan Hall Drive</span> (raw)
+- validated_address: <span class="str">2711 Bryonhall Drive, Austin, TX 78745</span> (VALIDATED)
+- address_confidence: <span class="str">high</span>
+- callback_number: <span class="cm">(not collected)</span>
+- confirmation_status: <span class="str">pending</span>
+
+<span class="kw">[STATE: FINALIZE_SCHEDULING]</span>
+<span class="kw">[TASK: Read back ALL booking details to the caller &mdash; name, service
+type, date/time, and validated address. Ask them to confirm everything
+is correct.]</span></pre>
+  </div>
+</div>
+
+<!-- Training Examples -->
+<div class="section" id="examples">
+  <h2>Training Examples by Phase</h2>
+
+  <h3>GREETING &mdash; no slots yet</h3>
+  <div class="json-example">
+    <span class="json-label">messages.json</span>
+    <pre>{
+  <span class="kw">"messages"</span>: [
+    {
+      <span class="kw">"role"</span>: <span class="str">"system"</span>,
+      <span class="kw">"content"</span>: <span class="str">"You are a friendly phone receptionist for Smith Plumbing. Keep responses brief.\n\n[SLOTS]\n(none collected yet)\n\n[STATE: GREETING]\n[TASK: Greet the caller warmly and ask how you can help.]"</span>
+    },
+    { <span class="kw">"role"</span>: <span class="str">"user"</span>, <span class="kw">"content"</span>: <span class="str">"Hi there"</span> },
+    { <span class="kw">"role"</span>: <span class="str">"assistant"</span>, <span class="kw">"content"</span>: <span class="str">"Hey there, thanks for calling Smith Plumbing! How can I help you today?"</span> }
+  ]
+}</pre>
+  </div>
+
+  <h3>PROBLEM_DETERMINATION &mdash; issue detected</h3>
+  <div class="json-example">
+    <span class="json-label">messages.json</span>
+    <pre>{
+  <span class="kw">"messages"</span>: [
+    {
+      <span class="kw">"role"</span>: <span class="str">"system"</span>,
+      <span class="kw">"content"</span>: <span class="str">"...\\n[SLOTS]\\n- issue_type: toilet\\n- issue_description: keeps flushing every hour\\n- urgency_level: low\\n\\n[STATE: PROBLEM_DETERMINATION]\\n[TASK: Acknowledge the issue with empathy. Ask when they'd like someone to come out.]"</span>
+    },
+    { <span class="kw">"role"</span>: <span class="str">"user"</span>, <span class="kw">"content"</span>: <span class="str">"My toilet keeps flushing on its own about every hour."</span> },
+    { <span class="kw">"role"</span>: <span class="str">"assistant"</span>, <span class="kw">"content"</span>: <span class="str">"Oh no, a toilet that keeps flushing on its own &mdash; that's no fun! We can definitely get someone out to take a look. When would be a good time?"</span> }
+  ]
+}</pre>
+  </div>
+
+  <h3>INTERNAL_SCHEDULING &mdash; time captured</h3>
+  <div class="json-example">
+    <span class="json-label">messages.json</span>
+    <pre>{
+  <span class="kw">"messages"</span>: [
+    {
+      <span class="kw">"role"</span>: <span class="str">"system"</span>,
+      <span class="kw">"content"</span>: <span class="str">"...\\n[SLOTS]\\n- issue_type: toilet\\n- date_time: Friday at 4:00 PM\\n\\n[STATE: INTERNAL_SCHEDULING]\\n[TASK: Confirm the time works. Ask for their name and address.]"</span>
+    },
+    { <span class="kw">"role"</span>: <span class="str">"user"</span>, <span class="kw">"content"</span>: <span class="str">"How about Friday at four?"</span> },
+    { <span class="kw">"role"</span>: <span class="str">"assistant"</span>, <span class="kw">"content"</span>: <span class="str">"Friday at four works great! I just need your name and address and you're all set."</span> }
+  ]
+}</pre>
+  </div>
+
+  <h3>PROPOSE_SCHEDULING &mdash; offering a time slot</h3>
+  <div class="json-example">
+    <span class="json-label">messages.json</span>
+    <pre>{
+  <span class="kw">"messages"</span>: [
+    {
+      <span class="kw">"role"</span>: <span class="str">"system"</span>,
+      <span class="kw">"content"</span>: <span class="str">"...\\n[SLOTS]\\n- issue_type: drain_cleaning\\n- date_time: tomorrow morning\\n- customer_name: Sarah Johnson\\n- selected_slot: (not yet)\\n\\n[STATE: PROPOSE_SCHEDULING]\\n[TASK: Offer the available time slot. Ask if it works for them.]"</span>
+    },
+    { <span class="kw">"role"</span>: <span class="str">"user"</span>, <span class="kw">"content"</span>: <span class="str">"What do you have available?"</span> },
+    { <span class="kw">"role"</span>: <span class="str">"assistant"</span>, <span class="kw">"content"</span>: <span class="str">"I've got an opening tomorrow at ten AM. Does that work for you, Sarah?"</span> }
+  ]
+}</pre>
+  </div>
+
+  <h3>FINALIZE_SCHEDULING &mdash; address validated, confirm booking</h3>
+  <div class="json-example">
+    <span class="json-label">messages.json</span>
+    <pre>{
+  <span class="kw">"messages"</span>: [
+    {
+      <span class="kw">"role"</span>: <span class="str">"system"</span>,
+      <span class="kw">"content"</span>: <span class="str">"...\\n[SLOTS]\\n- issue_type: toilet\\n- customer_name: David Marr\\n- date_time: Friday at 4:00 PM\\n- selected_slot: Friday at 4:00 PM\\n- validated_address: 2711 Bryonhall Drive, Austin, TX 78745 (VALIDATED)\\n- address_confidence: high\\n- confirmation_status: pending\\n\\n[STATE: FINALIZE_SCHEDULING]\\n[TASK: Read back the COMPLETE booking summary. Ask caller to confirm.]"</span>
+    },
+    { <span class="kw">"role"</span>: <span class="str">"user"</span>, <span class="kw">"content"</span>: <span class="str">"Yes that's the right address"</span> },
+    { <span class="kw">"role"</span>: <span class="str">"assistant"</span>, <span class="kw">"content"</span>: <span class="str">"Great! So just to confirm &mdash; David Marr, toilet repair at 2711 Bryonhall Drive in Austin, Friday at four o'clock. Does everything look good?"</span> }
+  ]
+}</pre>
+  </div>
+
+  <h3>GOODBYE &mdash; wrapping up</h3>
+  <div class="json-example">
+    <span class="json-label">messages.json</span>
+    <pre>{
+  <span class="kw">"messages"</span>: [
+    {
+      <span class="kw">"role"</span>: <span class="str">"system"</span>,
+      <span class="kw">"content"</span>: <span class="str">"...\\n[SLOTS]\\n- customer_name: David Marr\\n- issue_type: toilet\\n- date_time: Friday at 4:00 PM\\n- validated_address: 2711 Bryonhall Drive, Austin, TX 78745\\n- confirmation_status: confirmed\\n\\n[STATE: GOODBYE]\\n[TASK: Warm goodbye. Use their name. Keep it short.]"</span>
+    },
+    { <span class="kw">"role"</span>: <span class="str">"user"</span>, <span class="kw">"content"</span>: <span class="str">"Thanks so much, bye!"</span> },
+    { <span class="kw">"role"</span>: <span class="str">"assistant"</span>, <span class="kw">"content"</span>: <span class="str">"Take care, David! See you Friday. Bye!"</span> }
+  ]
+}</pre>
+  </div>
+</div>
+
+<!-- Edge Cases -->
+<div class="section" id="edge-cases">
+  <h2>Edge Cases</h2>
+
+  <h3>Caller changes their mind about the time</h3>
+  <div class="json-example">
+    <span class="json-label">messages.json</span>
+    <pre>{
+  <span class="kw">"messages"</span>: [
+    {
+      <span class="kw">"role"</span>: <span class="str">"system"</span>,
+      <span class="kw">"content"</span>: <span class="str">"...\\n[SLOTS]\\n- issue_type: leak_repair\\n- customer_name: Maria Garcia\\n- date_time: Tuesday at 10:00 AM\\n- selected_slot: Tuesday at 10:00 AM\\n\\n[STATE: PROPOSE_SCHEDULING]\\n[TASK: The caller wants to change. Accommodate them and ask for a new time.]"</span>
+    },
+    { <span class="kw">"role"</span>: <span class="str">"user"</span>, <span class="kw">"content"</span>: <span class="str">"Actually Tuesday doesn't work, can we do Wednesday instead?"</span> },
+    { <span class="kw">"role"</span>: <span class="str">"assistant"</span>, <span class="kw">"content"</span>: <span class="str">"No problem, Maria! Let me check Wednesday for you. What time works best?"</span> }
+  ]
+}</pre>
+  </div>
+
+  <h3>Caller gives partial info</h3>
+  <div class="json-example">
+    <span class="json-label">messages.json</span>
+    <pre>{
+  <span class="kw">"messages"</span>: [
+    {
+      <span class="kw">"role"</span>: <span class="str">"system"</span>,
+      <span class="kw">"content"</span>: <span class="str">"...\\n[SLOTS]\\n- issue_type: drain_cleaning\\n- customer_name: (not collected)\\n- date_time: (not collected)\\n\\n[STATE: PROBLEM_DETERMINATION]\\n[TASK: We know the issue but nothing else. Ask when they'd like someone to come out.]"</span>
+    },
+    { <span class="kw">"role"</span>: <span class="str">"user"</span>, <span class="kw">"content"</span>: <span class="str">"Yeah my drain is clogged"</span> },
+    { <span class="kw">"role"</span>: <span class="str">"assistant"</span>, <span class="kw">"content"</span>: <span class="str">"Clogged drain &mdash; we can help with that! When would be a good time for someone to come out?"</span> }
+  ]
+}</pre>
+  </div>
+
+  <h3>Emergency</h3>
+  <div class="json-example">
+    <span class="json-label">messages.json</span>
+    <pre>{
+  <span class="kw">"messages"</span>: [
+    {
+      <span class="kw">"role"</span>: <span class="str">"system"</span>,
+      <span class="kw">"content"</span>: <span class="str">"...\\n[SLOTS]\\n- issue_type: emergency\\n- issue_description: pipe burst flooding kitchen\\n- urgency_level: emergency\\n\\n[STATE: PROBLEM_DETERMINATION]\\n[TASK: This is an EMERGENCY. Express urgency, ask for their address immediately.]"</span>
+    },
+    { <span class="kw">"role"</span>: <span class="str">"user"</span>, <span class="kw">"content"</span>: <span class="str">"A pipe just burst in my kitchen and water is everywhere!"</span> },
+    { <span class="kw">"role"</span>: <span class="str">"assistant"</span>, <span class="kw">"content"</span>: <span class="str">"Oh no! We'll get someone out right away. What's your address so we can dispatch a technician immediately?"</span> }
+  ]
+}</pre>
+  </div>
+</div>
+
+<!-- Training Principles -->
+<div class="section" id="principles">
+  <h2>Key Training Principles</h2>
+
+  <ul class="principle-list">
+    <li><span class="num">1.</span> <span>If a slot has a value, <strong>NEVER re-ask for it</strong> &mdash; use it in the response</span></li>
+    <li><span class="num">2.</span> <span>If <code>validated_address</code> exists, use it instead of <code>service_address</code> (raw STT)</span></li>
+    <li><span class="num">3.</span> <span>Always follow the <code>[TASK]</code> instruction &mdash; it tells the model exactly what to do this turn</span></li>
+    <li><span class="num">4.</span> <span>Use <code>customer_name</code> when available &mdash; personalization is key</span></li>
+    <li><span class="num">5.</span> <span>Keep responses to <strong>1&ndash;2 sentences</strong> &mdash; this is a phone call, not an essay</span></li>
+    <li><span class="num">6.</span> <span>Read back <strong>ALL details at FINALIZE</strong> &mdash; name, service, time, address</span></li>
+    <li><span class="num">7.</span> <span>Warm, casual tone &mdash; "Hey there", "No problem", "You're all set", not "I would be delighted to assist you"</span></li>
+    <li><span class="num">8.</span> <span>Emergency = immediate action &mdash; skip scheduling small talk, get the address NOW</span></li>
+  </ul>
+</div>
+
+<!-- File Format -->
+<div class="section" id="file-format">
+  <h2>File Format for MLX Fine-Tuning</h2>
+  <p>Save as <code>data/training/finetune_slots.jsonl</code> &mdash; one JSON object per line:</p>
+
+  <div class="json-example">
+    <span class="json-label">finetune_slots.jsonl</span>
+    <pre>{<span class="kw">"messages"</span>:[{<span class="kw">"role"</span>:<span class="str">"system"</span>,<span class="kw">"content"</span>:<span class="str">"..."</span>},{<span class="kw">"role"</span>:<span class="str">"user"</span>,<span class="kw">"content"</span>:<span class="str">"..."</span>},{<span class="kw">"role"</span>:<span class="str">"assistant"</span>,<span class="kw">"content"</span>:<span class="str">"..."</span>}]}
+{<span class="kw">"messages"</span>:[{<span class="kw">"role"</span>:<span class="str">"system"</span>,<span class="kw">"content"</span>:<span class="str">"..."</span>},{<span class="kw">"role"</span>:<span class="str">"user"</span>,<span class="kw">"content"</span>:<span class="str">"..."</span>},{<span class="kw">"role"</span>:<span class="str">"assistant"</span>,<span class="kw">"content"</span>:<span class="str">"..."</span>}]}</pre>
+  </div>
+
+  <p>Generate ~100 examples covering:</p>
+  <ul>
+    <li>Each state (8 states x ~8 examples = 64)</li>
+    <li>Edge cases (time changes, partial info, emergencies = ~20)</li>
+    <li>Variations in tone and phrasing (~16)</li>
+  </ul>
+
+  <div class="callout">
+    <p><strong>Output paths:</strong> <code>data/training/finetune_slots.jsonl</code> (universal), plus <code>data/training/phi4/train.jsonl</code>, <code>data/training/mistral/train.jsonl</code>, <code>data/training/gemma/train.jsonl</code></p>
+  </div>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  Phone Agent Training Pipeline &middot; Slot Injection Spec &middot; David Mar &middot; April 2026
+</div>
+
+</div><!-- /main -->
+</div><!-- /layout -->
+
+<script>
+// Active sidebar link on scroll
+(function() {
+  const sections = document.querySelectorAll('.section[id]');
+  const navLinks = document.querySelectorAll('.sidebar nav a[href^="#"]');
+
+  function updateActive() {
+    let current = '';
+    const scrollY = window.scrollY + 60;
+
+    sections.forEach(function(section) {
+      if (section.offsetTop <= scrollY) {
+        current = section.getAttribute('id');
+      }
+    });
+
+    navLinks.forEach(function(link) {
+      link.classList.remove('active');
+      if (link.getAttribute('href') === '#' + current) {
+        link.classList.add('active');
+      }
+    });
+  }
+
+  window.addEventListener('scroll', updateActive, { passive: true });
+  updateActive();
+
+  // Close mobile sidebar on link click
+  navLinks.forEach(function(link) {
+    link.addEventListener('click', function() {
+      document.querySelector('.sidebar').classList.remove('open');
+    });
+  });
+})();
+</script>
+
+</body>
+</html>

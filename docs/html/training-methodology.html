@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Training Data Methodology</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0c0b0f;
+  --bg-raised: #15141a;
+  --bg-card: #1c1b22;
+  --bg-code: #1a1920;
+  --border: #2a2930;
+  --border-accent: #3d3a47;
+  --text: #c8c5d0;
+  --text-dim: #8a8794;
+  --text-bright: #eae8f0;
+  --accent: #d4a054;
+  --accent-dim: #b8873d;
+  --accent-glow: rgba(212, 160, 84, 0.08);
+  --green: #6abf7b;
+  --red: #d46a6a;
+  --blue: #6a9fd4;
+  --purple: #a06ad4;
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-mono: 'DM Mono', 'SF Mono', 'Fira Code', monospace;
+  --font-body: 'DM Mono', monospace;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* Layout */
+.layout { display: flex; min-height: 100vh; }
+.sidebar {
+  width: 260px;
+  background: var(--bg-raised);
+  border-right: 1px solid var(--border);
+  padding: 24px 0;
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  overflow-y: auto;
+  z-index: 100;
+}
+.sidebar-header {
+  padding: 0 20px 20px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 16px;
+}
+.sidebar-header h2 {
+  font-family: var(--font-display);
+  font-size: 15px;
+  color: var(--accent);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+.sidebar-header .sub {
+  font-size: 11px;
+  color: var(--text-dim);
+  margin-top: 4px;
+}
+.sidebar nav a {
+  display: block;
+  padding: 7px 20px;
+  color: var(--text-dim);
+  text-decoration: none;
+  font-size: 12px;
+  transition: all 0.15s;
+  border-left: 2px solid transparent;
+}
+.sidebar nav a:hover {
+  color: var(--text);
+  background: var(--accent-glow);
+}
+.sidebar nav a.active {
+  color: var(--accent);
+  border-left-color: var(--accent);
+  background: var(--accent-glow);
+}
+.sidebar nav .section-label {
+  padding: 16px 20px 6px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-dim);
+  opacity: 0.6;
+}
+.sidebar-links {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+.sidebar-links a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 20px;
+  color: var(--text-dim);
+  text-decoration: none;
+  font-size: 12px;
+  transition: all 0.15s;
+}
+.sidebar-links a:hover { color: var(--accent); }
+.sidebar-links a .arrow { font-size: 10px; opacity: 0.5; }
+
+.main {
+  margin-left: 260px;
+  flex: 1;
+  max-width: 900px;
+  padding: 0 48px 80px;
+}
+
+/* Hero */
+.hero {
+  padding: 64px 0 48px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 48px;
+}
+.hero-badge {
+  display: inline-block;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+  background: var(--accent-glow);
+  border: 1px solid var(--accent-dim);
+  padding: 4px 12px;
+  border-radius: 20px;
+  margin-bottom: 20px;
+}
+.hero h1 {
+  font-family: var(--font-display);
+  font-size: 36px;
+  font-weight: 400;
+  color: var(--text-bright);
+  margin-bottom: 8px;
+  letter-spacing: -0.01em;
+}
+.hero h1 span { color: var(--accent); }
+.hero .hero-subtitle {
+  font-family: var(--font-display);
+  font-size: 18px;
+  color: var(--text-dim);
+  font-weight: 300;
+  margin-bottom: 16px;
+}
+.hero .hero-desc {
+  font-size: 13px;
+  color: var(--text-dim);
+  max-width: 640px;
+  line-height: 1.7;
+  margin-bottom: 20px;
+}
+.hero-meta {
+  display: flex;
+  gap: 24px;
+  font-size: 12px;
+  color: var(--text-dim);
+}
+.hero-meta strong { color: var(--text); font-weight: 500; }
+
+/* Section headers */
+.section { margin-bottom: 56px; scroll-margin-top: 24px; }
+.section h2 {
+  font-family: var(--font-display);
+  font-size: 24px;
+  color: var(--text-bright);
+  font-weight: 400;
+  margin-bottom: 8px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.section h3 {
+  font-family: var(--font-display);
+  font-size: 17px;
+  color: var(--text-bright);
+  font-weight: 400;
+  margin: 28px 0 12px;
+}
+.section h4 {
+  font-size: 14px;
+  color: var(--accent);
+  font-weight: 500;
+  margin: 20px 0 8px;
+}
+.section p {
+  font-size: 13px;
+  color: var(--text);
+  line-height: 1.7;
+  margin-bottom: 14px;
+  max-width: 700px;
+}
+.section ul, .section ol {
+  margin: 0 0 14px 20px;
+  font-size: 13px;
+  line-height: 1.7;
+}
+.section li { margin-bottom: 4px; }
+.section strong { color: var(--text-bright); font-weight: 500; }
+
+/* Code blocks */
+pre {
+  background: var(--bg-code);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px 20px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--text);
+  overflow-x: auto;
+  margin-bottom: 16px;
+}
+code {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  background: var(--bg-code);
+  padding: 2px 6px;
+  border-radius: 3px;
+  color: var(--accent);
+}
+
+/* Tables */
+.table-wrap {
+  overflow-x: auto;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+.table-wrap table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+.table-wrap thead { background: var(--bg-raised); }
+.table-wrap th {
+  text-align: left;
+  padding: 10px 16px;
+  color: var(--accent);
+  font-weight: 500;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border-bottom: 1px solid var(--border);
+}
+.table-wrap td {
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+}
+.table-wrap tr:last-child td { border-bottom: none; }
+.table-wrap tr:hover td { background: var(--accent-glow); }
+.table-wrap td strong { color: var(--text-bright); }
+.table-wrap td code { font-size: 11px; }
+
+/* Callout */
+.callout {
+  background: var(--accent-glow);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 8px 8px 0;
+  padding: 16px 20px;
+  margin-bottom: 20px;
+}
+.callout p {
+  margin-bottom: 0;
+  font-size: 13px;
+  color: var(--text);
+}
+.callout strong { color: var(--accent); }
+
+/* Diagram */
+.diagram {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0;
+  margin-bottom: 20px;
+  overflow-x: auto;
+}
+.diagram-label {
+  display: block;
+  padding: 10px 16px;
+  font-size: 11px;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  border-bottom: 1px solid var(--border);
+  font-weight: 500;
+}
+.diagram pre {
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  margin: 0;
+  padding: 16px 20px;
+  font-size: 12px;
+  color: var(--text-dim);
+}
+
+/* Stat cards */
+.stat-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.stat-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px 18px;
+  text-align: center;
+}
+.stat-card .stat-value {
+  font-family: var(--font-display);
+  font-size: 28px;
+  color: var(--accent);
+  font-weight: 400;
+}
+.stat-card .stat-label {
+  font-size: 11px;
+  color: var(--text-dim);
+  margin-top: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* Info cards */
+.info-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 8px 8px 0;
+  padding: 16px 20px;
+  margin-bottom: 12px;
+}
+.info-card .info-title {
+  font-size: 13px;
+  color: var(--accent);
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+.info-card .info-desc {
+  font-size: 12px;
+  color: var(--text);
+  line-height: 1.6;
+}
+
+/* Validation badge */
+.badge-pass { color: var(--green); font-weight: 500; }
+.badge-warn { color: var(--accent); font-weight: 500; }
+
+/* Footer */
+.footer {
+  margin-top: 64px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--text-dim);
+  text-align: center;
+}
+
+/* Mobile */
+.menu-toggle {
+  display: none;
+  position: fixed;
+  top: 12px; left: 12px;
+  z-index: 200;
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
+  color: var(--accent);
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  cursor: pointer;
+}
+@media (max-width: 860px) {
+  .menu-toggle { display: block; }
+  .sidebar { transform: translateX(-100%); transition: transform 0.2s; }
+  .sidebar.open { transform: translateX(0); }
+  .main { margin-left: 0; padding: 0 20px 60px; }
+  .stat-row { grid-template-columns: 1fr; }
+  .hero h1 { font-size: 26px; }
+}
+</style>
+</head>
+<body>
+
+<button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')" aria-label="Toggle menu">Menu</button>
+
+<div class="layout">
+
+<!-- Sidebar -->
+<aside class="sidebar">
+  <div class="sidebar-header">
+    <h2>Training Methodology</h2>
+    <div class="sub">Data Science Reference</div>
+  </div>
+  <nav>
+    <div class="section-label">Sections</div>
+    <a href="#overview">Overview</a>
+    <a href="#data-format">Data Format</a>
+    <a href="#scenario-matrix">Scenario Matrix</a>
+    <a href="#splitting">Splitting Strategy</a>
+    <a href="#phase-balancing">Phase Balancing</a>
+    <a href="#validation">Validation Pipeline</a>
+    <a href="#file-structure">File Structure</a>
+    <a href="#scripts">Scripts</a>
+    <a href="#regeneration">Regeneration</a>
+    <div class="sidebar-links">
+      <div class="section-label">Related Docs</div>
+      <a href="fine-tuning-guide.html"><span class="arrow">&#8594;</span> Fine-Tuning Guide</a>
+      <a href="seed-training-pipeline.html"><span class="arrow">&#8594;</span> Training Explorer</a>
+      <a href="phases.html"><span class="arrow">&#8594;</span> Phases</a>
+      <a href="slot-injection-spec.html"><span class="arrow">&#8594;</span> Slot Injection</a>
+    </div>
+  </nav>
+</aside>
+
+<!-- Main Content -->
+<div class="main">
+
+<!-- Hero -->
+<div class="hero">
+  <div class="hero-badge">Data Science</div>
+  <h1>Training Data <span>Methodology</span></h1>
+  <div class="hero-subtitle">How the dataset is structured, split, and validated</div>
+  <p class="hero-desc">The dataset contains 170 synthetic phone conversations between a caller and a plumbing receptionist AI. These conversations are generated by a teacher model (Claude) and used to fine-tune smaller student models (Phi4-mini 3.8B, Mistral 7B, Gemma4 E2B 7B) via LoRA on Apple MLX.</p>
+  <div class="hero-meta">
+    <span>Conversations: <strong>170</strong></span>
+    <span>Training examples: <strong>922</strong></span>
+    <span>Split: <strong>75 / 12.5 / 12.5</strong></span>
+  </div>
+</div>
+
+<!-- Overview -->
+<div class="section" id="overview">
+  <h2>Overview</h2>
+  <p>The goal: compress Claude-quality phone conversation ability into models that run locally for free.</p>
+
+  <div class="stat-row">
+    <div class="stat-card">
+      <div class="stat-value">170</div>
+      <div class="stat-label">Conversations</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">922</div>
+      <div class="stat-label">Turn-level examples</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">11</div>
+      <div class="stat-label">Canonical phases</div>
+    </div>
+  </div>
+</div>
+
+<!-- Data Format -->
+<div class="section" id="data-format">
+  <h2>Data Format</h2>
+
+  <h3>Conversation Level</h3>
+  <p>Each conversation is stored as a JSON object:</p>
+
+  <pre>{
+  "id": "train_001",
+  "scenario": {
+    "problem": "clogged_drain",
+    "personality": "default",
+    "path": "happy_path"
+  },
+  "turns": [
+    {"role": "agent", "text": "Hi, Smith Plumbing...", "phase": "greeting"},
+    {"role": "caller", "text": "Yeah, my sink is backed up.", "phase": "problem_determination"}
+  ],
+  "booking_details": { "service": "...", "date": "...", "time": "...", "caller_name": "...", "phone": "..." },
+  "metadata": { "turn_count": 14, "has_booking": true, "phases_covered": ["greeting", ...] }
+}</pre>
+
+  <h3>Turn Level (What the model actually trains on)</h3>
+  <p>Each conversation is decomposed into <strong>multiple turn-level prompt/completion pairs</strong>. For each agent reply in a conversation, one training example is created:</p>
+  <ul>
+    <li><strong>Prompt:</strong> System prompt + all prior turns (user and assistant)</li>
+    <li><strong>Completion:</strong> The single agent reply</li>
+  </ul>
+  <p>This means a 14-turn conversation with 7 agent replies produces 7 training examples. The 170 conversations yield <strong>922 training examples</strong> in the train split alone.</p>
+
+  <div class="callout">
+    <p><strong>Why turn-level instead of whole-conversation?</strong> LLMs learn to predict the next token. One completion per example gives a cleaner learning signal. The opening greeting (agent speaks first) would otherwise violate the user&rarr;assistant turn order that Mistral and Gemma templates expect. More examples from the same data = stronger training signal without generating more conversations.</p>
+  </div>
+
+  <h4>The Greeting Turn Problem</h4>
+  <p>In phone calls, the agent speaks first. But training templates expect user&rarr;assistant ordering. We solve this with a synthetic <code>[phone rings]</code> user turn before the greeting, so every training example follows the user&rarr;assistant pattern.</p>
+</div>
+
+<!-- Scenario Matrix -->
+<div class="section" id="scenario-matrix">
+  <h2>Scenario Matrix (3 Axes)</h2>
+  <p>Each conversation is defined by a combination of three independent axes:</p>
+
+  <h3>Problem Types (8)</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Problem</th><th>Urgency</th><th>Notes</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Clogged drain</td><td>Normal</td><td>Most common call</td></tr>
+        <tr><td>Leak repair</td><td><strong>High</strong></td><td>Water damage risk</td></tr>
+        <tr><td>Water heater</td><td>Normal</td><td>No hot water, pilot light</td></tr>
+        <tr><td>Toilet repair</td><td>Normal</td><td>Running, clogged, leaking</td></tr>
+        <tr><td>Faucet install</td><td>Low</td><td>New or replacement</td></tr>
+        <tr><td>Sewer line</td><td><strong>High</strong></td><td>Main line backup</td></tr>
+        <tr><td>Garbage disposal</td><td>Low</td><td>Jammed or leaking</td></tr>
+        <tr><td>Emergency</td><td><strong>Emergency</strong></td><td>Burst pipe, gas smell, flooding</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Caller Personalities (7)</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Personality</th><th>Behavior Pattern</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Default</td><td>Cooperative, clear communication</td></tr>
+        <tr><td>Rushed</td><td>Terse answers, wants fastest slot</td></tr>
+        <tr><td>Chatty</td><td>Tangential stories, slow to the point</td></tr>
+        <tr><td>Confused</td><td>Vague descriptions, needs help identifying the problem</td></tr>
+        <tr><td>Angry</td><td>Frustrated, complains, needs to be heard</td></tr>
+        <tr><td>Elderly</td><td>Slow, repeats, appreciates patience</td></tr>
+        <tr><td>Non-native English</td><td>Wrong terms ("water hot machine"), simpler grammar</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Conversation Paths (8)</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Path</th><th>Ends with booking?</th><th>Description</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Happy path</td><td>Yes</td><td>Smooth booking</td></tr>
+        <tr><td>No slots</td><td>Yes (usually)</td><td>Preferred time unavailable, agent offers alternatives</td></tr>
+        <tr><td>Cancellation</td><td>No</td><td>Caller cancels existing appointment</td></tr>
+        <tr><td>Question only</td><td>No</td><td>Just asking about pricing/services</td></tr>
+        <tr><td>Emergency escalation</td><td>Yes</td><td>Urgent &mdash; safety first, fast-track dispatch</td></tr>
+        <tr><td>Caller hangup</td><td>No</td><td>Call ends before completion</td></tr>
+        <tr><td>DIY recommendation</td><td>No (usually)</td><td>Simple fix the agent can explain</td></tr>
+        <tr><td>Changes mind</td><td>Yes</td><td>Initially declines, then reconsiders</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout">
+    <p><strong>Full matrix:</strong> 8 x 7 x 8 = 448 possible combinations. We sample ~170 to cover the most important scenarios, weighted toward difficult cases.</p>
+  </div>
+</div>
+
+<!-- Splitting Strategy -->
+<div class="section" id="splitting">
+  <h2>Splitting Strategy</h2>
+
+  <h3>Why Not 50/50</h3>
+  <p>A 50/50 train/test split wastes training signal. LoRA fine-tuning updates only ~1.5% of model parameters and works well with 500&ndash;1000 examples. The test set needs to be large enough to measure quality reliably across all phases, but no larger.</p>
+
+  <h3>Stratified Split (75 / 12.5 / 12.5)</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Set</th><th>Conversations</th><th>Turn-level examples</th><th>Purpose</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Train</strong></td><td>128 (75%)</td><td>922</td><td>LoRA fine-tuning &mdash; the model learns from these</td></tr>
+        <tr><td><strong>Val</strong></td><td>21 (12.5%)</td><td>159</td><td>Overfitting detection during training</td></tr>
+        <tr><td><strong>Test</strong></td><td>21 (12.5%)</td><td>145</td><td>Final tournament evaluation &mdash; never seen during training</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p><strong>Stratification:</strong> The split is not random. Conversations are grouped by <code>path</code> (the most behaviorally distinct axis), and each path is proportionally distributed across all three sets. This guarantees:</p>
+  <ul>
+    <li>Every conversation path appears in train, val, AND test</li>
+    <li>All 8 problem types are covered in each set</li>
+    <li>All 7 personalities are covered in each set</li>
+  </ul>
+
+  <div class="callout">
+    <p><strong>Why stratify by path?</strong> A random split with 170 conversations can easily leave <code>caller_hangup</code> (13 total) entirely absent from the test set. Path determines the conversation structure more than problem or personality &mdash; a <code>happy_path</code> booking and a <code>caller_hangup</code> are fundamentally different evaluation targets.</p>
+  </div>
+
+  <h3>What Each Set Proves</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Set</th><th>Question It Answers</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Train</strong></td><td>"Can the model learn to imitate these conversations?"</td></tr>
+        <tr><td><strong>Val</strong></td><td>"Is it memorizing or generalizing?" (overfitting check)</td></tr>
+        <tr><td><strong>Test</strong></td><td>"How good is it on conversations it's never seen?"</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>The val set is checked automatically during training. If val loss diverges from train loss after epoch 2, the model is overfitting &mdash; reduce LoRA rank from 8 to 4, or increase dropout.</p>
+  <p>The test set is used ONLY during tournament evaluation. It's the "exam" &mdash; touching it during training would invalidate the results.</p>
+</div>
+
+<!-- Phase Balancing -->
+<div class="section" id="phase-balancing">
+  <h2>Phase Balancing</h2>
+  <p>The dataset is intentionally weighted to cover all 11 canonical phases, with targeted generation for underrepresented phases:</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Phase</th><th>Before Balancing</th><th>After Balancing</th><th>Target</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>greeting</code></td><td>100</td><td>128</td><td>&ge;50</td></tr>
+        <tr><td><code>problem_determination</code></td><td>182</td><td>232</td><td>&ge;50</td></tr>
+        <tr><td><code>solution_proposal</code></td><td>90</td><td>98</td><td>&ge;50</td></tr>
+        <tr><td><code>time_preference</code></td><td>77</td><td>79</td><td>&ge;50</td></tr>
+        <tr><td><strong><code>match_propose</code></strong></td><td><strong>21</strong></td><td><strong>52</strong></td><td><span class="badge-pass">&ge;50 &#10003;</span></td></tr>
+        <tr><td><code>confirmation</code></td><td>57</td><td>76</td><td>&ge;50</td></tr>
+        <tr><td><strong><code>summarize_book</code></strong></td><td><strong>23</strong></td><td><strong>50</strong></td><td><span class="badge-pass">&ge;50 &#10003;</span></td></tr>
+        <tr><td><code>goodbye</code></td><td>98</td><td>127</td><td>&ge;50</td></tr>
+        <tr><td><strong><code>emergency_escalation</code></strong></td><td><strong>34</strong></td><td><strong>40</strong></td><td><span class="badge-pass">&ge;30 &#10003;</span></td></tr>
+        <tr><td><strong><code>cancellation</code></strong></td><td><strong>17</strong></td><td><strong>27</strong></td><td><span class="badge-pass">&ge;20 &#10003;</span></td></tr>
+        <tr><td><strong><code>caller_hangup</code></strong></td><td><strong>5</strong></td><td><strong>13</strong></td><td><span class="badge-pass">&ge;10 &#10003;</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>Bold rows are the phases that were specifically targeted for additional generation.</p>
+  <p><strong>Why these targets?</strong> The model needs enough examples of each phase to learn the distinct behavior pattern. Greeting and goodbye are structurally simple &mdash; the model picks them up fast. Match &amp; propose, emergency escalation, and cancellation require nuanced multi-turn behavior that needs more examples.</p>
+</div>
+
+<!-- Validation Pipeline -->
+<div class="section" id="validation">
+  <h2>Validation Pipeline</h2>
+  <p>Every conversation passes through two validation stages:</p>
+
+  <h3>Structural Validation (hard gates &mdash; must pass)</h3>
+  <ul>
+    <li>All required fields present (id, scenario, turns, metadata)</li>
+    <li>First turn is agent (agent answers the phone)</li>
+    <li>Minimum turn count: 6 for bookings, 4 for non-bookings</li>
+    <li>No forbidden AI patterns ("As an AI", "as a language model")</li>
+    <li>All phase labels are canonical (after normalization)</li>
+  </ul>
+
+  <h3>Business Validation (soft warnings &mdash; flagged for review)</h3>
+  <ul>
+    <li><strong>Reply length:</strong> Agent turns must be &le;50 words (it's a phone call)</li>
+    <li><strong>Emergency triage:</strong> Emergency calls must reach escalation within 6 turns</li>
+    <li><strong>Confirmation completeness:</strong> Booking confirmations must use the caller's name</li>
+    <li><strong>Booking details:</strong> All booking fields (service, date, time, name, phone) must be present</li>
+    <li><strong>DIY safety:</strong> DIY recommendations for dangerous problems (sewer, water heater, emergency) must also recommend a professional</li>
+    <li><strong>Pricing policy:</strong> Agent-quoted prices must be within reasonable range</li>
+    <li><strong>No premature promises:</strong> Agent shouldn't promise specific availability before checking calendar</li>
+  </ul>
+
+  <div class="stat-row">
+    <div class="stat-card">
+      <div class="stat-value">170</div>
+      <div class="stat-label">Conversations</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value" style="color: var(--green);">0</div>
+      <div class="stat-label">Structural errors</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value" style="color: var(--accent);">37</div>
+      <div class="stat-label">Business warnings</div>
+    </div>
+  </div>
+  <p>37 business warnings are mostly incomplete <code>booking_details</code> in edge-case conversations.</p>
+</div>
+
+<!-- File Structure -->
+<div class="section" id="file-structure">
+  <h2>File Structure</h2>
+
+  <div class="diagram">
+    <span class="diagram-label">Data Directory Layout</span>
+    <pre>data/
+├── scenario_matrix.json              # The 8x7x8 scenario definitions
+├── conversations/
+│   ├── batch_01.json                 # Original generation (20 conversations)
+│   ├── batch_02.json                 # ...
+│   ├── batch_03.json
+│   ├── batch_04.json
+│   ├── batch_05.json
+│   ├── batch_06_hard.json            # Hard cases: hangups, cancellations, angry callers
+│   ├── batch_07_hard.json            # Contrastive examples: corrections, interruptions
+│   ├── batch_08_match_propose.json   # Phase-targeted: slot negotiation
+│   ├── batch_09_hangup.json          # Phase-targeted: caller exits
+│   ├── batch_10_cancellation.json    # Phase-targeted: retention and cancel
+│   ├── batch_11_summarize.json       # Phase-targeted: booking read-back
+│   └── batch_12_emergency.json       # Phase-targeted: safety triage
+├── all_conversations.json            # Merged raw (before normalization)
+├── all_conversations_normalized.json # Merged with canonical phase labels
+└── splits/
+    ├── train.json / train.jsonl      # 128 conversations
+    ├── val.json / val.jsonl          # 21 conversations
+    ├── test.json / test.jsonl        # 21 conversations
+    ├── train_mlx.jsonl               # 922 turn-level examples (MLX format)
+    ├── val_mlx.jsonl                 # 159 turn-level examples
+    └── test_mlx.jsonl                # 145 turn-level examples</pre>
+  </div>
+</div>
+
+<!-- Scripts -->
+<div class="section" id="scripts">
+  <h2>Scripts</h2>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Script</th><th>Purpose</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>scripts/normalize_and_split.py</code></td><td>Phase normalization, structural + business validation, stratified splitting</td></tr>
+        <tr><td><code>scripts/convert_to_chat_templates.py</code></td><td>Turn-level decomposition, MLX/Phi4/Mistral/Gemma format conversion</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Regeneration -->
+<div class="section" id="regeneration">
+  <h2>Regeneration</h2>
+  <p>To regenerate or extend the dataset:</p>
+  <ol>
+    <li>Add new conversation files to <code>data/conversations/batch_NN_description.json</code></li>
+    <li>Run <code>python3 scripts/normalize_and_split.py</code> &mdash; normalizes phases, validates, creates stratified splits</li>
+    <li>Run <code>python3 scripts/convert_to_chat_templates.py -i data/splits/train.json -f mlx -o data/splits/train_mlx.jsonl</code> (repeat for val/test)</li>
+    <li>Check phase distribution &mdash; if any phase has &lt;30 training examples, generate more targeted conversations</li>
+  </ol>
+  <p>The pipeline is designed to be additive. New conversations are added as new batch files; the normalizer and splitter always re-process everything from scratch.</p>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  Phone Agent Training Pipeline &middot; Training Methodology &middot; David Mar &middot; April 2026
+</div>
+
+</div><!-- /main -->
+</div><!-- /layout -->
+
+<script>
+// Active sidebar link on scroll
+(function() {
+  const sections = document.querySelectorAll('.section[id]');
+  const navLinks = document.querySelectorAll('.sidebar nav a[href^="#"]');
+
+  function updateActive() {
+    let current = '';
+    const scrollY = window.scrollY + 60;
+
+    sections.forEach(function(section) {
+      if (section.offsetTop <= scrollY) {
+        current = section.getAttribute('id');
+      }
+    });
+
+    navLinks.forEach(function(link) {
+      link.classList.remove('active');
+      if (link.getAttribute('href') === '#' + current) {
+        link.classList.add('active');
+      }
+    });
+  }
+
+  window.addEventListener('scroll', updateActive, { passive: true });
+  updateActive();
+
+  // Close mobile sidebar on link click
+  navLinks.forEach(function(link) {
+    link.addEventListener('click', function() {
+      document.querySelector('.sidebar').classList.remove('open');
+    });
+  });
+})();
+</script>
+
+</body>
+</html>

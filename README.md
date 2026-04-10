@@ -34,48 +34,80 @@ python -m mlx_lm.lora \
 | Metric | Value |
 |--------|-------|
 | Total conversations | 170 |
-| Training examples (turn-level) | 922 |
-| Validation examples | 159 |
-| Test examples (held out) | 145 |
+| Training examples (with slot context) | ~1,200+ |
+| Slot-specific edge cases | ~100 |
 | Problem types | 8 |
 | Caller personalities | 7 |
 | Conversation paths | 8 |
-| Conversation phases | 11 |
+| Conversation phases / FSM states | 11 / 7 |
+| Scheduling mode | **24/7** — always accepts bookings |
+
+## Slot Injection Training
+
+Every training example includes structured context that matches what the model sees in production:
+
+```
+[CONTEXT]  — current day/time, available slots, caller mood, 24/7 scheduling mode
+[SLOTS]    — 13 tracked values: issue_type, customer_name, date_time, address, etc.
+[STATE]    — which FSM state we're in (GREETING, PROBLEM_DETERMINATION, FINALIZE, etc.)
+[TASK]     — explicit instruction for this turn ("Read back all booking details")
+```
+
+This teaches the model to **use collected information** (never re-ask), **follow the workflow** (right response for the phase), and **always book** (24/7 answering service — never says "we're closed").
+
+See the [Slot Injection Spec](docs/seed/slot_injection_training_spec.md) for the full design, including the 13-slot schema, real production failure examples, and training example format.
 
 ## Documentation
 
 | Doc | What You'll Learn |
 |-----|-------------------|
-| **[Fine-Tuning Guide](docs/fine-tuning-guide.md)** | Start here. Plain-English explanation of every concept: MLX, LoRA, GGUF, quantization, unified memory. Written for someone new to ML fine-tuning. Covers the full pipeline from training data to deployed model. |
-| **[Conversation Phases](docs/phases.md)** | The 11 phases every phone call can contain (greeting, problem determination, solution proposal, etc.). What the agent should do in each phase, what we train for, and how we evaluate quality. |
-| **[Training Methodology](docs/training-methodology.md)** | How the data was generated, why we split 75/12.5/12.5, how stratified splitting works, phase balancing strategy, and the validation pipeline. |
-| **[Training Pipeline Explorer](docs/html/seed-training-pipeline.html)** | Interactive HTML page — browse all 170 conversations, filter by phase/problem/personality, view transcripts, see distribution stats. Open in a browser. |
-| **[Fine-Tuning Guide (HTML)](docs/html/fine-tuning-guide.html)** | Beautiful rendered version of the fine-tuning guide with diagrams, glossary cards, and the full pipeline walkthrough. |
+| **[Fine-Tuning Guide](docs/fine-tuning-guide.md)** | Start here. Plain-English explanation of MLX, LoRA, GGUF, quantization, unified memory. Full pipeline from training data to deployed model. |
+| **[Conversation Phases](docs/phases.md)** | The 11 phases every phone call can contain. Agent behavior, training signal, and evaluation rubrics per phase. |
+| **[Training Methodology](docs/training-methodology.md)** | Data generation, stratified splitting, phase balancing, and the validation pipeline. |
+| **[Slot Injection Spec](docs/seed/slot_injection_training_spec.md)** | The [CONTEXT] + [SLOTS] + [STATE] + [TASK] system prompt format. 13-slot schema, real failure examples, training data design. |
+| **[Training Data Explorer](docs/html/seed-training-pipeline.html)** | Interactive HTML — browse all 170 conversations, filter by phase/problem/personality. |
 
-**Reading order for newcomers:** Fine-Tuning Guide → Phases → Training Methodology
+### HTML Versions (rendered with Afterburner dark theme)
+
+| Page | Link |
+|------|------|
+| Fine-Tuning Guide | [docs/html/fine-tuning-guide.html](docs/html/fine-tuning-guide.html) |
+| Conversation Phases | [docs/html/phases.html](docs/html/phases.html) |
+| Training Methodology | [docs/html/training-methodology.html](docs/html/training-methodology.html) |
+| Slot Injection Spec | [docs/html/slot-injection-spec.html](docs/html/slot-injection-spec.html) |
+| Training Data Explorer | [docs/html/seed-training-pipeline.html](docs/html/seed-training-pipeline.html) |
+
+**Reading order for newcomers:** Fine-Tuning Guide → Phases → Training Methodology → Slot Injection Spec
 
 ## Project Structure
 
 ```
 training/
 ├── README.md                          ← you are here
-├── docs/html/
-│   ├── seed-training-pipeline.html    ← interactive data explorer (open in browser)
-│   └── fine-tuning-guide.html         ← rendered fine-tuning guide
+├── docs/
+│   ├── fine-tuning-guide.md           ← educational guide (MLX, LoRA, GGUF)
+│   ├── phases.md                      ← the 11 conversation phases
+│   ├── training-methodology.md        ← data generation and splitting
+│   ├── seed/
+│   │   └── slot_injection_training_spec.md  ← slot context training design
+│   └── html/                          ← rendered HTML versions (Afterburner theme)
+│       ├── fine-tuning-guide.html
+│       ├── phases.html
+│       ├── training-methodology.html
+│       ├── slot-injection-spec.html
+│       └── seed-training-pipeline.html ← interactive data explorer
 ├── data/
 │   ├── scenario_matrix.json           ← 8×7×8 scenario definitions
 │   ├── conversations/                 ← raw generated conversations (12 batch files)
-│   │   ├── batch_01.json ... batch_05.json       (original 100)
-│   │   ├── batch_06_hard.json, batch_07_hard.json (30 hard cases)
-│   │   └── batch_08-12_*.json                     (40 phase-targeted)
 │   ├── all_conversations_normalized.json          (170, phase-normalized)
-│   └── splits/
-│       ├── train.json / train.jsonl   ← 128 conversations
-│       ├── val.json / val.jsonl       ← 21 conversations
-│       ├── test.json / test.jsonl     ← 21 conversations (held out)
-│       ├── train_mlx.jsonl            ← 922 turn-level examples (MLX format)
-│       ├── val_mlx.jsonl              ← 159 turn-level examples
-│       └── test_mlx.jsonl             ← 145 turn-level examples
+│   ├── training/
+│   │   ├── all_with_slots.jsonl       ← 1,210 examples with [CONTEXT]+[SLOTS]+[STATE]+[TASK]
+│   │   └── slot_edge_cases.jsonl      ← 100 edge cases (after-hours, corrections, emergencies)
+│   ├── splits/                        ← stratified train/val/test splits
+│   └── mlx_data/                      ← final merged MLX-ready training files
+│       ├── train.jsonl
+│       ├── valid.jsonl
+│       └── test.jsonl
 ├── scripts/
 │   ├── normalize_and_split.py         ← phase normalization + stratified splitting
 │   └── convert_to_chat_templates.py   ← turn-level decomposition + format conversion

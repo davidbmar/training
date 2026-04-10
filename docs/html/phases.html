@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The 11 Conversation Phases</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0c0b0f;
+  --bg-raised: #15141a;
+  --bg-card: #1c1b22;
+  --bg-code: #1a1920;
+  --border: #2a2930;
+  --border-accent: #3d3a47;
+  --text: #c8c5d0;
+  --text-dim: #8a8794;
+  --text-bright: #eae8f0;
+  --accent: #d4a054;
+  --accent-dim: #b8873d;
+  --accent-glow: rgba(212, 160, 84, 0.08);
+  --green: #6abf7b;
+  --red: #d46a6a;
+  --blue: #6a9fd4;
+  --purple: #a06ad4;
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-mono: 'DM Mono', 'SF Mono', 'Fira Code', monospace;
+  --font-body: 'DM Mono', monospace;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* Layout */
+.layout { display: flex; min-height: 100vh; }
+.sidebar {
+  width: 260px;
+  background: var(--bg-raised);
+  border-right: 1px solid var(--border);
+  padding: 24px 0;
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  overflow-y: auto;
+  z-index: 100;
+}
+.sidebar-header {
+  padding: 0 20px 20px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 16px;
+}
+.sidebar-header h2 {
+  font-family: var(--font-display);
+  font-size: 15px;
+  color: var(--accent);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+.sidebar-header .sub {
+  font-size: 11px;
+  color: var(--text-dim);
+  margin-top: 4px;
+}
+.sidebar nav a {
+  display: block;
+  padding: 7px 20px;
+  color: var(--text-dim);
+  text-decoration: none;
+  font-size: 12px;
+  transition: all 0.15s;
+  border-left: 2px solid transparent;
+}
+.sidebar nav a:hover {
+  color: var(--text);
+  background: var(--accent-glow);
+}
+.sidebar nav a.active {
+  color: var(--accent);
+  border-left-color: var(--accent);
+  background: var(--accent-glow);
+}
+.sidebar nav .section-label {
+  padding: 16px 20px 6px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-dim);
+  opacity: 0.6;
+}
+.sidebar-links {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+.sidebar-links a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 20px;
+  color: var(--text-dim);
+  text-decoration: none;
+  font-size: 12px;
+  transition: all 0.15s;
+}
+.sidebar-links a:hover { color: var(--accent); }
+.sidebar-links a .arrow { font-size: 10px; opacity: 0.5; }
+
+.main {
+  margin-left: 260px;
+  flex: 1;
+  max-width: 900px;
+  padding: 0 48px 80px;
+}
+
+/* Hero */
+.hero {
+  padding: 64px 0 48px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 48px;
+}
+.hero-badge {
+  display: inline-block;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+  background: var(--accent-glow);
+  border: 1px solid var(--accent-dim);
+  padding: 4px 12px;
+  border-radius: 20px;
+  margin-bottom: 20px;
+}
+.hero h1 {
+  font-family: var(--font-display);
+  font-size: 36px;
+  font-weight: 400;
+  color: var(--text-bright);
+  margin-bottom: 8px;
+  letter-spacing: -0.01em;
+}
+.hero h1 span { color: var(--accent); }
+.hero .hero-subtitle {
+  font-family: var(--font-display);
+  font-size: 18px;
+  color: var(--text-dim);
+  font-weight: 300;
+  margin-bottom: 16px;
+}
+.hero .hero-desc {
+  font-size: 13px;
+  color: var(--text-dim);
+  max-width: 640px;
+  line-height: 1.7;
+  margin-bottom: 20px;
+}
+.hero-meta {
+  display: flex;
+  gap: 24px;
+  font-size: 12px;
+  color: var(--text-dim);
+}
+.hero-meta strong { color: var(--text); font-weight: 500; }
+
+/* Section headers */
+.section { margin-bottom: 56px; scroll-margin-top: 24px; }
+.section h2 {
+  font-family: var(--font-display);
+  font-size: 24px;
+  color: var(--text-bright);
+  font-weight: 400;
+  margin-bottom: 8px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.section h3 {
+  font-family: var(--font-display);
+  font-size: 17px;
+  color: var(--text-bright);
+  font-weight: 400;
+  margin: 28px 0 12px;
+}
+.section h4 {
+  font-size: 14px;
+  color: var(--accent);
+  font-weight: 500;
+  margin: 20px 0 8px;
+}
+.section p {
+  font-size: 13px;
+  color: var(--text);
+  line-height: 1.7;
+  margin-bottom: 14px;
+  max-width: 700px;
+}
+.section ul, .section ol {
+  margin: 0 0 14px 20px;
+  font-size: 13px;
+  line-height: 1.7;
+}
+.section li { margin-bottom: 4px; }
+.section strong { color: var(--text-bright); font-weight: 500; }
+
+/* Code blocks */
+pre {
+  background: var(--bg-code);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px 20px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--text);
+  overflow-x: auto;
+  margin-bottom: 16px;
+}
+code {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  background: var(--bg-code);
+  padding: 2px 6px;
+  border-radius: 3px;
+  color: var(--accent);
+}
+
+/* Tables */
+.table-wrap {
+  overflow-x: auto;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+.table-wrap table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+.table-wrap thead { background: var(--bg-raised); }
+.table-wrap th {
+  text-align: left;
+  padding: 10px 16px;
+  color: var(--accent);
+  font-weight: 500;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border-bottom: 1px solid var(--border);
+}
+.table-wrap td {
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+}
+.table-wrap tr:last-child td { border-bottom: none; }
+.table-wrap tr:hover td { background: var(--accent-glow); }
+.table-wrap td strong { color: var(--text-bright); }
+
+/* Phase cards */
+.phase-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 8px 8px 0;
+  padding: 18px 22px;
+  margin-bottom: 16px;
+  transition: border-color 0.15s;
+}
+.phase-card:hover { border-color: var(--border-accent); border-left-color: var(--accent); }
+.phase-card .phase-num {
+  font-size: 11px;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+.phase-card .phase-name {
+  font-family: var(--font-display);
+  font-size: 16px;
+  color: var(--text-bright);
+  font-weight: 400;
+  margin-bottom: 10px;
+}
+.phase-card .phase-fsm {
+  font-size: 11px;
+  color: var(--text-dim);
+  margin-bottom: 8px;
+}
+.phase-card .phase-fsm code { font-size: 11px; }
+.phase-detail { margin-bottom: 6px; font-size: 13px; line-height: 1.6; }
+.phase-detail .label { color: var(--accent); font-weight: 500; }
+.phase-example {
+  background: var(--bg-code);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 10px 14px;
+  margin-top: 10px;
+  font-size: 12px;
+  color: var(--green);
+  font-style: italic;
+  line-height: 1.6;
+}
+
+/* Edge case card variant */
+.phase-card.edge {
+  border-left-color: var(--red);
+}
+.phase-card.edge .phase-num { color: var(--red); }
+
+/* Diagram */
+.diagram {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0;
+  margin-bottom: 20px;
+  overflow-x: auto;
+}
+.diagram-label {
+  display: block;
+  padding: 10px 16px;
+  font-size: 11px;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  border-bottom: 1px solid var(--border);
+  font-weight: 500;
+}
+.diagram pre {
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  margin: 0;
+  padding: 16px 20px;
+  font-size: 12px;
+  color: var(--text-dim);
+}
+
+/* Callout */
+.callout {
+  background: var(--accent-glow);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 8px 8px 0;
+  padding: 16px 20px;
+  margin-bottom: 20px;
+}
+.callout p {
+  margin-bottom: 0;
+  font-size: 13px;
+  color: var(--text);
+}
+.callout strong { color: var(--accent); }
+
+/* Footer */
+.footer {
+  margin-top: 64px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--text-dim);
+  text-align: center;
+}
+
+/* Mobile */
+.menu-toggle {
+  display: none;
+  position: fixed;
+  top: 12px; left: 12px;
+  z-index: 200;
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
+  color: var(--accent);
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  cursor: pointer;
+}
+@media (max-width: 860px) {
+  .menu-toggle { display: block; }
+  .sidebar { transform: translateX(-100%); transition: transform 0.2s; }
+  .sidebar.open { transform: translateX(0); }
+  .main { margin-left: 0; padding: 0 20px 60px; }
+  .hero h1 { font-size: 26px; }
+}
+</style>
+</head>
+<body>
+
+<button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')" aria-label="Toggle menu">Menu</button>
+
+<div class="layout">
+
+<!-- Sidebar -->
+<aside class="sidebar">
+  <div class="sidebar-header">
+    <h2>Conversation Phases</h2>
+    <div class="sub">Phase Reference</div>
+  </div>
+  <nav>
+    <div class="section-label">Sections</div>
+    <a href="#core-phases">9 Core Phases</a>
+    <a href="#edge-phases">2 Edge-Case Phases</a>
+    <a href="#caller-hangup">Caller Hangup</a>
+    <a href="#sequence-rules">Phase Sequence Rules</a>
+    <a href="#distribution">Phase Distribution</a>
+    <a href="#rubrics">Evaluation Rubrics</a>
+    <div class="sidebar-links">
+      <div class="section-label">Related Docs</div>
+      <a href="fine-tuning-guide.html"><span class="arrow">&#8594;</span> Fine-Tuning Guide</a>
+      <a href="seed-training-pipeline.html"><span class="arrow">&#8594;</span> Training Explorer</a>
+      <a href="training-methodology.html"><span class="arrow">&#8594;</span> Methodology</a>
+      <a href="slot-injection-spec.html"><span class="arrow">&#8594;</span> Slot Injection</a>
+    </div>
+  </nav>
+</aside>
+
+<!-- Main Content -->
+<div class="main">
+
+<!-- Hero -->
+<div class="hero">
+  <div class="hero-badge">Conversation Design</div>
+  <h1>The 11 <span>Conversation Phases</span></h1>
+  <div class="hero-subtitle">Canonical labels for every turn in a phone call</div>
+  <p class="hero-desc">Every phone call to Smith Plumbing follows a natural conversational arc. We label each turn with one of 11 canonical phases. These labels tell the training pipeline which conversational skill each example teaches, and they power the per-phase evaluation rubrics that score model quality.</p>
+  <div class="hero-meta">
+    <span>Phases: <strong>11 total</strong></span>
+    <span>Core: <strong>9 phases</strong></span>
+    <span>Edge: <strong>2 phases</strong></span>
+  </div>
+</div>
+
+<!-- 9 Core Phases -->
+<div class="section" id="core-phases">
+  <h2>The 9 Core Phases</h2>
+  <p>These phases represent the standard booking flow. A complete happy-path call touches all 9 in order.</p>
+
+  <div class="phase-card">
+    <div class="phase-num">Phase 1</div>
+    <div class="phase-name">Greeting</div>
+    <div class="phase-fsm">FSM state: <code>greet</code></div>
+    <div class="phase-detail"><span class="label">What happens:</span> Agent answers the phone with the business name and a warm opener.</div>
+    <div class="phase-detail"><span class="label">Agent behavior:</span> "Hi, Smith Plumbing, how can I help?" &mdash; brief, warm, sets the tone.</div>
+    <div class="phase-detail"><span class="label">Training signal:</span> Warmth, enthusiasm, personalization.</div>
+    <div class="phase-example">"Thanks for calling Smith Plumbing! This is Lisa, how can I help?"</div>
+  </div>
+
+  <div class="phase-card">
+    <div class="phase-num">Phase 2</div>
+    <div class="phase-name">Problem Determination</div>
+    <div class="phase-fsm">FSM state: <code>ask_service</code></div>
+    <div class="phase-detail"><span class="label">What happens:</span> Agent listens to the caller's issue and asks clarifying questions to identify the right service.</div>
+    <div class="phase-detail"><span class="label">Agent behavior:</span> Echo the caller's exact words back ("leaking sink" not "water damage"). Ask one question at a time. Show empathy before moving to scheduling.</div>
+    <div class="phase-detail"><span class="label">Training signal:</span> Empathy, active listening, clarifying questions, echo-back pattern.</div>
+    <div class="phase-example">"Oh no, a leak under the bathroom sink &mdash; that's no fun. Is it a steady drip or more of a trickle?"</div>
+  </div>
+
+  <div class="phase-card">
+    <div class="phase-num">Phase 3</div>
+    <div class="phase-name">Solution Proposal</div>
+    <div class="phase-fsm">FSM state: <code>(new phase, not yet in FSM)</code></div>
+    <div class="phase-detail"><span class="label">What happens:</span> Agent suggests the appropriate next step &mdash; send a plumber, DIY tip for simple issues, or explain what the service involves.</div>
+    <div class="phase-detail"><span class="label">Agent behavior:</span> Brief explanation. For simple issues (running toilet, jammed disposal), offer a quick fix first. For complex issues, move toward scheduling.</div>
+    <div class="phase-detail"><span class="label">Training signal:</span> Accuracy, helpfulness, setting expectations.</div>
+    <div class="phase-example">"That sounds like a supply line issue &mdash; we can send someone out to take a look. Usually takes about an hour."</div>
+  </div>
+
+  <div class="phase-card">
+    <div class="phase-num">Phase 4</div>
+    <div class="phase-name">Time Preference</div>
+    <div class="phase-fsm">FSM state: <code>ask_time</code></div>
+    <div class="phase-detail"><span class="label">What happens:</span> Agent asks when the caller wants the appointment.</div>
+    <div class="phase-detail"><span class="label">Agent behavior:</span> One question: "What day works for you?" Don't re-ask about the problem. If caller keeps talking about the issue, gently redirect.</div>
+    <div class="phase-detail"><span class="label">Training signal:</span> Efficiency, redirection, natural transition.</div>
+    <div class="phase-example">"Sure thing! What day works best for you?"</div>
+  </div>
+
+  <div class="phase-card">
+    <div class="phase-num">Phase 5</div>
+    <div class="phase-name">Availability Check</div>
+    <div class="phase-fsm">FSM state: <code>find_slots</code></div>
+    <div class="phase-detail"><span class="label">What happens:</span> Automatic calendar lookup. No conversation turns &mdash; this is a system action between phases 4 and 6.</div>
+    <div class="phase-detail"><span class="label">Training signal:</span> None (no agent text generated).</div>
+  </div>
+
+  <div class="phase-card">
+    <div class="phase-num">Phase 6</div>
+    <div class="phase-name">Match &amp; Propose</div>
+    <div class="phase-fsm">FSM state: <code>offer_slots</code></div>
+    <div class="phase-detail"><span class="label">What happens:</span> Agent presents available time slots and negotiates with the caller.</div>
+    <div class="phase-detail"><span class="label">Agent behavior:</span> Offer 2&ndash;3 options naturally. If the caller's preferred time isn't available, suggest the closest alternatives. For rushed callers, lead with the earliest slot.</div>
+    <div class="phase-detail"><span class="label">Training signal:</span> Flexibility, clear options, negotiation.</div>
+    <div class="phase-example">"I've got Thursday at 10am or Friday at 2pm &mdash; which works better?"</div>
+  </div>
+
+  <div class="phase-card">
+    <div class="phase-num">Phase 7</div>
+    <div class="phase-name">Confirmation</div>
+    <div class="phase-fsm">FSM state: <code>confirm_booking</code></div>
+    <div class="phase-detail"><span class="label">What happens:</span> Agent collects name and phone number, then reads back ALL booking details.</div>
+    <div class="phase-detail"><span class="label">Agent behavior:</span> Echo everything: service, date, time, name, phone. Wait for "yes" before proceeding. Use the caller's name.</div>
+    <div class="phase-detail"><span class="label">Training signal:</span> Echo-back completeness, detail accuracy, using caller's name.</div>
+    <div class="phase-example">"Alright Mike, so that's drain cleaning on Thursday at 2pm. I've got you at 555-0142. Sound good?"</div>
+  </div>
+
+  <div class="phase-card">
+    <div class="phase-num">Phase 8</div>
+    <div class="phase-name">Summarize &amp; Book</div>
+    <div class="phase-fsm">FSM state: <code>book_appointment</code></div>
+    <div class="phase-detail"><span class="label">What happens:</span> Final summary and calendar insertion. Agent confirms the booking is set.</div>
+    <div class="phase-detail"><span class="label">Agent behavior:</span> Celebrate: "You're all set!" Mention next steps (text confirmation, what to expect). If booking fails, apologize and offer callback.</div>
+    <div class="phase-detail"><span class="label">Training signal:</span> Completeness, next steps, handling system errors gracefully.</div>
+    <div class="phase-example">"You're all set for Thursday at 2pm! You'll get a text confirmation. Have a great day, Mike!"</div>
+  </div>
+
+  <div class="phase-card">
+    <div class="phase-num">Phase 9</div>
+    <div class="phase-name">Goodbye</div>
+    <div class="phase-fsm">FSM state: <code>exit</code></div>
+    <div class="phase-detail"><span class="label">What happens:</span> Warm close to the conversation.</div>
+    <div class="phase-detail"><span class="label">Agent behavior:</span> Use the caller's name. Offer further help. Keep it brief and warm.</div>
+    <div class="phase-detail"><span class="label">Training signal:</span> Warmth, personalization, clean close.</div>
+    <div class="phase-example">"Thanks for calling, Mike! We'll see you Thursday."</div>
+  </div>
+</div>
+
+<!-- Edge-Case Phases -->
+<div class="section" id="edge-phases">
+  <h2>The 2 Edge-Case Phases</h2>
+  <p>These phases handle non-standard flows. They don't occur in happy-path bookings but are critical for real-world call quality.</p>
+
+  <div class="phase-card edge">
+    <div class="phase-num">Phase 10</div>
+    <div class="phase-name">Emergency Escalation</div>
+    <div class="phase-detail"><span class="label">What happens:</span> Caller reports an urgent situation &mdash; burst pipe, gas smell, flooding.</div>
+    <div class="phase-detail"><span class="label">Agent behavior:</span> SAFETY FIRST. For gas: "Leave the house immediately and call 911." For flooding: "Can you turn off the main water valve?" Triage the severity before scheduling. Fast-track to same-day dispatch.</div>
+    <div class="phase-detail"><span class="label">Training signal:</span> Safety prioritization, calm under pressure, correct triage protocol.</div>
+    <div class="phase-example">"I hear you &mdash; first thing, can you find the main water shutoff valve? It's usually near the water meter."</div>
+  </div>
+
+  <div class="phase-card edge">
+    <div class="phase-num">Phase 11</div>
+    <div class="phase-name">Cancellation</div>
+    <div class="phase-detail"><span class="label">What happens:</span> Caller wants to cancel an existing appointment.</div>
+    <div class="phase-detail"><span class="label">Agent behavior:</span> Acknowledge, attempt gentle retention ("Is there a different time that works?"), accept gracefully when they insist. Never guilt-trip.</div>
+    <div class="phase-detail"><span class="label">Training signal:</span> Retention attempt, graceful acceptance, professionalism.</div>
+    <div class="phase-example">"No problem at all! Is there a different day that might work, or would you like to cancel completely?"</div>
+  </div>
+</div>
+
+<!-- Caller Hangup -->
+<div class="section" id="caller-hangup">
+  <h2>Special Label: Caller Hangup</h2>
+  <p><code>caller_hangup</code> is not a phase the agent controls &mdash; it marks the point where the caller ends the call abruptly. The agent's response to a hangup (or silence) is what we train:</p>
+  <div class="callout">
+    <p>"Hello? ... Alright, give us a call back anytime!"</p>
+  </div>
+</div>
+
+<!-- Phase Sequence Rules -->
+<div class="section" id="sequence-rules">
+  <h2>Phase Sequence Rules</h2>
+  <p>Legal transitions follow this general pattern:</p>
+
+  <div class="diagram">
+    <span class="diagram-label">Happy Path Sequence</span>
+    <pre>greeting &rarr; problem_determination &rarr; solution_proposal &rarr; time_preference
+    &rarr; match_propose &rarr; confirmation &rarr; summarize_book &rarr; goodbye</pre>
+  </div>
+
+  <h3>Allowed Shortcuts</h3>
+  <ul>
+    <li><code>greeting &rarr; emergency_escalation &rarr; confirmation &rarr; goodbye</code> &mdash; emergencies skip normal flow</li>
+    <li><code>greeting &rarr; problem_determination &rarr; cancellation &rarr; goodbye</code> &mdash; cancellation calls</li>
+    <li><code>greeting &rarr; problem_determination &rarr; solution_proposal &rarr; goodbye</code> &mdash; DIY recommendation, question-only</li>
+    <li>Any phase &rarr; <code>caller_hangup</code> &mdash; caller can leave at any point</li>
+  </ul>
+
+  <h3>Illegal Jumps</h3>
+  <ul>
+    <li><code>greeting &rarr; confirmation</code> &mdash; can't confirm what hasn't been discussed</li>
+    <li><code>greeting &rarr; summarize_book</code> &mdash; can't summarize without details</li>
+    <li><code>match_propose &rarr; problem_determination</code> &mdash; don't go backwards to re-ask the problem</li>
+  </ul>
+</div>
+
+<!-- Phase Distribution -->
+<div class="section" id="distribution">
+  <h2>Phase Distribution in Training Data</h2>
+  <p>The dataset targets balanced coverage across all phases:</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Phase</th><th>Train Examples</th><th>Purpose</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>greeting</code></td><td>128</td><td>Opening warmth and tone-setting</td></tr>
+        <tr><td><code>problem_determination</code></td><td>232</td><td>Active listening and echo-back</td></tr>
+        <tr><td><code>solution_proposal</code></td><td>98</td><td>Helpfulness and accuracy</td></tr>
+        <tr><td><code>time_preference</code></td><td>79</td><td>Efficient scheduling transition</td></tr>
+        <tr><td><code>match_propose</code></td><td>52</td><td>Slot negotiation and flexibility</td></tr>
+        <tr><td><code>confirmation</code></td><td>76</td><td>Detail read-back and accuracy</td></tr>
+        <tr><td><code>summarize_book</code></td><td>50</td><td>Booking finalization</td></tr>
+        <tr><td><code>goodbye</code></td><td>127</td><td>Warm close with personalization</td></tr>
+        <tr><td><code>emergency_escalation</code></td><td>40</td><td>Safety-first triage</td></tr>
+        <tr><td><code>cancellation</code></td><td>27</td><td>Retention and graceful handling</td></tr>
+        <tr><td><code>caller_hangup</code></td><td>13</td><td>Graceful response to abrupt exits</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p><strong>Total:</strong> 922 turn-level training examples from 128 conversations.</p>
+</div>
+
+<!-- Evaluation Rubrics -->
+<div class="section" id="rubrics">
+  <h2>Per-Phase Evaluation Rubrics</h2>
+  <p>Each phase is scored on 3 dimensions (1&ndash;5 scale) during tournament evaluation:</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Phase</th><th>Dimensions</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Greeting</strong></td><td>warmth, enthusiasm, personalization</td></tr>
+        <tr><td><strong>Discovery</strong></td><td>empathy, listening, clarifying questions</td></tr>
+        <tr><td><strong>Solution</strong></td><td>accuracy, helpfulness, expectations set</td></tr>
+        <tr><td><strong>Scheduling</strong></td><td>flexibility, calendar check, options offered</td></tr>
+        <tr><td><strong>Confirmation</strong></td><td>echo back, calendar validated, details complete</td></tr>
+        <tr><td><strong>Goodbye</strong></td><td>warmth, offered help, used caller's name</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>These rubrics are implemented in <code>phone_agent/evaluation/phase_eval.py</code> in the phone-agent-scheduler repo and will be used for tournament evaluation after fine-tuning.</p>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  Phone Agent Training Pipeline &middot; Conversation Phases &middot; David Mar &middot; April 2026
+</div>
+
+</div><!-- /main -->
+</div><!-- /layout -->
+
+<script>
+// Active sidebar link on scroll
+(function() {
+  const sections = document.querySelectorAll('.section[id]');
+  const navLinks = document.querySelectorAll('.sidebar nav a[href^="#"]');
+
+  function updateActive() {
+    let current = '';
+    const scrollY = window.scrollY + 60;
+
+    sections.forEach(function(section) {
+      if (section.offsetTop <= scrollY) {
+        current = section.getAttribute('id');
+      }
+    });
+
+    navLinks.forEach(function(link) {
+      link.classList.remove('active');
+      if (link.getAttribute('href') === '#' + current) {
+        link.classList.add('active');
+      }
+    });
+  }
+
+  window.addEventListener('scroll', updateActive, { passive: true });
+  updateActive();
+
+  // Close mobile sidebar on link click
+  navLinks.forEach(function(link) {
+    link.addEventListener('click', function() {
+      document.querySelector('.sidebar').classList.remove('open');
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
