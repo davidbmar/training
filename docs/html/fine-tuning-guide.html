@@ -1,0 +1,1363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fine-Tuning Local LLMs: A Complete Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0c0b0f;
+  --bg-raised: #15141a;
+  --bg-card: #1c1b22;
+  --bg-code: #1a1920;
+  --border: #2a2930;
+  --border-accent: #3d3a47;
+  --text: #c8c5d0;
+  --text-dim: #8a8794;
+  --text-bright: #eae8f0;
+  --accent: #d4a054;
+  --accent-dim: #b8873d;
+  --accent-glow: rgba(212, 160, 84, 0.08);
+  --green: #6abf7b;
+  --red: #d46a6a;
+  --blue: #6a9fd4;
+  --purple: #a06ad4;
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-mono: 'DM Mono', 'SF Mono', 'Fira Code', monospace;
+  --font-body: 'DM Mono', monospace;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* Layout */
+.layout { display: flex; min-height: 100vh; }
+.sidebar {
+  width: 260px;
+  background: var(--bg-raised);
+  border-right: 1px solid var(--border);
+  padding: 24px 0;
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  overflow-y: auto;
+  z-index: 100;
+}
+.sidebar-header {
+  padding: 0 20px 20px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 16px;
+}
+.sidebar-header h2 {
+  font-family: var(--font-display);
+  font-size: 15px;
+  color: var(--accent);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+.sidebar-header .sub {
+  font-size: 11px;
+  color: var(--text-dim);
+  margin-top: 4px;
+}
+.sidebar nav a {
+  display: block;
+  padding: 7px 20px;
+  color: var(--text-dim);
+  text-decoration: none;
+  font-size: 12px;
+  transition: all 0.15s;
+  border-left: 2px solid transparent;
+}
+.sidebar nav a:hover {
+  color: var(--text);
+  background: var(--accent-glow);
+}
+.sidebar nav a.active {
+  color: var(--accent);
+  border-left-color: var(--accent);
+  background: var(--accent-glow);
+}
+.sidebar nav .section-label {
+  padding: 16px 20px 6px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-dim);
+  opacity: 0.6;
+}
+.sidebar-links {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+.sidebar-links a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 20px;
+  color: var(--text-dim);
+  text-decoration: none;
+  font-size: 12px;
+  transition: all 0.15s;
+}
+.sidebar-links a:hover { color: var(--accent); }
+.sidebar-links a .arrow { font-size: 10px; opacity: 0.5; }
+
+.main {
+  margin-left: 260px;
+  flex: 1;
+  max-width: 900px;
+  padding: 0 48px 80px;
+}
+
+/* Hero */
+.hero {
+  padding: 64px 0 48px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 48px;
+}
+.hero-badge {
+  display: inline-block;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+  background: var(--accent-glow);
+  border: 1px solid var(--accent-dim);
+  padding: 4px 12px;
+  border-radius: 20px;
+  margin-bottom: 20px;
+}
+.hero h1 {
+  font-family: var(--font-display);
+  font-size: 36px;
+  font-weight: 400;
+  color: var(--text-bright);
+  margin-bottom: 8px;
+  letter-spacing: -0.01em;
+}
+.hero h1 span { color: var(--accent); }
+.hero .hero-subtitle {
+  font-family: var(--font-display);
+  font-size: 18px;
+  color: var(--text-dim);
+  font-weight: 300;
+  margin-bottom: 16px;
+}
+.hero .hero-desc {
+  font-size: 13px;
+  color: var(--text-dim);
+  max-width: 640px;
+  line-height: 1.7;
+  margin-bottom: 20px;
+}
+.hero-meta {
+  display: flex;
+  gap: 24px;
+  font-size: 12px;
+  color: var(--text-dim);
+}
+.hero-meta strong { color: var(--text); font-weight: 500; }
+
+/* Section headers */
+.section { margin-bottom: 56px; scroll-margin-top: 24px; }
+.section h2 {
+  font-family: var(--font-display);
+  font-size: 24px;
+  color: var(--text-bright);
+  font-weight: 400;
+  margin-bottom: 8px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.section h3 {
+  font-family: var(--font-display);
+  font-size: 17px;
+  color: var(--text-bright);
+  font-weight: 400;
+  margin: 28px 0 12px;
+}
+.section h4 {
+  font-size: 14px;
+  color: var(--accent);
+  font-weight: 500;
+  margin: 20px 0 8px;
+}
+.section p {
+  font-size: 13px;
+  color: var(--text);
+  line-height: 1.7;
+  margin-bottom: 14px;
+  max-width: 700px;
+}
+.section ul, .section ol {
+  margin: 0 0 14px 20px;
+  font-size: 13px;
+  line-height: 1.7;
+}
+.section li { margin-bottom: 4px; }
+.section strong { color: var(--text-bright); font-weight: 500; }
+
+/* Code blocks */
+pre {
+  background: var(--bg-code);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px 20px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--text);
+  overflow-x: auto;
+  margin-bottom: 16px;
+}
+pre .kw { color: var(--accent); }
+pre .cm { color: var(--text-dim); }
+pre .str { color: var(--green); }
+pre .flag { color: var(--blue); }
+code {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  background: var(--bg-code);
+  padding: 2px 6px;
+  border-radius: 3px;
+  color: var(--accent);
+}
+
+/* Tables */
+.table-wrap {
+  overflow-x: auto;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+.table-wrap table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+.table-wrap thead { background: var(--bg-raised); }
+.table-wrap th {
+  text-align: left;
+  padding: 10px 16px;
+  color: var(--accent);
+  font-weight: 500;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border-bottom: 1px solid var(--border);
+}
+.table-wrap td {
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+}
+.table-wrap tr:last-child td { border-bottom: none; }
+.table-wrap tr:hover td { background: var(--accent-glow); }
+.table-wrap td strong { color: var(--text-bright); }
+
+/* Diagram */
+.diagram {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0;
+  margin-bottom: 20px;
+  overflow-x: auto;
+}
+.diagram-label {
+  display: block;
+  padding: 10px 16px;
+  font-size: 11px;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  border-bottom: 1px solid var(--border);
+  font-weight: 500;
+}
+.diagram pre {
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  margin: 0;
+  padding: 16px 20px;
+  font-size: 12px;
+  color: var(--text-dim);
+}
+
+/* Callout */
+.callout {
+  background: var(--accent-glow);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 8px 8px 0;
+  padding: 16px 20px;
+  margin-bottom: 20px;
+}
+.callout p {
+  margin-bottom: 0;
+  font-size: 13px;
+  color: var(--text);
+}
+.callout strong { color: var(--accent); }
+
+/* Glossary cards */
+.glossary-group { margin-bottom: 32px; }
+.glossary-group h3 {
+  font-family: var(--font-display);
+  font-size: 16px;
+  color: var(--text-bright);
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+.glossary-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 8px 8px 0;
+  padding: 16px 20px;
+  margin-bottom: 10px;
+  transition: border-color 0.15s;
+}
+.glossary-card:hover { border-color: var(--border-accent); border-left-color: var(--accent); }
+.glossary-term {
+  font-size: 14px;
+  color: var(--accent);
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+.glossary-term .abbr {
+  font-size: 11px;
+  color: var(--text-dim);
+  font-weight: 400;
+  margin-left: 8px;
+}
+.glossary-def {
+  font-size: 13px;
+  color: var(--text);
+  line-height: 1.7;
+}
+
+/* Before/After comparison */
+.comparison {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  margin-bottom: 20px;
+}
+.comparison-side {
+  padding: 20px;
+}
+.comparison-side.before {
+  background: rgba(212, 106, 106, 0.06);
+  border-right: 1px solid var(--border);
+}
+.comparison-side.after {
+  background: rgba(106, 191, 123, 0.06);
+}
+.comparison-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 500;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+.comparison-side.before .comparison-label { color: var(--red); }
+.comparison-side.after .comparison-label { color: var(--green); }
+.comparison-dialog {
+  font-size: 12px;
+  line-height: 1.7;
+}
+.comparison-dialog .role {
+  font-weight: 500;
+  display: block;
+  margin-top: 8px;
+}
+.comparison-dialog .role:first-child { margin-top: 0; }
+.comparison-side.before .role { color: var(--red); }
+.comparison-side.after .role { color: var(--green); }
+.comparison-dialog .text {
+  color: var(--text);
+  display: block;
+  margin-left: 8px;
+}
+.comparison-note {
+  font-size: 11px;
+  color: var(--text-dim);
+  margin-top: 10px;
+  font-style: italic;
+}
+
+/* LoRA highlight card */
+.lora-highlight {
+  background: var(--bg-card);
+  border: 2px solid var(--accent-dim);
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 0 40px rgba(212, 160, 84, 0.04);
+}
+.lora-highlight h4 {
+  font-family: var(--font-display);
+  font-size: 16px;
+  color: var(--accent);
+  margin: 0 0 16px;
+}
+.lora-highlight pre {
+  background: var(--bg);
+  font-size: 13px;
+}
+
+/* Pipeline steps */
+.pipeline-flow {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-bottom: 24px;
+}
+.pipeline-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  position: relative;
+}
+.pipeline-step-marker {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 40px;
+}
+.pipeline-step-num {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--accent-glow);
+  border: 2px solid var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--accent);
+  flex-shrink: 0;
+}
+.pipeline-step-line {
+  width: 2px;
+  flex: 1;
+  min-height: 24px;
+  background: var(--border-accent);
+}
+.pipeline-step:last-child .pipeline-step-line { display: none; }
+.pipeline-step-content {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px 18px;
+  flex: 1;
+  margin-bottom: 8px;
+}
+.pipeline-step-content h4 {
+  font-size: 13px;
+  color: var(--accent);
+  font-weight: 500;
+  margin: 0 0 6px;
+}
+.pipeline-step-content p {
+  font-size: 12px;
+  color: var(--text-dim);
+  margin: 0;
+  line-height: 1.6;
+}
+.pipeline-step-content code {
+  font-size: 11px;
+}
+
+/* Training loss */
+.loss-line { display: flex; align-items: center; gap: 0; font-family: var(--font-mono); font-size: 12px; line-height: 1.8; }
+.loss-line .iter { color: var(--text-dim); min-width: 340px; }
+.loss-line .annotation { font-size: 11px; margin-left: 8px; }
+.loss-line .annotation.healthy { color: var(--green); }
+.loss-line .annotation.warning { color: var(--accent); }
+.loss-line .annotation.danger { color: var(--red); }
+
+/* Pitfall cards */
+.pitfall {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 18px 20px;
+  margin-bottom: 12px;
+}
+.pitfall-q {
+  font-size: 13px;
+  color: var(--red);
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+.pitfall-a {
+  font-size: 13px;
+  color: var(--text);
+  line-height: 1.7;
+}
+
+/* Links */
+.further-links {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.further-link {
+  display: block;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px 18px;
+  text-decoration: none;
+  transition: all 0.15s;
+}
+.further-link:hover { border-color: var(--accent); transform: translateY(-1px); }
+.further-link-title { font-size: 13px; color: var(--accent); font-weight: 500; margin-bottom: 4px; }
+.further-link-desc { font-size: 11px; color: var(--text-dim); line-height: 1.5; }
+
+/* Footer */
+.footer {
+  margin-top: 64px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--text-dim);
+  text-align: center;
+}
+
+/* Mobile */
+.menu-toggle {
+  display: none;
+  position: fixed;
+  top: 12px; left: 12px;
+  z-index: 200;
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
+  color: var(--accent);
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  cursor: pointer;
+}
+@media (max-width: 860px) {
+  .menu-toggle { display: block; }
+  .sidebar { transform: translateX(-100%); transition: transform 0.2s; }
+  .sidebar.open { transform: translateX(0); }
+  .main { margin-left: 0; padding: 0 20px 60px; }
+  .comparison { grid-template-columns: 1fr; }
+  .comparison-side.before { border-right: none; border-bottom: 1px solid var(--border); }
+  .further-links { grid-template-columns: 1fr; }
+  .hero h1 { font-size: 26px; }
+}
+</style>
+</head>
+<body>
+
+<button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')" aria-label="Toggle menu">Menu</button>
+
+<div class="layout">
+
+<!-- Sidebar -->
+<aside class="sidebar">
+  <div class="sidebar-header">
+    <h2>Fine-Tuning Guide</h2>
+    <div class="sub">Educational Reference</div>
+  </div>
+  <nav>
+    <div class="section-label">Chapters</div>
+    <a href="#big-picture">The Big Picture</a>
+    <a href="#glossary">Key Terms Glossary</a>
+    <a href="#why-fine-tune">Why Fine-Tune?</a>
+    <a href="#hardware">Our Hardware</a>
+    <a href="#software-stack">The Software Stack</a>
+    <a href="#what-is-lora">What is LoRA?</a>
+    <a href="#pipeline">The Full Pipeline</a>
+    <a href="#walkthrough">Step-by-Step Walkthrough</a>
+    <a href="#evaluation">How to Know If It Worked</a>
+    <a href="#pitfalls">Common Pitfalls</a>
+    <a href="#further-reading">Further Reading</a>
+    <div class="sidebar-links">
+      <div class="section-label">Related Docs</div>
+      <a href="seed-training-pipeline.html"><span class="arrow">&#8594;</span> Training Explorer</a>
+      <a href="../phases.md"><span class="arrow">&#8594;</span> Phases</a>
+      <a href="../training-methodology.md"><span class="arrow">&#8594;</span> Methodology</a>
+    </div>
+  </nav>
+</aside>
+
+<!-- Main Content -->
+<div class="main">
+
+<!-- Hero -->
+<div class="hero">
+  <div class="hero-badge">Educational Guide</div>
+  <h1>Fine-Tuning <span>Local LLMs</span></h1>
+  <div class="hero-subtitle">A Complete Guide</div>
+  <p class="hero-desc">A plain-English guide to how we take off-the-shelf AI models and teach them to be great phone receptionists. Written so that a college student studying AI/ML can follow every step.</p>
+  <div class="hero-meta">
+    <span>Author: <strong>David Mar</strong></span>
+    <span>Date: <strong>April 2026</strong></span>
+    <span>Level: <strong>Beginner-Friendly</strong></span>
+  </div>
+</div>
+
+<!-- The Big Picture -->
+<div class="section" id="big-picture">
+  <h2>The Big Picture</h2>
+  <p>We have a phone agent that answers calls for a plumbing company. It uses a local AI model (running on your laptop, not in the cloud) to generate what the receptionist says. The problem: off-the-shelf models are generalists. They can write essays, answer trivia, and generate code &mdash; but they don't naturally sound like a warm, efficient plumbing receptionist.</p>
+  <p><strong>Fine-tuning</strong> is the process of taking a general-purpose model and teaching it a specific skill by showing it hundreds of examples of how to do that skill well. It's like the difference between hiring someone who "speaks English" versus someone who's been trained as a receptionist &mdash; same underlying ability, but focused through practice.</p>
+
+  <div class="comparison">
+    <div class="comparison-side before">
+      <div class="comparison-label">Before Fine-Tuning</div>
+      <div class="comparison-dialog">
+        <span class="role">Caller:</span>
+        <span class="text">"My sink is leaking"</span>
+        <span class="role">Model:</span>
+        <span class="text">"I understand you're experiencing a plumbing issue. There are several potential causes for a leaking sink, including worn washers, corroded valve seats, or loose connections..."</span>
+      </div>
+      <div class="comparison-note">Too long, too formal, not helpful</div>
+    </div>
+    <div class="comparison-side after">
+      <div class="comparison-label">After Fine-Tuning</div>
+      <div class="comparison-dialog">
+        <span class="role">Caller:</span>
+        <span class="text">"My sink is leaking"</span>
+        <span class="role">Model:</span>
+        <span class="text">"Oh no, a leaking sink &mdash; that's no fun. Is it a steady drip or more of a trickle?"</span>
+      </div>
+      <div class="comparison-note">Warm, brief, moves toward booking</div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <p>The model's weights (its internal knowledge) actually change. It doesn't just get a better prompt &mdash; it <strong>becomes</strong> a better receptionist at the neural network level.</p>
+  </div>
+</div>
+
+<!-- Key Terms Glossary -->
+<div class="section" id="glossary">
+  <h2>Key Terms Glossary</h2>
+  <p>Read this section first. Every term used in the rest of the guide is defined here.</p>
+
+  <div class="glossary-group">
+    <h3>Models and Weights</h3>
+
+    <div class="glossary-card">
+      <div class="glossary-term">LLM <span class="abbr">Large Language Model</span></div>
+      <div class="glossary-def">An AI model trained on massive amounts of text that can generate human-like responses. Examples: GPT-4, Claude, Llama, Mistral, Phi. "Large" refers to the number of parameters &mdash; typically billions.</div>
+    </div>
+
+    <div class="glossary-card">
+      <div class="glossary-term">Parameters</div>
+      <div class="glossary-def">The numbers inside a neural network that determine its behavior. When we say "Phi4-mini is a 3.8B model," that means it has 3.8 billion parameters. More parameters generally means more capable but slower and larger on disk.</div>
+    </div>
+
+    <div class="glossary-card">
+      <div class="glossary-term">Weights</div>
+      <div class="glossary-def">Another word for parameters. "The model's weights" = "the model's parameters" = the billions of numbers that define what the model knows and how it responds. When we fine-tune, we modify some of these weights.</div>
+    </div>
+
+    <div class="glossary-card">
+      <div class="glossary-term">Base Model</div>
+      <div class="glossary-def">The original, unmodified model as released by its creator (Microsoft for Phi4, Mistral AI for Mistral, Google for Gemma). This is our starting point before fine-tuning. Also called the "foundation model" or "pretrained model."</div>
+    </div>
+
+    <div class="glossary-card">
+      <div class="glossary-term">Instruct Model / Chat Model</div>
+      <div class="glossary-def">A base model that has already been fine-tuned (by its creator) to follow instructions and have conversations. We start from instruct models, not raw base models, because they already know how to chat &mdash; we're just teaching them to chat <em>as a plumbing receptionist specifically</em>.</div>
+    </div>
+  </div>
+
+  <div class="glossary-group">
+    <h3>Fine-Tuning Concepts</h3>
+
+    <div class="glossary-card">
+      <div class="glossary-term">Fine-Tuning</div>
+      <div class="glossary-def">The process of continuing a model's training on a smaller, specialized dataset. The model's weights are updated to reflect the new training data. Think of it as "additional education" &mdash; the model already went to school (pretraining), and now it's doing on-the-job training.</div>
+    </div>
+
+    <div class="glossary-card">
+      <div class="glossary-term">Full Fine-Tuning</div>
+      <div class="glossary-def">Updating ALL of the model's parameters. For a 7B model, that's 7 billion numbers being modified. This requires enormous amounts of memory (often 4-8x the model size) and is typically done on expensive GPU clusters. We do NOT do this.</div>
+    </div>
+
+    <div class="glossary-card">
+      <div class="glossary-term">LoRA <span class="abbr">Low-Rank Adaptation</span></div>
+      <div class="glossary-def">A clever technique that fine-tunes only a tiny fraction (~1-2%) of a model's parameters by adding small "adapter" matrices alongside the original weights. Instead of modifying 7 billion parameters, LoRA modifies ~100 million. This is what makes fine-tuning possible on a laptop. See the <a href="#what-is-lora" style="color:var(--accent)">dedicated LoRA section</a> below.</div>
+    </div>
+
+    <div class="glossary-card">
+      <div class="glossary-term">LoRA Adapter</div>
+      <div class="glossary-def">The output of LoRA fine-tuning &mdash; a small file (typically 10-100 MB) containing only the modified parameters. The adapter sits on top of the original base model. To use the fine-tuned model, you load the base model + the adapter. Think of it like a "patch" that modifies the base model's behavior without replacing it.</div>
+    </div>
+
+    <div class="glossary-card">
+      <div class="glossary-term">LoRA Rank</div>
+      <div class="glossary-def">A hyperparameter that controls how much the adapter can learn. Rank 4 = less learning capacity but faster training. Rank 16 = more learning capacity but slower and higher overfitting risk. We use rank 8 as a balance. Technically, it's the rank of the low-rank matrices in the adapter &mdash; but practically, just think "bigger rank = more expressive adapter."</div>
+    </div>
+
+    <div class="glossary-card">
+      <div class="glossary-term">Epoch</div>
+      <div class="glossary-def">One complete pass through the entire training dataset. If we have 922 training examples and train for 3 epochs, the model sees each example 3 times. More epochs = more learning, but also more risk of memorization (overfitting).</div>
+    </div>
+
+    <div class="glossary-card">
+      <div class="glossary-term">Batch Size</div>
+      <div class="glossary-def">How many training examples the model processes at once before updating its weights. Batch size 2 means "look at 2 examples, then update weights." Smaller batches = more frequent updates = less memory required. On our 36GB M3 Pro, we use batch size 2-4.</div>
+    </div>
+
+    <div class="glossary-card">
+      <div class="glossary-term">Learning Rate</div>
+      <div class="glossary-def">How much the model's weights change in response to each training example. Too high = model learns too fast and becomes unstable (like cramming for an exam and getting confused). Too low = model barely learns anything. We use 1e-5 (0.00001), which is typical for LoRA fine-tuning.</div>
+    </div>
+
+    <div class="glossary-card">
+      <div class="glossary-term">Overfitting</div>
+      <div class="glossary-def">When the model memorizes the training data instead of learning the underlying patterns. An overfitted model scores great on training examples but poorly on new conversations it hasn't seen. Signs: training loss keeps dropping but validation loss starts climbing. The cure: fewer epochs, lower LoRA rank, or more training data.</div>
+    </div>
+
+    <div class="glossary-card">
+      <div class="glossary-term">Knowledge Distillation</div>
+      <div class="glossary-def">Using a large, expensive model (the "teacher") to generate training data that a small, cheap model (the "student") learns from. We use Claude (the teacher, ~100B+ parameters, runs in the cloud) to generate 170 phone conversations, then use those conversations to train Phi4-mini (the student, 3.8B parameters, runs on your laptop). The student can't match the teacher on everything, but it can match the teacher on this specific task.</div>
+    </div>
+  </div>
+
+  <div class="glossary-group">
+    <h3>Model Formats</h3>
+
+    <div class="glossary-card">
+      <div class="glossary-term">GGUF <span class="abbr">GPT-Generated Unified Format</span></div>
+      <div class="glossary-def">The file format that Ollama uses to store and run models. It's a single file containing the model's weights, metadata, and tokenizer. When we fine-tune with MLX, we produce MLX-format adapters, which we then convert to GGUF so Ollama can use them.</div>
+    </div>
+
+    <div class="glossary-card">
+      <div class="glossary-term">Quantization</div>
+      <div class="glossary-def">Compressing a model by using less precise numbers for its weights. A "full precision" model uses 32-bit floating point numbers (4 bytes each). Quantization reduces this to 4-bit (0.5 bytes each), making the model ~8x smaller on disk and ~4x faster, with only a small quality loss. When you see <code>q4_K_M</code> in an Ollama model name, that's 4-bit quantization.</div>
+    </div>
+
+    <div class="glossary-card">
+      <div class="glossary-term">Chat Template</div>
+      <div class="glossary-def">The special formatting that each model family expects for conversations. Phi4 uses <code>&lt;|user|&gt;...&lt;|end|&gt;</code>, Mistral uses <code>[INST]...[/INST]</code>, Gemma uses <code>&lt;start_of_turn&gt;user...</code>. Getting this wrong means the model sees garbled input. Our conversion script (<code>convert_to_chat_templates.py</code>) handles this automatically.</div>
+    </div>
+
+    <div class="glossary-card">
+      <div class="glossary-term">Tokenizer</div>
+      <div class="glossary-def">The component that converts text into numbers (tokens) that the model can process. "Hello, how are you?" might become <code>[15496, 11, 703, 527, 499, 30]</code>. Each model family has its own tokenizer. The tokenizer is baked into the GGUF file.</div>
+    </div>
+  </div>
+
+  <div class="glossary-group">
+    <h3>Infrastructure</h3>
+
+    <div class="glossary-card">
+      <div class="glossary-term">MLX <span class="abbr">Machine Learning eXploration</span></div>
+      <div class="glossary-def">Apple's machine learning framework, designed specifically for Apple Silicon chips (M1, M2, M3, M4). It's like PyTorch or TensorFlow, but optimized for the Mac's unified memory architecture. This is why fine-tuning on a MacBook is possible &mdash; MLX can use all 36GB of your RAM as GPU memory.</div>
+    </div>
+
+    <div class="glossary-card">
+      <div class="glossary-term">mlx-lm</div>
+      <div class="glossary-def">A Python library built on top of MLX that provides ready-to-use functions for loading, fine-tuning, and running LLMs. It handles the LoRA implementation, training loop, and model I/O so we don't have to write low-level ML code. This is our primary fine-tuning tool.</div>
+    </div>
+
+    <div class="glossary-card">
+      <div class="glossary-term">Ollama</div>
+      <div class="glossary-def">A tool for running LLMs locally. It manages model downloads, quantization, and serving. Think of it as "Docker for AI models." Our phone agent uses Ollama to run models &mdash; so after fine-tuning, we need to get our trained model back into Ollama.</div>
+    </div>
+
+    <div class="glossary-card">
+      <div class="glossary-term">Modelfile</div>
+      <div class="glossary-def">Ollama's configuration file for a model. It specifies which base model to use, what system prompt to include, and any parameter overrides (temperature, etc.). After fine-tuning, we create a Modelfile that points to our fine-tuned GGUF weights.</div>
+    </div>
+
+    <div class="glossary-card">
+      <div class="glossary-term">Unified Memory</div>
+      <div class="glossary-def">Apple Silicon's architecture where the CPU and GPU share the same physical RAM. On a traditional PC, you have separate CPU RAM (32GB) and GPU VRAM (12GB). On Apple Silicon, the M3 Pro's 36GB is available to both. This is critical for fine-tuning because loading a 7B model requires ~14GB of memory, and the training process needs additional memory for gradients and optimizer state.</div>
+    </div>
+  </div>
+</div>
+
+<!-- Why Fine-Tune -->
+<div class="section" id="why-fine-tune">
+  <h2>Why Fine-Tune Instead of Prompting?</h2>
+  <p>You might ask: "Why not just write a really good system prompt?" That's a fair question. Here's why fine-tuning is better for this use case:</p>
+
+  <h3>The System Prompt Problem</h3>
+  <p>Right now, every time the phone agent generates a response, it sends a ~500-word system prompt to the model:</p>
+  <pre><span class="cm">[System prompt: 500 words explaining persona, rules, examples]</span>
+<span class="cm">[Conversation history: 200-400 words]</span>
+<span class="cm">[Model generates: 20 words]</span></pre>
+  <p>That's 700+ input tokens processed for every single 20-word reply. On a 3.8B model running locally, processing those input tokens takes real time &mdash; about 800-1200ms just for the prompt, before the model even starts generating.</p>
+
+  <h3>What Fine-Tuning Changes</h3>
+  <p>After fine-tuning, the persona knowledge is baked into the model's weights. The system prompt shrinks from 500 words to ~50:</p>
+  <pre><span class="cm">[System prompt: 50 words -- just "You are Smith Plumbing receptionist"]</span>
+<span class="cm">[Conversation history: 200-400 words]</span>
+<span class="cm">[Model generates: 20 words]</span></pre>
+
+  <div class="callout">
+    <p>That's a <strong>~60% reduction in input tokens per turn</strong>, which directly translates to faster responses on the phone.</p>
+  </div>
+
+  <h3>The Quality Difference</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Aspect</th><th>Prompting Only</th><th>Fine-Tuned</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Persona consistency</strong></td><td>Drifts after long conversations</td><td>Stable &mdash; it's in the weights</td></tr>
+        <tr><td><strong>Response length</strong></td><td>Tends to be verbose despite instructions</td><td>Learns to be brief from examples</td></tr>
+        <tr><td><strong>JSON format compliance</strong></td><td>Frequently malformed with small models</td><td>Learns the format from repetition</td></tr>
+        <tr><td><strong>Echo-back pattern</strong></td><td>Sometimes paraphrases instead of echoing</td><td>Internalizes the echo pattern</td></tr>
+        <tr><td><strong>Latency per turn</strong></td><td>800-1200ms prompt overhead</td><td>200-400ms prompt overhead</td></tr>
+        <tr><td><strong>Cost to run</strong></td><td>$0 (local)</td><td>$0 (local) &mdash; same model, better behavior</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>When Prompting IS Enough</h3>
+  <p>Fine-tuning isn't always the answer. For our large judge model (Gemma4 26B), prompting is sufficient &mdash; it's big enough to follow complex instructions without fine-tuning. We only fine-tune the small, fast models (3.8B-7B) that struggle with prompt-following.</p>
+</div>
+
+<!-- Hardware -->
+<div class="section" id="hardware">
+  <h2>Our Hardware: Apple M3 Pro</h2>
+
+  <h3>Why This Matters</h3>
+  <p>Fine-tuning an LLM typically requires expensive NVIDIA GPUs (A100, H100) that cost $10,000+ each. Apple Silicon changes this equation because of <strong>unified memory</strong>.</p>
+
+  <h3>What We're Working With</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Spec</th><th>Value</th><th>Why It Matters</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Chip</strong></td><td>Apple M3 Pro</td><td>12-core CPU + 18-core GPU, both can access all RAM</td></tr>
+        <tr><td><strong>RAM</strong></td><td>36 GB unified</td><td>Shared between CPU and GPU &mdash; no separate VRAM bottleneck</td></tr>
+        <tr><td><strong>Memory bandwidth</strong></td><td>150 GB/s</td><td>How fast data moves to the GPU &mdash; directly affects token generation speed</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Memory Budget During Fine-Tuning</h3>
+  <div class="diagram">
+    <span class="diagram-label">Memory Budget</span>
+    <pre>Model weights (quantized):     ~4 GB  (for a 7B model in 4-bit)
+LoRA adapter weights:          ~0.1 GB
+Optimizer state:               ~0.3 GB
+Gradient computation:          ~2 GB
+Training batch:                ~1 GB
+-----------------------------------------------
+Total:                         ~7.5 GB per model
+
+Our available memory:          36 GB
+Headroom for OS + apps:        ~8 GB
+Available for training:        ~28 GB  (comfortable margin)</pre>
+  </div>
+
+  <div class="callout">
+    <p>This is why LoRA is essential &mdash; full fine-tuning of a 7B model would need <strong>~56 GB</strong>, far more than our 36 GB allows. LoRA keeps us well within budget.</p>
+  </div>
+
+  <h3>Speed Expectations</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Model</th><th>Base Inference</th><th>Training Time (3 epochs)</th><th>Adapter Size</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Phi4-mini 3.8B</strong></td><td>~2,602ms/turn</td><td>~15 minutes</td><td>~30 MB</td></tr>
+        <tr><td><strong>Mistral 7B</strong></td><td>~4,463ms/turn</td><td>~25 minutes</td><td>~60 MB</td></tr>
+        <tr><td><strong>Gemma4 E2B 7B</strong></td><td>~4,500ms/turn (est.)</td><td>~25 minutes</td><td>~60 MB</td></tr>
+        <tr><td><strong>Total</strong></td><td></td><td><strong>~65 minutes</strong></td><td><strong>~150 MB</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Software Stack -->
+<div class="section" id="software-stack">
+  <h2>The Software Stack</h2>
+  <p>Here's every piece of software involved and how they connect:</p>
+
+  <div class="diagram">
+    <span class="diagram-label">Fine-Tuning Pipeline Architecture</span>
+    <pre>
+ +-------------------------------------------------------------+
+ |                OUR FINE-TUNING PIPELINE                      |
+ |                                                              |
+ |  +--------------+    +--------------+    +--------------+    |
+ |  |  Training    |    |   MLX +      |    |   Ollama     |    |
+ |  |  Data        |--->|   mlx-lm     |--->|              |    |
+ |  |  (JSONL)     |    |  (fine-tune) |    |  (deploy)    |    |
+ |  +--------------+    +--------------+    +--------------+    |
+ |        |                    |                    |           |
+ |   922 turn-level      LoRA adapters        GGUF model      |
+ |   examples             (~60 MB)           ready to serve    |
+ |                             |                    |           |
+ |                    +--------+--------+           |           |
+ |                    |  Convert to     |           |           |
+ |                    |  GGUF format    |---------->|           |
+ |                    +-----------------+           |           |
+ |                                                  |           |
+ |                                          +-------+------+   |
+ |                                          | Phone Agent   |   |
+ |                                          | (uses Ollama  |   |
+ |                                          |  for inference)|  |
+ |                                          +--------------+   |
+ +-------------------------------------------------------------+</pre>
+  </div>
+
+  <h3>Software Requirements</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Software</th><th>Version</th><th>Purpose</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Python 3.11+</strong></td><td>System</td><td>Runs all scripts</td></tr>
+        <tr><td><strong>MLX</strong></td><td>Already installed</td><td>Apple's ML framework (low-level)</td></tr>
+        <tr><td><strong>mlx-lm</strong></td><td>Needs install</td><td>High-level fine-tuning library for MLX</td></tr>
+        <tr><td><strong>Ollama</strong></td><td>Already installed</td><td>Model serving and deployment</td></tr>
+        <tr><td><strong>HuggingFace Hub</strong></td><td>Needs install</td><td>Downloads base model weights for fine-tuning</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout">
+    <p><strong>Why do we need HuggingFace if we already have the models in Ollama?</strong> Ollama stores models in GGUF format (quantized, ready to run). MLX needs the original unquantized weights in HuggingFace format to fine-tune. Think of GGUF as a "compiled" version &mdash; you can run it, but you can't edit it. HuggingFace weights are the "source code" that we can modify. After fine-tuning, we convert back to GGUF so Ollama can serve the modified model.</p>
+  </div>
+</div>
+
+<!-- What is LoRA -->
+<div class="section" id="what-is-lora">
+  <h2>What is LoRA?</h2>
+  <p>LoRA (Low-Rank Adaptation) is the technique that makes fine-tuning possible on consumer hardware. This section explains how it works at an intuitive level.</p>
+
+  <h3>The Problem LoRA Solves</h3>
+  <p>A 7B model has ~7 billion parameters organized into large matrices (tables of numbers). Full fine-tuning means updating all 7 billion numbers, which requires:</p>
+  <ul>
+    <li>Loading all 7B weights into memory (~28 GB at full precision)</li>
+    <li>Storing a copy of the gradients (~28 GB)</li>
+    <li>Storing optimizer states (~28 GB)</li>
+    <li>Total: ~84 GB &mdash; way more than our 36 GB</li>
+  </ul>
+
+  <h3>The LoRA Insight</h3>
+  <p>Researchers discovered that when you fine-tune a model on a specific task, the <em>changes</em> to the weight matrices are usually "low-rank" &mdash; meaning they can be approximated by much smaller matrices.</p>
+  <p>Imagine a weight matrix W that's 4096 x 4096 (about 16 million numbers). Instead of modifying W directly, LoRA adds two small matrices:</p>
+
+  <div class="lora-highlight">
+    <h4>LoRA Matrix Decomposition</h4>
+    <pre><span class="cm">Original:</span>  <span class="kw">W</span>                    (4096 x 4096 = <span class="str">16,777,216 parameters</span>)
+
+<span class="cm">LoRA:</span>      <span class="kw">W + A x B</span>            where:
+           <span class="kw">A</span> is (4096 x 8)      = <span class="str">32,768 parameters</span>
+           <span class="kw">B</span> is (8 x 4096)      = <span class="str">32,768 parameters</span>
+                                -------------------------
+           Total LoRA params:   = <span class="str">65,536 parameters</span>  (<span class="kw">0.4% of original!</span>)</pre>
+  </div>
+
+  <p>The "8" in the middle is the <strong>LoRA rank</strong>. A rank of 8 means each adapter matrix has 8 columns/rows. Higher rank = more expressive but more parameters.</p>
+
+  <h3>What This Means Practically</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Aspect</th><th>Full Fine-Tuning</th><th>LoRA (rank 8)</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Parameters modified</strong></td><td>7,000,000,000</td><td>~100,000,000 (~1.5%)</td></tr>
+        <tr><td><strong>Memory needed</strong></td><td>~84 GB</td><td>~7.5 GB</td></tr>
+        <tr><td><strong>Training time (7B)</strong></td><td>Hours on GPU cluster</td><td>~25 min on M3 Pro</td></tr>
+        <tr><td><strong>Output size</strong></td><td>14 GB (full model copy)</td><td>~60 MB (adapter only)</td></tr>
+        <tr><td><strong>Quality</strong></td><td>Best possible</td><td>90-95% of full fine-tuning</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Intuitive Analogy</h3>
+  <div class="callout">
+    <p>Think of the base model as a skilled employee who just joined your company. Full fine-tuning is like retraining them from scratch on everything. LoRA is like giving them a small <strong>"cheat sheet"</strong> specific to your company &mdash; they keep all their existing skills and just reference the cheat sheet for company-specific behavior. The cheat sheet (adapter) is tiny compared to everything they know (base weights), but it's enough to make them great at this specific job.</p>
+  </div>
+</div>
+
+<!-- The Full Pipeline -->
+<div class="section" id="pipeline">
+  <h2>The Full Pipeline</h2>
+  <p>Here's every step from training data to deployed model, in order:</p>
+
+  <div class="pipeline-flow">
+    <div class="pipeline-step">
+      <div class="pipeline-step-marker"><div class="pipeline-step-num">1</div><div class="pipeline-step-line"></div></div>
+      <div class="pipeline-step-content">
+        <h4>Prepare Data</h4>
+        <p><code>data/splits/train_mlx.jsonl</code> (922 examples) + <code>data/splits/val_mlx.jsonl</code> (159 examples)</p>
+      </div>
+    </div>
+    <div class="pipeline-step">
+      <div class="pipeline-step-marker"><div class="pipeline-step-num">2</div><div class="pipeline-step-line"></div></div>
+      <div class="pipeline-step-content">
+        <h4>Download Base Weights</h4>
+        <p>HuggingFace &rarr; <code>microsoft/phi-4-mini-instruct</code>, <code>mistralai/Mistral-7B-Instruct-v0.3</code>, <code>google/gemma-2-2b-it</code></p>
+      </div>
+    </div>
+    <div class="pipeline-step">
+      <div class="pipeline-step-marker"><div class="pipeline-step-num">3</div><div class="pipeline-step-line"></div></div>
+      <div class="pipeline-step-content">
+        <h4>Fine-Tune with MLX LoRA</h4>
+        <p><code>mlx_lm.lora --model &lt;base&gt; --data &lt;train&gt; --adapter-path &lt;output&gt;</code><br>Repeat for each model (3 runs, ~65 min total)</p>
+      </div>
+    </div>
+    <div class="pipeline-step">
+      <div class="pipeline-step-marker"><div class="pipeline-step-num">4</div><div class="pipeline-step-line"></div></div>
+      <div class="pipeline-step-content">
+        <h4>Test the Adapter</h4>
+        <p><code>mlx_lm.generate --model &lt;base&gt; --adapter-path &lt;adapter&gt;</code><br>Quick sanity check: does it sound like a receptionist?</p>
+      </div>
+    </div>
+    <div class="pipeline-step">
+      <div class="pipeline-step-marker"><div class="pipeline-step-num">5</div><div class="pipeline-step-line"></div></div>
+      <div class="pipeline-step-content">
+        <h4>Fuse Adapter into Base Model</h4>
+        <p><code>mlx_lm.fuse --model &lt;base&gt; --adapter-path &lt;adapter&gt;</code><br>Merges the LoRA adapter into the base weights</p>
+      </div>
+    </div>
+    <div class="pipeline-step">
+      <div class="pipeline-step-marker"><div class="pipeline-step-num">6</div><div class="pipeline-step-line"></div></div>
+      <div class="pipeline-step-content">
+        <h4>Convert to GGUF</h4>
+        <p><code>mlx_lm.convert --to-gguf</code><br>Produces a .gguf file that Ollama can load</p>
+      </div>
+    </div>
+    <div class="pipeline-step">
+      <div class="pipeline-step-marker"><div class="pipeline-step-num">7</div><div class="pipeline-step-line"></div></div>
+      <div class="pipeline-step-content">
+        <h4>Import into Ollama</h4>
+        <p><code>ollama create smith-plumbing-phi4 -f Modelfile</code><br>Creates an Ollama model from the GGUF + a Modelfile</p>
+      </div>
+    </div>
+    <div class="pipeline-step">
+      <div class="pipeline-step-marker"><div class="pipeline-step-num">8</div><div class="pipeline-step-line"></div></div>
+      <div class="pipeline-step-content">
+        <h4>Tournament Evaluation</h4>
+        <p>Run all 6 models (3 base + 3 fine-tuned) through the held-out test set, score with LLM judge</p>
+      </div>
+    </div>
+    <div class="pipeline-step">
+      <div class="pipeline-step-marker"><div class="pipeline-step-num">9</div><div class="pipeline-step-line"></div></div>
+      <div class="pipeline-step-content">
+        <h4>Deploy Winner</h4>
+        <p>Update <code>.env: LLM_FAST=smith-plumbing-phi4</code><br>The phone agent now uses the fine-tuned model</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Step-by-Step Walkthrough -->
+<div class="section" id="walkthrough">
+  <h2>Step-by-Step Walkthrough</h2>
+
+  <h3>Step 1: Prepare Data (Already Done)</h3>
+  <p>Our training data is already in the right format. The key file is <code>data/splits/train_mlx.jsonl</code>, where each line is a JSON object with a <code>messages</code> array:</p>
+  <pre>{
+  <span class="str">"messages"</span>: [
+    {<span class="str">"role"</span>: <span class="str">"system"</span>, <span class="str">"content"</span>: <span class="str">"You are a friendly, warm phone receptionist..."</span>},
+    {<span class="str">"role"</span>: <span class="str">"user"</span>, <span class="str">"content"</span>: <span class="str">"[phone rings]"</span>},
+    {<span class="str">"role"</span>: <span class="str">"assistant"</span>, <span class="str">"content"</span>: <span class="str">"Hi, Smith Plumbing, how can I help?"</span>}
+  ]
+}</pre>
+  <p>Each example trains the model to generate one specific assistant reply given the conversation history. We have 922 of these in the training set.</p>
+  <p>See <a href="../training-methodology.md" style="color:var(--accent)">Training Methodology</a> for full details on how this data was generated and structured.</p>
+
+  <h3>Step 2: Install Dependencies</h3>
+  <pre><span class="kw">pip install</span> mlx-lm huggingface_hub</pre>
+  <p><code>mlx-lm</code> brings in the fine-tuning tools. <code>huggingface_hub</code> handles downloading base model weights.</p>
+
+  <h3>Step 3: Download Base Weights</h3>
+  <pre><span class="cm"># These download the full-precision HuggingFace weights (~8-14 GB each)</span>
+<span class="kw">huggingface-cli download</span> microsoft/phi-4-mini-instruct
+<span class="kw">huggingface-cli download</span> mistralai/Mistral-7B-Instruct-v0.3
+<span class="kw">huggingface-cli download</span> google/gemma-2-2b-it</pre>
+  <p>These are cached in <code>~/.cache/huggingface/</code> and reused across fine-tuning runs.</p>
+
+  <h3>Step 4: Fine-Tune with LoRA</h3>
+  <p>The actual fine-tuning command for each model:</p>
+  <pre><span class="cm"># Phi4-mini (~15 min)</span>
+<span class="kw">python -m</span> mlx_lm.lora \
+  <span class="flag">--model</span> microsoft/phi-4-mini-instruct \
+  <span class="flag">--data</span> data/splits/ \
+  <span class="flag">--train</span> \
+  <span class="flag">--batch-size</span> 2 \
+  <span class="flag">--lora-rank</span> 8 \
+  <span class="flag">--num-layers</span> 16 \
+  <span class="flag">--iters</span> 600 \
+  <span class="flag">--learning-rate</span> 1e-5 \
+  <span class="flag">--adapter-path</span> adapters/phi4-mini
+
+<span class="cm"># Mistral 7B (~25 min)</span>
+<span class="kw">python -m</span> mlx_lm.lora \
+  <span class="flag">--model</span> mistralai/Mistral-7B-Instruct-v0.3 \
+  <span class="flag">--data</span> data/splits/ \
+  <span class="flag">--train</span> \
+  <span class="flag">--batch-size</span> 2 \
+  <span class="flag">--lora-rank</span> 8 \
+  <span class="flag">--num-layers</span> 16 \
+  <span class="flag">--iters</span> 600 \
+  <span class="flag">--learning-rate</span> 1e-5 \
+  <span class="flag">--adapter-path</span> adapters/mistral-7b
+
+<span class="cm"># Gemma E2B (~25 min)</span>
+<span class="kw">python -m</span> mlx_lm.lora \
+  <span class="flag">--model</span> google/gemma-2-2b-it \
+  <span class="flag">--data</span> data/splits/ \
+  <span class="flag">--train</span> \
+  <span class="flag">--batch-size</span> 2 \
+  <span class="flag">--lora-rank</span> 8 \
+  <span class="flag">--num-layers</span> 16 \
+  <span class="flag">--iters</span> 600 \
+  <span class="flag">--learning-rate</span> 1e-5 \
+  <span class="flag">--adapter-path</span> adapters/gemma-e2b</pre>
+
+  <div class="callout">
+    <p><strong>What <code>--iters 600</code> means:</strong> With 922 training examples and batch size 2, one epoch is ~461 iterations. 600 iterations is approximately 1.3 epochs. We can increase this to 1380 for 3 full epochs, but starting conservative reduces overfitting risk.</p>
+  </div>
+
+  <h4>What happens during training</h4>
+  <p>MLX loads the base model, attaches LoRA adapter matrices to each transformer layer, then runs through the training examples. For each batch, it:</p>
+  <ol>
+    <li>Feeds the conversation history through the model</li>
+    <li>Compares the model's predicted next tokens against the actual assistant reply</li>
+    <li>Computes how wrong the predictions were (the "loss")</li>
+    <li>Updates only the LoRA adapter weights to reduce the loss</li>
+  </ol>
+  <p>The loss should steadily decrease. If it plateaus, the model has learned what it can from this data.</p>
+
+  <h3>Step 5: Test the Adapter</h3>
+  <p>Before converting, do a quick sanity check:</p>
+  <pre><span class="kw">python -m</span> mlx_lm.generate \
+  <span class="flag">--model</span> microsoft/phi-4-mini-instruct \
+  <span class="flag">--adapter-path</span> adapters/phi4-mini \
+  <span class="flag">--prompt</span> <span class="str">"You are a receptionist at Smith Plumbing.\n\nUser: Hi, my kitchen sink is leaking pretty bad.\n\nAssistant:"</span></pre>
+  <p>If it responds like a warm receptionist ("Oh no, a leaking sink &mdash; let's get that taken care of!"), the fine-tuning worked.</p>
+
+  <h3>Step 6: Fuse and Convert</h3>
+  <pre><span class="cm"># Merge adapter into base model</span>
+<span class="kw">python -m</span> mlx_lm.fuse \
+  <span class="flag">--model</span> microsoft/phi-4-mini-instruct \
+  <span class="flag">--adapter-path</span> adapters/phi4-mini \
+  <span class="flag">--save-path</span> models/phi4-mini-fused
+
+<span class="cm"># Convert to GGUF for Ollama (4-bit quantization)</span>
+<span class="kw">python -m</span> mlx_lm.convert \
+  <span class="flag">--model</span> models/phi4-mini-fused \
+  <span class="flag">--quantize</span> q4_K_M \
+  <span class="flag">--to-gguf</span> \
+  <span class="flag">--output</span> models/smith-plumbing-phi4.gguf</pre>
+
+  <p><strong>Fusing</strong> permanently merges the LoRA adapter into the base model weights. After fusing, you have a standalone model that doesn't need the adapter file.</p>
+  <p><strong>Converting to GGUF</strong> takes the fused model and packages it in the format Ollama expects, with 4-bit quantization to keep the file size manageable.</p>
+
+  <h3>Step 7: Import into Ollama</h3>
+  <p>Create a Modelfile:</p>
+  <pre><span class="cm"># models/Modelfile.phi4</span>
+<span class="kw">FROM</span> ./smith-plumbing-phi4.gguf
+
+<span class="kw">PARAMETER</span> temperature 0.7
+<span class="kw">PARAMETER</span> top_p 0.9
+
+<span class="kw">SYSTEM</span> <span class="str">"""You are a friendly phone receptionist at Smith Plumbing."""</span></pre>
+
+  <p>Then import:</p>
+  <pre><span class="kw">ollama create</span> smith-plumbing-phi4 <span class="flag">-f</span> models/Modelfile.phi4</pre>
+
+  <p>Now <code>ollama run smith-plumbing-phi4</code> runs your fine-tuned model, and the phone agent can use it by setting <code>LLM_FAST=smith-plumbing-phi4</code> in the <code>.env</code> file.</p>
+
+  <h3>Steps 8-9: Evaluation and Deployment</h3>
+  <p>See <a href="../training-methodology.md" style="color:var(--accent)">Training Methodology</a> for the tournament evaluation design and deployment process.</p>
+</div>
+
+<!-- How to Know If It Worked -->
+<div class="section" id="evaluation">
+  <h2>How to Know If It Worked</h2>
+
+  <h3>During Training: Watch the Loss</h3>
+  <div class="diagram">
+    <span class="diagram-label">Training Loss Over Time</span>
+    <div style="padding: 16px 20px; font-family: var(--font-mono); font-size: 12px;">
+      <div class="loss-line"><span class="iter">Iter 100: train loss 2.41, val loss 2.38</span><span class="annotation healthy">healthy -- both decreasing</span></div>
+      <div class="loss-line"><span class="iter">Iter 200: train loss 1.89, val loss 1.92</span><span class="annotation healthy">healthy -- both decreasing</span></div>
+      <div class="loss-line"><span class="iter">Iter 300: train loss 1.52, val loss 1.58</span><span class="annotation healthy">healthy -- both decreasing</span></div>
+      <div class="loss-line"><span class="iter">Iter 400: train loss 1.31, val loss 1.40</span><span class="annotation warning">gap growing slightly</span></div>
+      <div class="loss-line"><span class="iter">Iter 500: train loss 1.18, val loss 1.35</span><span class="annotation warning">gap growing more</span></div>
+      <div class="loss-line"><span class="iter">Iter 600: train loss 1.08, val loss 1.33</span><span class="annotation danger">starting to overfit!</span></div>
+    </div>
+  </div>
+
+  <p><strong>Healthy training:</strong> Both train and val loss decrease together.</p>
+  <p><strong>Overfitting:</strong> Train loss keeps dropping but val loss plateaus or increases. The gap between them is the "generalization gap." If it exceeds ~0.5, stop training or reduce the LoRA rank.</p>
+
+  <h3>After Training: Tournament Evaluation</h3>
+  <p>Run the 3 base models and 3 fine-tuned models through the same 21 held-out test conversations. Score each with the LLM judge on 6 phases x 3 dimensions = 18 quality metrics.</p>
+
+  <h4>Success Criteria</h4>
+  <ol>
+    <li>At least one fine-tuned model scores &gt;4.0/5 average</li>
+    <li>Fine-tuned model beats its base by &gt;0.3 average</li>
+    <li>Post-tuning latency stays within 4-second budget</li>
+    <li>Test scores within 0.5 of training scores (no overfitting)</li>
+  </ol>
+</div>
+
+<!-- Common Pitfalls -->
+<div class="section" id="pitfalls">
+  <h2>Common Pitfalls</h2>
+
+  <div class="pitfall">
+    <div class="pitfall-q">"My model sounds great on training examples but terrible on new ones"</div>
+    <div class="pitfall-a"><strong>Overfitting.</strong> Reduce LoRA rank from 8 to 4, or stop training earlier (fewer iterations). More training data also helps.</div>
+  </div>
+
+  <div class="pitfall">
+    <div class="pitfall-q">"The fine-tuned model generates gibberish or repeats itself"</div>
+    <div class="pitfall-a"><strong>Wrong chat template.</strong> Each model family expects a specific conversation format. If the training data uses Mistral's format but you're fine-tuning Phi4, the model learns garbage. Our <code>convert_to_chat_templates.py</code> script prevents this.</div>
+  </div>
+
+  <div class="pitfall">
+    <div class="pitfall-q">"Training is extremely slow (hours instead of minutes)"</div>
+    <div class="pitfall-a"><strong>Not using MLX.</strong> Make sure you installed <code>mlx-lm</code>, not a PyTorch-based trainer. MLX is optimized for Apple Silicon; PyTorch on Mac falls back to CPU and is 10-50x slower.</div>
+  </div>
+
+  <div class="pitfall">
+    <div class="pitfall-q">"Out of memory during training"</div>
+    <div class="pitfall-a"><strong>Reduce batch size</strong> to 1. If still failing, try a smaller LoRA rank (4 instead of 8). The 36GB M3 Pro should handle 7B models comfortably, but if you have other apps consuming memory, close them.</div>
+  </div>
+
+  <div class="pitfall">
+    <div class="pitfall-q">"The model is good at greeting but terrible at scheduling"</div>
+    <div class="pitfall-a"><strong>Phase imbalance.</strong> Check the training data distribution &mdash; if match_propose has 5 examples but greeting has 100, the model barely learned scheduling. Generate more examples targeting the weak phase. See <a href="../training-methodology.md" style="color:var(--accent)">Training Methodology</a> for how we balanced phases.</div>
+  </div>
+
+  <div class="pitfall">
+    <div class="pitfall-q">"Ollama can't load my converted model"</div>
+    <div class="pitfall-a"><strong>GGUF version mismatch.</strong> Make sure <code>mlx-lm</code> and Ollama are both up to date. The GGUF format evolves, and older converters produce files that newer Ollama versions reject.</div>
+  </div>
+</div>
+
+<!-- Further Reading -->
+<div class="section" id="further-reading">
+  <h2>Further Reading</h2>
+
+  <h3>Our Project Docs</h3>
+  <div class="further-links">
+    <a href="../phases.md" class="further-link">
+      <div class="further-link-title">Conversation Phases</div>
+      <div class="further-link-desc">Detailed breakdown of the 11 conversation phases</div>
+    </a>
+    <a href="../training-methodology.md" class="further-link">
+      <div class="further-link-title">Training Methodology</div>
+      <div class="further-link-desc">How the training data was generated, split, and validated</div>
+    </a>
+    <a href="../../data/scenario_matrix.json" class="further-link">
+      <div class="further-link-title">Scenario Matrix</div>
+      <div class="further-link-desc">The 8x7x8 scenario definitions</div>
+    </a>
+    <a href="seed-training-pipeline.html" class="further-link">
+      <div class="further-link-title">Training Explorer</div>
+      <div class="further-link-desc">Interactive explorer for training pipeline data</div>
+    </a>
+  </div>
+
+  <h3>External Resources</h3>
+  <div class="further-links">
+    <a href="https://arxiv.org/abs/2106.09685" class="further-link" target="_blank" rel="noopener">
+      <div class="further-link-title">LoRA Paper (Hu et al., 2021)</div>
+      <div class="further-link-desc">Low-Rank Adaptation of Large Language Models &mdash; the original paper</div>
+    </a>
+    <a href="https://ml-explore.github.io/mlx/" class="further-link" target="_blank" rel="noopener">
+      <div class="further-link-title">MLX Documentation</div>
+      <div class="further-link-desc">Apple's ML framework docs</div>
+    </a>
+    <a href="https://github.com/ml-explore/mlx-examples/tree/main/llms" class="further-link" target="_blank" rel="noopener">
+      <div class="further-link-title">mlx-lm GitHub</div>
+      <div class="further-link-desc">The fine-tuning library we use</div>
+    </a>
+    <a href="https://ollama.ai/docs" class="further-link" target="_blank" rel="noopener">
+      <div class="further-link-title">Ollama Documentation</div>
+      <div class="further-link-desc">Model serving and Modelfile reference</div>
+    </a>
+    <a href="https://arxiv.org/abs/2305.14314" class="further-link" target="_blank" rel="noopener">
+      <div class="further-link-title">QLoRA Paper</div>
+      <div class="further-link-desc">Efficient Finetuning of Quantized LLMs &mdash; related technique</div>
+    </a>
+  </div>
+
+  <h3>Key Concepts to Study Further</h3>
+  <ul>
+    <li><strong>Transformer architecture</strong> &mdash; the neural network design all modern LLMs use</li>
+    <li><strong>Attention mechanism</strong> &mdash; how transformers decide which parts of the input to focus on</li>
+    <li><strong>Tokenization</strong> &mdash; how text becomes numbers (BPE, SentencePiece)</li>
+    <li><strong>Gradient descent</strong> &mdash; the optimization algorithm that updates weights during training</li>
+    <li><strong>Quantization</strong> &mdash; compressing model weights for faster inference</li>
+  </ul>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  Phone Agent Training Pipeline &middot; Fine-Tuning Guide &middot; David Mar &middot; April 2026
+</div>
+
+</div><!-- /main -->
+</div><!-- /layout -->
+
+<script>
+// Active sidebar link on scroll
+(function() {
+  const sections = document.querySelectorAll('.section[id]');
+  const navLinks = document.querySelectorAll('.sidebar nav a[href^="#"]');
+
+  function updateActive() {
+    let current = '';
+    const scrollY = window.scrollY + 60;
+
+    sections.forEach(function(section) {
+      if (section.offsetTop <= scrollY) {
+        current = section.getAttribute('id');
+      }
+    });
+
+    navLinks.forEach(function(link) {
+      link.classList.remove('active');
+      if (link.getAttribute('href') === '#' + current) {
+        link.classList.add('active');
+      }
+    });
+  }
+
+  window.addEventListener('scroll', updateActive, { passive: true });
+  updateActive();
+
+  // Close mobile sidebar on link click
+  navLinks.forEach(function(link) {
+    link.addEventListener('click', function() {
+      document.querySelector('.sidebar').classList.remove('open');
+    });
+  });
+})();
+</script>
+
+</body>
+</html>

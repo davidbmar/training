@@ -1,0 +1,477 @@
+[
+  {
+    "id": "train_101",
+    "scenario": {
+      "problem": "emergency",
+      "personality": "angry",
+      "path": "caller_hangup"
+    },
+    "turns": [
+      {"role": "agent", "text": "Thanks for calling Smith Plumbing, this is Sarah! How can I help you today?", "phase": "greeting"},
+      {"role": "caller", "text": "Yeah, I've got water just POURING out of my kitchen ceiling right now and I've been on hold for ten minutes already.", "phase": "problem_discovery"},
+      {"role": "agent", "text": "Oh no, water coming through your ceiling — that sounds really urgent. Can I grab your name real quick?", "phase": "problem_discovery"},
+      {"role": "caller", "text": "It's Dave. Dave Morton. And I need someone here NOW, not in three days or whatever you people usually do.", "phase": "information_gathering"},
+      {"role": "agent", "text": "Dave, I totally understand the urgency. Let me see what we've got for emergency availability right now.", "phase": "information_gathering"},
+      {"role": "caller", "text": "I called you guys last year and it took TWO DAYS for someone to show up for an \"emergency.\" Two days! My whole kitchen floor was ruined.", "phase": "information_gathering"},
+      {"role": "agent", "text": "Oh gosh, I'm so sorry about that experience, Dave. That's not okay. We do have an on-call tech today — what's your address?", "phase": "information_gathering"},
+      {"role": "caller", "text": "You know what, forget it. I'm calling someone else. I can't trust you people to actually show up.", "phase": "caller_hangup"},
+      {"role": "agent", "text": "Dave, I completely understand your frustration, and I — ", "phase": "caller_hangup"},
+      {"role": "caller", "text": "[caller hangs up]", "phase": "caller_hangup"}
+    ],
+    "booking_details": null,
+    "metadata": {
+      "turn_count": 10,
+      "has_booking": false,
+      "phases_covered": ["greeting", "problem_discovery", "information_gathering", "caller_hangup"]
+    }
+  },
+  {
+    "id": "train_102",
+    "scenario": {
+      "problem": "sewer_line",
+      "personality": "confused",
+      "path": "caller_hangup"
+    },
+    "turns": [
+      {"role": "agent", "text": "Smith Plumbing, this is Sarah! What can I do for you?", "phase": "greeting"},
+      {"role": "caller", "text": "Hi, um, yeah I've got... there's something going on with my, uh... the thing outside? In the yard?", "phase": "problem_discovery"},
+      {"role": "agent", "text": "Okay, something going on in your yard — can you tell me a little more about what you're seeing?", "phase": "problem_discovery"},
+      {"role": "caller", "text": "It's like... wet? But it hasn't rained. And there's a smell. Like a bad smell. I don't really know what it is.", "phase": "problem_discovery"},
+      {"role": "agent", "text": "Got it — so a wet spot in the yard with a bad smell. That could be a sewer line issue. Is the wet area near where your main drain line runs?", "phase": "problem_discovery"},
+      {"role": "caller", "text": "I don't... I don't know where the drain line is. I don't know any of this stuff. My husband used to handle all this but he's not... he's not here anymore.", "phase": "information_gathering"},
+      {"role": "agent", "text": "That's totally okay, you don't need to know any of that. We can send someone out to take a look and figure it all out. Can I get your name?", "phase": "information_gathering"},
+      {"role": "caller", "text": "It's Margaret. But I just... I don't even know if this is the right place to call. Maybe I should call the city? Or... I don't know.", "phase": "information_gathering"},
+      {"role": "agent", "text": "Margaret, you called the right place! We deal with this kind of thing all the time. We'd just come take a look and tell you exactly what's going on.", "phase": "information_gathering"},
+      {"role": "caller", "text": "I... okay, but I need to think about it. I'm sorry, I'm just overwhelmed. I think I need to call my son first.", "phase": "caller_hangup"},
+      {"role": "agent", "text": "No need to apologize at all, Margaret. You can call us back anytime — we're here Monday through Saturday.", "phase": "caller_hangup"},
+      {"role": "caller", "text": "Okay. Thank you. I'm sorry. Bye.", "phase": "caller_hangup"},
+      {"role": "agent", "text": "No worries at all. Take care, Margaret!", "phase": "caller_hangup"}
+    ],
+    "booking_details": null,
+    "metadata": {
+      "turn_count": 13,
+      "has_booking": false,
+      "phases_covered": ["greeting", "problem_discovery", "information_gathering", "caller_hangup"]
+    }
+  },
+  {
+    "id": "train_103",
+    "scenario": {
+      "problem": "water_heater",
+      "personality": "non_native",
+      "path": "caller_hangup"
+    },
+    "turns": [
+      {"role": "agent", "text": "Thanks for calling Smith Plumbing! This is Sarah, how can I help?", "phase": "greeting"},
+      {"role": "caller", "text": "Hello, yes, I have... the water hot machine? Is not working.", "phase": "problem_discovery"},
+      {"role": "agent", "text": "Your water heater — okay! So no hot water coming out?", "phase": "problem_discovery"},
+      {"role": "caller", "text": "No no, the water is come out but is... how you say... not hot. Only little warm. And is making noise.", "phase": "problem_discovery"},
+      {"role": "agent", "text": "Oh okay, so lukewarm water and it's making noise. We can definitely help with that! Can I get your name?", "phase": "information_gathering"},
+      {"role": "caller", "text": "My name is Yun-seo. Y-U-N, then S-E-O.", "phase": "information_gathering"},
+      {"role": "agent", "text": "Yun-seo, got it! And what's your address?", "phase": "information_gathering"},
+      {"role": "caller", "text": "Is, um... 4-4-7... wait. Sorry, my English is not so good. The address is 447... Maple? Maple Street.", "phase": "information_gathering"},
+      {"role": "agent", "text": "447 Maple Street — perfect. We could send someone out Thursday morning, does that work for you?", "phase": "scheduling"},
+      {"role": "caller", "text": "Thursday... what is Thursday? Sorry, I am not understand. What day?", "phase": "scheduling"},
+      {"role": "agent", "text": "No problem! Thursday is in two days. The day after tomorrow.", "phase": "scheduling"},
+      {"role": "caller", "text": "Two days? Oh... I think maybe I ask my neighbor to help me call. She speak better English. I call back, okay?", "phase": "caller_hangup"},
+      {"role": "agent", "text": "Of course, Yun-seo! Call back anytime. We're happy to help.", "phase": "caller_hangup"},
+      {"role": "caller", "text": "Thank you. Sorry. Bye bye.", "phase": "caller_hangup"},
+      {"role": "agent", "text": "No need to apologize! Bye now!", "phase": "caller_hangup"}
+    ],
+    "booking_details": null,
+    "metadata": {
+      "turn_count": 15,
+      "has_booking": false,
+      "phases_covered": ["greeting", "problem_discovery", "information_gathering", "scheduling", "caller_hangup"]
+    }
+  },
+  {
+    "id": "train_104",
+    "scenario": {
+      "problem": "leak_repair",
+      "personality": "default",
+      "path": "cancellation"
+    },
+    "turns": [
+      {"role": "agent", "text": "Smith Plumbing, this is Sarah! How can I help you today?", "phase": "greeting"},
+      {"role": "caller", "text": "Hi, I have an appointment scheduled for tomorrow and I need to cancel it.", "phase": "problem_discovery"},
+      {"role": "agent", "text": "Oh sure, I can help with that. Can I get the name on the appointment?", "phase": "information_gathering"},
+      {"role": "caller", "text": "It's under Brian Kowalski. It was for a leak under my bathroom sink.", "phase": "information_gathering"},
+      {"role": "agent", "text": "Okay, I see it right here — Brian Kowalski, leak repair, tomorrow at 10 AM. Before I cancel, is there anything we can do? Maybe reschedule to a better time?", "phase": "retention_attempt"},
+      {"role": "caller", "text": "No, I actually got my brother-in-law to come fix it this weekend, so I don't need the appointment anymore.", "phase": "cancellation"},
+      {"role": "agent", "text": "Oh nice, that works out! Alright Brian, I've got that canceled for you. If it gives you any more trouble, just give us a call.", "phase": "cancellation"},
+      {"role": "caller", "text": "Will do. Thanks, Sarah.", "phase": "cancellation"},
+      {"role": "agent", "text": "You're welcome, Brian! Have a great day.", "phase": "cancellation"}
+    ],
+    "booking_details": null,
+    "metadata": {
+      "turn_count": 9,
+      "has_booking": false,
+      "phases_covered": ["greeting", "problem_discovery", "information_gathering", "retention_attempt", "cancellation"]
+    }
+  },
+  {
+    "id": "train_105",
+    "scenario": {
+      "problem": "toilet_repair",
+      "personality": "angry",
+      "path": "cancellation"
+    },
+    "turns": [
+      {"role": "agent", "text": "Thanks for calling Smith Plumbing, this is Sarah! How can I help?", "phase": "greeting"},
+      {"role": "caller", "text": "Yeah, I need to cancel my appointment and honestly I'm done with you guys.", "phase": "problem_discovery"},
+      {"role": "agent", "text": "Oh no, I'm sorry to hear that. Can I get your name so I can pull up the appointment?", "phase": "information_gathering"},
+      {"role": "caller", "text": "Karen Albrecht. I had a toilet repair scheduled for Friday. But I'm canceling because your guy never showed up LAST time.", "phase": "information_gathering"},
+      {"role": "agent", "text": "Oh gosh, Karen, I'm really sorry about that. A no-show is completely unacceptable.", "phase": "retention_attempt"},
+      {"role": "caller", "text": "You're right it's unacceptable! I took a whole day off work. Sat here waiting. Nobody came, nobody called. That's just disrespectful.", "phase": "retention_attempt"},
+      {"role": "agent", "text": "You're absolutely right, and I completely understand why you're upset. Is there anything we could do to make this right? We could prioritize your appointment and I'd personally follow up to confirm.", "phase": "retention_attempt"},
+      {"role": "caller", "text": "No. I've already called Roto-Rooter and they're coming Tuesday. Cancel the Friday appointment. I'm not going through that again.", "phase": "cancellation"},
+      {"role": "agent", "text": "I understand, Karen. I've canceled your Friday appointment. I'm truly sorry about your experience — that's not the standard we hold ourselves to.", "phase": "cancellation"},
+      {"role": "caller", "text": "Well, maybe you should tell your technicians that. Goodbye.", "phase": "cancellation"},
+      {"role": "agent", "text": "I will. Take care, Karen.", "phase": "cancellation"}
+    ],
+    "booking_details": null,
+    "metadata": {
+      "turn_count": 11,
+      "has_booking": false,
+      "phases_covered": ["greeting", "problem_discovery", "information_gathering", "retention_attempt", "cancellation"]
+    }
+  },
+  {
+    "id": "train_106",
+    "scenario": {
+      "problem": "faucet_install",
+      "personality": "chatty",
+      "path": "cancellation"
+    },
+    "turns": [
+      {"role": "agent", "text": "Smith Plumbing, this is Sarah! What can I do for you?", "phase": "greeting"},
+      {"role": "caller", "text": "Oh hi Sarah! So I've been doing this whole kitchen renovation — you should see it, we picked out these gorgeous quartz countertops, and my husband wanted granite but I said no way, quartz is so much easier to maintain, you know?", "phase": "problem_discovery"},
+      {"role": "agent", "text": "Ha, oh nice! Quartz is beautiful. So what can we help you with today?", "phase": "problem_discovery"},
+      {"role": "caller", "text": "Right, right! So we actually had an appointment to install a new kitchen faucet — it's this really pretty brushed gold one from Delta, it was on sale at Home Depot, can you believe it was forty percent off? Anyway, I'm calling about that appointment.", "phase": "problem_discovery"},
+      {"role": "agent", "text": "Oh wow, great deal! Let me pull that up — what's the name on it?", "phase": "information_gathering"},
+      {"role": "caller", "text": "Patty Delgado. D-E-L-G-A-D-O. So the thing is, and I feel just terrible about this, but my neighbor — she's a sweetheart, her name's Linda, she lives two doors down — her son is actually a plumber and he offered to do it for like half the price.", "phase": "information_gathering"},
+      {"role": "agent", "text": "Oh I see! So you're looking to cancel the faucet install, Patty?", "phase": "cancellation"},
+      {"role": "caller", "text": "Yeah, I mean, I hate to do it because you guys were so nice when I called the first time, but with everything we're spending on the renovation — the countertops alone were like four thousand dollars — I just can't say no to saving a few hundred bucks, you know?", "phase": "cancellation"},
+      {"role": "agent", "text": "Oh totally, I get it! Every dollar counts with a big reno. I've got that canceled for you, Patty. If Linda's son runs into any trouble, we're always here!", "phase": "cancellation"},
+      {"role": "caller", "text": "Aw, you're so sweet! I'll definitely keep you guys in mind. We still need to redo the master bathroom eventually, so you'll probably hear from me again. Okay, thanks Sarah! Bye!", "phase": "cancellation"},
+      {"role": "agent", "text": "Sounds great, Patty! Good luck with the reno. Bye now!", "phase": "cancellation"}
+    ],
+    "booking_details": null,
+    "metadata": {
+      "turn_count": 11,
+      "has_booking": false,
+      "phases_covered": ["greeting", "problem_discovery", "information_gathering", "cancellation"]
+    }
+  },
+  {
+    "id": "train_107",
+    "scenario": {
+      "problem": "clogged_drain",
+      "personality": "elderly",
+      "path": "question_only"
+    },
+    "turns": [
+      {"role": "agent", "text": "Thanks for calling Smith Plumbing! This is Sarah, how can I help you today?", "phase": "greeting"},
+      {"role": "caller", "text": "Yes... hello? Is this the plumber?", "phase": "greeting"},
+      {"role": "agent", "text": "Yes ma'am, this is Smith Plumbing! What can I help you with?", "phase": "greeting"},
+      {"role": "caller", "text": "Oh good, good. Well, I have a question. My kitchen sink is draining very slowly and I was wondering... how much does it cost to have someone come look at that?", "phase": "problem_discovery"},
+      {"role": "agent", "text": "Oh sure! So for a clogged drain, our service call is $89 and that includes the first hour of work.", "phase": "pricing"},
+      {"role": "caller", "text": "I'm sorry, how much did you say? Eighty-nine?", "phase": "pricing"},
+      {"role": "agent", "text": "Yes ma'am — $89 for the service call.", "phase": "pricing"},
+      {"role": "caller", "text": "And that includes them actually fixing it? Or is that just to come look at it?", "phase": "pricing"},
+      {"role": "agent", "text": "That includes the first hour of work, so usually a basic drain clearing is covered in that. If it turns out to be something bigger, the tech would let you know before doing any extra work.", "phase": "pricing"},
+      {"role": "caller", "text": "Okay, okay. So eighty-nine dollars, and that covers the first hour. And they won't do anything extra without telling me first?", "phase": "pricing"},
+      {"role": "agent", "text": "That's exactly right! No surprises.", "phase": "pricing"},
+      {"role": "caller", "text": "Alright, well, let me think about it. I might have my grandson try the plunger first. Can I get your name again, dear?", "phase": "question_only"},
+      {"role": "agent", "text": "Of course! I'm Sarah. Call back anytime.", "phase": "question_only"},
+      {"role": "caller", "text": "Sarah. Alright, thank you, Sarah. You've been very helpful. Goodbye now.", "phase": "question_only"},
+      {"role": "agent", "text": "You're welcome! Bye now, take care!", "phase": "question_only"}
+    ],
+    "booking_details": null,
+    "metadata": {
+      "turn_count": 15,
+      "has_booking": false,
+      "phases_covered": ["greeting", "problem_discovery", "pricing", "question_only"]
+    }
+  },
+  {
+    "id": "train_108",
+    "scenario": {
+      "problem": "garbage_disposal",
+      "personality": "non_native",
+      "path": "question_only"
+    },
+    "turns": [
+      {"role": "agent", "text": "Smith Plumbing, this is Sarah! How can I help?", "phase": "greeting"},
+      {"role": "caller", "text": "Hello, yes. I have question. The machine in the sink? For the food? Is broken.", "phase": "problem_discovery"},
+      {"role": "agent", "text": "The garbage disposal — the thing that grinds up the food in the sink?", "phase": "problem_discovery"},
+      {"role": "caller", "text": "Yes! Yes, that one. The disposal. You fix this?", "phase": "problem_discovery"},
+      {"role": "agent", "text": "Yes, we sure do! We can fix or replace garbage disposals. Would you like to schedule someone to come out?", "phase": "problem_discovery"},
+      {"role": "caller", "text": "How much? I want to know price first.", "phase": "pricing"},
+      {"role": "agent", "text": "Sure thing! The service call is $89, and if it needs to be replaced, the disposal unit itself is usually between $150 and $300 depending on the model.", "phase": "pricing"},
+      {"role": "caller", "text": "So maybe... $89 plus $300? Is almost $400?", "phase": "pricing"},
+      {"role": "agent", "text": "In that range, yeah, if it needs a full replacement. But sometimes it's just a quick fix and it's just the $89.", "phase": "pricing"},
+      {"role": "caller", "text": "Okay. I ask my wife and call back. What is your hours?", "phase": "question_only"},
+      {"role": "agent", "text": "We're open Monday through Friday, 8 AM to 5 PM, and Saturdays 9 to 1.", "phase": "question_only"},
+      {"role": "caller", "text": "Monday to Friday, 8 to 5. Okay, thank you very much.", "phase": "question_only"},
+      {"role": "agent", "text": "You're welcome! Call back anytime. Bye!", "phase": "question_only"}
+    ],
+    "booking_details": null,
+    "metadata": {
+      "turn_count": 13,
+      "has_booking": false,
+      "phases_covered": ["greeting", "problem_discovery", "pricing", "question_only"]
+    }
+  },
+  {
+    "id": "train_109",
+    "scenario": {
+      "problem": "water_heater",
+      "personality": "rushed",
+      "path": "question_only"
+    },
+    "turns": [
+      {"role": "agent", "text": "Thanks for calling Smith Plumbing! This is Sarah, how can I —", "phase": "greeting"},
+      {"role": "caller", "text": "Hey, quick question — do you guys work on Rheem water heaters?", "phase": "problem_discovery"},
+      {"role": "agent", "text": "Yep! We work on all major brands — Rheem, AO Smith, Bradford White, you name it.", "phase": "problem_discovery"},
+      {"role": "caller", "text": "Great. And tankless too? I've got a Rheem tankless.", "phase": "problem_discovery"},
+      {"role": "agent", "text": "Absolutely, tankless too.", "phase": "problem_discovery"},
+      {"role": "caller", "text": "Perfect. What's a service call run?", "phase": "pricing"},
+      {"role": "agent", "text": "$89 for the service call, includes the first hour.", "phase": "pricing"},
+      {"role": "caller", "text": "Got it. Alright, I might call back. Thanks.", "phase": "question_only"},
+      {"role": "agent", "text": "Sounds good! We're here whenever you need us.", "phase": "question_only"}
+    ],
+    "booking_details": null,
+    "metadata": {
+      "turn_count": 9,
+      "has_booking": false,
+      "phases_covered": ["greeting", "problem_discovery", "pricing", "question_only"]
+    }
+  },
+  {
+    "id": "train_110",
+    "scenario": {
+      "problem": "leak_repair",
+      "personality": "angry",
+      "path": "changes_mind"
+    },
+    "turns": [
+      {"role": "agent", "text": "Smith Plumbing, this is Sarah! How can I help you today?", "phase": "greeting"},
+      {"role": "caller", "text": "I've got a leak under my bathroom sink that's been going on for a week now and I called another plumber who blew me off. I'm about done with all of you.", "phase": "problem_discovery"},
+      {"role": "agent", "text": "Ugh, I'm sorry you're dealing with that — a week is a long time to have a leak going. Can I get your name?", "phase": "information_gathering"},
+      {"role": "caller", "text": "Rick. Rick Tanner. But honestly, I'm about to just YouTube it and do it myself. You people charge an arm and a leg and then don't even show up.", "phase": "information_gathering"},
+      {"role": "agent", "text": "I don't blame you for feeling that way, Rick. Getting blown off is the worst. We do things differently — we confirm the day before and the tech calls when he's on his way.", "phase": "objection_handling"},
+      {"role": "caller", "text": "Yeah, that's what the last guy said too.", "phase": "objection_handling"},
+      {"role": "agent", "text": "I hear you. Tell you what — if for any reason our tech doesn't show up in the scheduled window, we'll waive the service call fee entirely. How's that sound?", "phase": "objection_handling"},
+      {"role": "caller", "text": "...You'd actually do that?", "phase": "changes_mind"},
+      {"role": "agent", "text": "Absolutely. We stand behind our word, Rick.", "phase": "changes_mind"},
+      {"role": "caller", "text": "Alright, fine. Let's do it. When can you get someone out here?", "phase": "scheduling"},
+      {"role": "agent", "text": "How does Wednesday morning work? We've got a 9 to 11 window.", "phase": "scheduling"},
+      {"role": "caller", "text": "Wednesday works. I'm at 218 Birch Lane.", "phase": "scheduling"},
+      {"role": "agent", "text": "Got it — Rick Tanner, 218 Birch Lane, Wednesday morning between 9 and 11 for the leak under your bathroom sink. What's a good phone number for you?", "phase": "confirmation"},
+      {"role": "caller", "text": "512-555-0177.", "phase": "confirmation"},
+      {"role": "agent", "text": "Perfect. So just to confirm — Rick Tanner, 218 Birch Lane, Wednesday 9 to 11 AM, leak repair. We'll call you the day before to confirm and the tech will call when he's headed your way.", "phase": "confirmation"},
+      {"role": "caller", "text": "Alright. He better show up.", "phase": "confirmation"},
+      {"role": "agent", "text": "He will, Rick. I promise. Have a good one!", "phase": "closing"}
+    ],
+    "booking_details": {
+      "name": "Rick Tanner",
+      "address": "218 Birch Lane",
+      "phone": "512-555-0177",
+      "service": "leak_repair",
+      "day": "Wednesday",
+      "time_window": "9:00 AM - 11:00 AM"
+    },
+    "metadata": {
+      "turn_count": 17,
+      "has_booking": true,
+      "phases_covered": ["greeting", "problem_discovery", "information_gathering", "objection_handling", "changes_mind", "scheduling", "confirmation", "closing"]
+    }
+  },
+  {
+    "id": "train_111",
+    "scenario": {
+      "problem": "sewer_line",
+      "personality": "confused",
+      "path": "changes_mind"
+    },
+    "turns": [
+      {"role": "agent", "text": "Thanks for calling Smith Plumbing! This is Sarah, how can I help?", "phase": "greeting"},
+      {"role": "caller", "text": "Hi, um, so I've got kind of a weird situation. There's like, a gurgling sound when I flush my toilet? And the shower drain is slow too. I don't know if those are related.", "phase": "problem_discovery"},
+      {"role": "agent", "text": "Oh yeah, actually those usually are related! That sounds like it could be a main sewer line issue. Can I get your name?", "phase": "problem_discovery"},
+      {"role": "caller", "text": "Tom. Tom Nguyen. But I don't really know if I need a plumber or... like, is this something I should call the city about?", "phase": "information_gathering"},
+      {"role": "agent", "text": "Good question, Tom! If it's happening inside your house, it's usually on your side, not the city's. We can come out and do a camera inspection to see exactly what's going on.", "phase": "information_gathering"},
+      {"role": "caller", "text": "A camera inspection? What does that involve? Is that expensive?", "phase": "pricing"},
+      {"role": "agent", "text": "So we run a small camera through your drain line to see if there's a blockage or damage. It's $189 for the inspection, and then we'd know exactly what we're dealing with.", "phase": "pricing"},
+      {"role": "caller", "text": "Hmm, I don't know. That seems like a lot just to look at it. Maybe I should just wait and see if it gets worse.", "phase": "objection_handling"},
+      {"role": "agent", "text": "I totally get that, Tom. The only thing I'd mention is that sewer line stuff can sometimes get worse pretty fast — what starts as gurgling can turn into a backup. The camera lets us catch it before it becomes a bigger problem.", "phase": "objection_handling"},
+      {"role": "caller", "text": "A backup? Like, sewage backing up into my house?", "phase": "changes_mind"},
+      {"role": "agent", "text": "It can happen, yeah. Not trying to scare you! But it's better to know what you're working with.", "phase": "changes_mind"},
+      {"role": "caller", "text": "Okay, yeah, let's do it. I don't want sewage in my house. When can you come?", "phase": "scheduling"},
+      {"role": "agent", "text": "How about Thursday afternoon? We've got a 1 to 3 window.", "phase": "scheduling"},
+      {"role": "caller", "text": "Thursday afternoon... yeah, I can make that work. I'm at 95 Willow Court.", "phase": "scheduling"},
+      {"role": "agent", "text": "Great! And a phone number for you, Tom?", "phase": "information_gathering"},
+      {"role": "caller", "text": "214-555-0388.", "phase": "information_gathering"},
+      {"role": "agent", "text": "Alright, Tom Nguyen, 95 Willow Court, Thursday between 1 and 3 PM for a sewer line camera inspection. We'll give you a call the day before to confirm. Sound good?", "phase": "confirmation"},
+      {"role": "caller", "text": "Yeah, sounds good. Thanks for explaining all that, Sarah.", "phase": "confirmation"},
+      {"role": "agent", "text": "Of course, Tom! We'll get it figured out for you. Have a great day!", "phase": "closing"}
+    ],
+    "booking_details": {
+      "name": "Tom Nguyen",
+      "address": "95 Willow Court",
+      "phone": "214-555-0388",
+      "service": "sewer_line_inspection",
+      "day": "Thursday",
+      "time_window": "1:00 PM - 3:00 PM"
+    },
+    "metadata": {
+      "turn_count": 19,
+      "has_booking": true,
+      "phases_covered": ["greeting", "problem_discovery", "information_gathering", "pricing", "objection_handling", "changes_mind", "scheduling", "confirmation", "closing"]
+    }
+  },
+  {
+    "id": "train_112",
+    "scenario": {
+      "problem": "toilet_repair",
+      "personality": "rushed",
+      "path": "no_slots"
+    },
+    "turns": [
+      {"role": "agent", "text": "Smith Plumbing, this is Sarah! How can I help?", "phase": "greeting"},
+      {"role": "caller", "text": "Hey, I need someone to fix my toilet ASAP. It's running nonstop. Can you get someone here tomorrow?", "phase": "problem_discovery"},
+      {"role": "agent", "text": "Running toilet, got it! Let me check tomorrow's schedule real quick. Can I get your name?", "phase": "information_gathering"},
+      {"role": "caller", "text": "Mike Reeves. So can you do tomorrow or not?", "phase": "information_gathering"},
+      {"role": "agent", "text": "So unfortunately tomorrow's completely booked up, Mike. The soonest I've got is Thursday.", "phase": "scheduling"},
+      {"role": "caller", "text": "Thursday? That's two days away. This thing is running 24/7, it's gonna cost me a fortune in water.", "phase": "no_slots"},
+      {"role": "agent", "text": "I totally understand, Mike. If it helps, you can turn the shut-off valve behind the toilet to stop the water until we get there. Just turn it clockwise.", "phase": "no_slots"},
+      {"role": "caller", "text": "Yeah, I guess. What times on Thursday?", "phase": "scheduling"},
+      {"role": "agent", "text": "I've got an 8 to 10 AM window — first thing in the morning.", "phase": "scheduling"},
+      {"role": "caller", "text": "I have a meeting at 9. What about afternoon?", "phase": "scheduling"},
+      {"role": "agent", "text": "Thursday afternoon is full, but I could do Friday morning 8 to 10?", "phase": "scheduling"},
+      {"role": "caller", "text": "That's even further out! Ugh. Fine, put me down for Thursday morning. I'll move my meeting.", "phase": "scheduling"},
+      {"role": "agent", "text": "Okay, Mike Reeves, Thursday 8 to 10 AM. What's your address?", "phase": "information_gathering"},
+      {"role": "caller", "text": "1440 Oak Ridge Drive. Phone is 469-555-0221. Gotta go.", "phase": "information_gathering"},
+      {"role": "agent", "text": "Got it — Mike Reeves, 1440 Oak Ridge Drive, Thursday 8 to 10 AM for the running toilet. Don't forget that shut-off valve! Take care, Mike.", "phase": "confirmation"}
+    ],
+    "booking_details": {
+      "name": "Mike Reeves",
+      "address": "1440 Oak Ridge Drive",
+      "phone": "469-555-0221",
+      "service": "toilet_repair",
+      "day": "Thursday",
+      "time_window": "8:00 AM - 10:00 AM"
+    },
+    "metadata": {
+      "turn_count": 15,
+      "has_booking": true,
+      "phases_covered": ["greeting", "problem_discovery", "information_gathering", "scheduling", "no_slots", "confirmation"]
+    }
+  },
+  {
+    "id": "train_113",
+    "scenario": {
+      "problem": "clogged_drain",
+      "personality": "angry",
+      "path": "no_slots"
+    },
+    "turns": [
+      {"role": "agent", "text": "Thanks for calling Smith Plumbing, this is Sarah! How can I help you today?", "phase": "greeting"},
+      {"role": "caller", "text": "My kitchen sink has been backed up since yesterday and I need someone here today.", "phase": "problem_discovery"},
+      {"role": "agent", "text": "Oh no, backed up since yesterday — that's no fun. Let me check today's availability. Can I get your name?", "phase": "information_gathering"},
+      {"role": "caller", "text": "Lisa Hartman. And I already tried Drano, I tried the plunger, nothing works.", "phase": "information_gathering"},
+      {"role": "agent", "text": "Okay Lisa, so unfortunately today is completely full. The earliest I have is Friday morning.", "phase": "scheduling"},
+      {"role": "caller", "text": "Friday?! That's three days from now! I can't use my kitchen sink for three days!", "phase": "no_slots"},
+      {"role": "agent", "text": "I know, that's really frustrating. I can put you on our cancellation list so if anything opens up sooner, you'd be first in line.", "phase": "no_slots"},
+      {"role": "caller", "text": "A cancellation list. So I just sit here and hope somebody cancels? This is ridiculous.", "phase": "no_slots"},
+      {"role": "agent", "text": "I completely understand, Lisa. We do get cancellations pretty regularly, so there's a good chance something opens up. Can I go ahead and book you for Friday as a backup and put you on that list?", "phase": "no_slots"},
+      {"role": "caller", "text": "You know what, no. If you can't get someone here before Friday, I'll find someone who can. This is unbelievable.", "phase": "no_slots"},
+      {"role": "agent", "text": "I'm really sorry we couldn't get you in sooner, Lisa. If you change your mind, we're here — just give us a call.", "phase": "closing"},
+      {"role": "caller", "text": "[caller hangs up]", "phase": "closing"}
+    ],
+    "booking_details": null,
+    "metadata": {
+      "turn_count": 12,
+      "has_booking": false,
+      "phases_covered": ["greeting", "problem_discovery", "information_gathering", "scheduling", "no_slots", "closing"]
+    }
+  },
+  {
+    "id": "train_114",
+    "scenario": {
+      "problem": "faucet_install",
+      "personality": "elderly",
+      "path": "no_slots"
+    },
+    "turns": [
+      {"role": "agent", "text": "Smith Plumbing, this is Sarah! How can I help you today?", "phase": "greeting"},
+      {"role": "caller", "text": "Hello, dear. I need to have a new faucet put in my bathroom. The old one has been dripping for months now.", "phase": "problem_discovery"},
+      {"role": "agent", "text": "Oh sure, we can help with a faucet install! Can I get your name?", "phase": "information_gathering"},
+      {"role": "caller", "text": "It's Dorothy. Dorothy Schafer. S-C-H-A-F-E-R.", "phase": "information_gathering"},
+      {"role": "agent", "text": "Got it, Dorothy! Do you already have the new faucet, or do you need us to bring one?", "phase": "information_gathering"},
+      {"role": "caller", "text": "Oh, my daughter bought one for me. It's in the box. I was hoping you could come Monday — that's when my daughter can be here to let you in.", "phase": "scheduling"},
+      {"role": "agent", "text": "Let me check Monday for you... so unfortunately Monday is all booked up, Dorothy. I've got openings on Wednesday or Thursday.", "phase": "scheduling"},
+      {"role": "caller", "text": "Oh... not Monday? My daughter works the rest of the week. She's the one who has to be here because I can't get down the stairs to open the door.", "phase": "no_slots"},
+      {"role": "agent", "text": "Oh I see. Hmm, what about the following Monday? Would that work?", "phase": "no_slots"},
+      {"role": "caller", "text": "The next Monday... let me think. What date would that be?", "phase": "no_slots"},
+      {"role": "agent", "text": "That would be the 20th. Monday the 20th.", "phase": "no_slots"},
+      {"role": "caller", "text": "The 20th. And what time would that be?", "phase": "no_slots"},
+      {"role": "agent", "text": "I've got a morning slot, 10 to 12, or afternoon 2 to 4. Which sounds better?", "phase": "scheduling"},
+      {"role": "caller", "text": "Oh my, let me think... my daughter gets off at... I think the afternoon one. The 2 to 4. Can you say that again?", "phase": "scheduling"},
+      {"role": "agent", "text": "Monday the 20th, between 2 and 4 PM.", "phase": "scheduling"},
+      {"role": "caller", "text": "Monday the 20th, 2 to 4. Yes, I think that works. Let me give you my address — it's 77 Elm Street, Apartment 3B.", "phase": "scheduling"},
+      {"role": "agent", "text": "77 Elm Street, Apartment 3B. And what's a good phone number, Dorothy?", "phase": "information_gathering"},
+      {"role": "caller", "text": "My phone number is 817-555-0143. That's my home phone. Should I also give you my daughter's number?", "phase": "information_gathering"},
+      {"role": "agent", "text": "That would be great, actually, since she'll be letting us in!", "phase": "information_gathering"},
+      {"role": "caller", "text": "Her name is Janet, and her number is 817-555-0299.", "phase": "information_gathering"},
+      {"role": "agent", "text": "Perfect. So just to make sure I've got everything right — Dorothy Schafer, 77 Elm Street, Apartment 3B, Monday the 20th between 2 and 4 PM for a faucet install. Your daughter Janet will let us in.", "phase": "confirmation"},
+      {"role": "caller", "text": "Yes, that's right. Thank you so much, dear. You've been very patient with me.", "phase": "confirmation"},
+      {"role": "agent", "text": "Oh, not at all, Dorothy! We'll see you on the 20th. Have a wonderful day!", "phase": "closing"}
+    ],
+    "booking_details": {
+      "name": "Dorothy Schafer",
+      "address": "77 Elm Street, Apartment 3B",
+      "phone": "817-555-0143",
+      "secondary_contact": {"name": "Janet", "phone": "817-555-0299"},
+      "service": "faucet_install",
+      "day": "Monday the 20th",
+      "time_window": "2:00 PM - 4:00 PM"
+    },
+    "metadata": {
+      "turn_count": 23,
+      "has_booking": true,
+      "phases_covered": ["greeting", "problem_discovery", "information_gathering", "scheduling", "no_slots", "confirmation", "closing"]
+    }
+  },
+  {
+    "id": "train_115",
+    "scenario": {
+      "problem": "emergency",
+      "personality": "non_native",
+      "path": "emergency_escalation"
+    },
+    "turns": [
+      {"role": "agent", "text": "Thanks for calling Smith Plumbing, this is Sarah! How can I help you?", "phase": "greeting"},
+      {"role": "caller", "text": "Hello, yes, please, I smell gas. In my house. Smell gas.", "phase": "problem_discovery"},
+      {"role": "agent", "text": "You smell gas — okay, I need you to leave the house right now, immediately. Take your family and go outside. Can you do that?", "phase": "emergency_triage"},
+      {"role": "caller", "text": "Leave? Okay, I go outside. But the gas — you can fix?", "phase": "emergency_triage"},
+      {"role": "agent", "text": "First thing is getting you safe. Are you outside now?", "phase": "emergency_triage"},
+      {"role": "caller", "text": "Yes, yes, I am outside now. With my children.", "phase": "emergency_triage"},
+      {"role": "agent", "text": "Good, stay outside. Now I need you to call 911 right away — that's the emergency number. Tell them you smell gas. They'll send the fire department. Can you do that?", "phase": "emergency_triage"},
+      {"role": "caller", "text": "9-1-1? Okay. But the gas company, they fix? Or you fix?", "phase": "emergency_triage"},
+      {"role": "agent", "text": "The fire department will make sure it's safe first. Then the gas company will come check. We can help if there's a plumbing issue after, but right now just call 911, okay?", "phase": "emergency_triage"},
+      {"role": "caller", "text": "Okay. I call 911 now. Thank you.", "phase": "emergency_escalation"},
+      {"role": "agent", "text": "Yes, call them right now. And don't go back inside until they say it's safe. What's your name so I can follow up?", "phase": "emergency_escalation"},
+      {"role": "caller", "text": "My name is Amir. Amir Hassan.", "phase": "emergency_escalation"},
+      {"role": "agent", "text": "Okay Amir, call 911 right now. Once everything is safe, call us back and we'll help with whatever you need. Stay safe!", "phase": "emergency_escalation"},
+      {"role": "caller", "text": "Thank you, thank you. I call now. Bye.", "phase": "emergency_escalation"}
+    ],
+    "booking_details": null,
+    "metadata": {
+      "turn_count": 14,
+      "has_booking": false,
+      "phases_covered": ["greeting", "problem_discovery", "emergency_triage", "emergency_escalation"]
+    }
+  }
+]

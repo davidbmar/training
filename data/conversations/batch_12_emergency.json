@@ -1,0 +1,514 @@
+[
+  {
+    "id": "train_165",
+    "scenario": {
+      "problem": "emergency",
+      "personality": "angry",
+      "path": "emergency_escalation"
+    },
+    "turns": [
+      {
+        "role": "agent",
+        "text": "Smith Plumbing, how can I help you?",
+        "phase": "greeting"
+      },
+      {
+        "role": "caller",
+        "text": "OH MY GOD there's water EVERYWHERE! A pipe just burst in my kitchen and it's flooding the whole floor! I need someone here NOW!",
+        "phase": "emergency_escalation"
+      },
+      {
+        "role": "agent",
+        "text": "Okay, I hear you — water everywhere in the kitchen. First thing, can you find the main water shutoff valve? It's usually near the water heater or where the main line comes into the house.",
+        "phase": "emergency_escalation"
+      },
+      {
+        "role": "caller",
+        "text": "I don't — I don't know where that is! The water is just spraying out of the wall and it's getting into the living room now!",
+        "phase": "emergency_escalation"
+      },
+      {
+        "role": "agent",
+        "text": "Okay, check your basement or crawlspace — there should be a big handle or wheel on the pipe coming in from outside. Turn it clockwise to shut it off. That'll stop the water right away.",
+        "phase": "emergency_escalation"
+      },
+      {
+        "role": "caller",
+        "text": "Okay — okay hold on... I think I found it, it's this red handle? I'm turning it... okay the spraying stopped. But there's like two inches of water on my kitchen floor!",
+        "phase": "emergency_escalation"
+      },
+      {
+        "role": "agent",
+        "text": "Good, you got the water stopped, that's the important part. Now if you can, grab some towels and try to keep it from spreading. We're gonna get someone out to you as fast as we can.",
+        "phase": "emergency_escalation"
+      },
+      {
+        "role": "caller",
+        "text": "How fast? Because this is a disaster, I've got water damage everywhere!",
+        "phase": "confirmation"
+      },
+      {
+        "role": "agent",
+        "text": "We'll have someone there within the hour, this goes to the top of the list. Can I get your name and a good number to reach you?",
+        "phase": "confirmation"
+      },
+      {
+        "role": "caller",
+        "text": "It's Marcus Webb, 555-0187. I'm at 412 Birch Lane.",
+        "phase": "confirmation"
+      },
+      {
+        "role": "agent",
+        "text": "Got it, Marcus. So we've got an emergency burst pipe at 412 Birch Lane, water's been shut off, and our plumber's heading your way within the hour.",
+        "phase": "summarize_book"
+      },
+      {
+        "role": "caller",
+        "text": "Yeah, please just get them here fast.",
+        "phase": "summarize_book"
+      },
+      {
+        "role": "agent",
+        "text": "They're on their way. Hang in there, Marcus.",
+        "phase": "goodbye"
+      }
+    ],
+    "booking_details": {
+      "service": "emergency service",
+      "date": "today",
+      "time": "ASAP",
+      "caller_name": "Marcus Webb",
+      "phone": "555-0187"
+    },
+    "metadata": {
+      "turn_count": 13,
+      "has_booking": true,
+      "phases_covered": ["greeting", "emergency_escalation", "confirmation", "summarize_book", "goodbye"]
+    }
+  },
+  {
+    "id": "train_166",
+    "scenario": {
+      "problem": "emergency",
+      "personality": "elderly",
+      "path": "emergency_escalation"
+    },
+    "turns": [
+      {
+        "role": "agent",
+        "text": "Smith Plumbing, this is Lisa. What can I do for you today?",
+        "phase": "greeting"
+      },
+      {
+        "role": "caller",
+        "text": "Hello, dear. I'm not sure who to call about this but... there's a funny smell in my house. It's been there since this morning, kind of like eggs?",
+        "phase": "emergency_escalation"
+      },
+      {
+        "role": "agent",
+        "text": "Ma'am, a rotten egg smell — that could be a gas leak. I need you to leave the house right now and call 911 from outside. Don't turn on any lights or anything on the way out.",
+        "phase": "emergency_escalation"
+      },
+      {
+        "role": "caller",
+        "text": "Oh my, really? I thought maybe something just went bad in the refrigerator. Are you sure it's that serious?",
+        "phase": "emergency_escalation"
+      },
+      {
+        "role": "agent",
+        "text": "Yes ma'am, we always treat a rotten egg smell as gas until we know for sure. Please head outside right now — don't use the stove or flip any switches. Can you do that for me?",
+        "phase": "emergency_escalation"
+      },
+      {
+        "role": "caller",
+        "text": "Okay, okay, let me get my coat... alright I'm walking to the front door now. Should I leave it open?",
+        "phase": "emergency_escalation"
+      },
+      {
+        "role": "agent",
+        "text": "Yes, leave the door open for ventilation. Once you're outside, call 911 first — they'll send someone to check the gas. Then call us back and we'll send a plumber out too.",
+        "phase": "emergency_escalation"
+      },
+      {
+        "role": "caller",
+        "text": "I'm outside now. Alright, I'll call 911. But can you still send someone? I don't really understand all this gas business.",
+        "phase": "confirmation"
+      },
+      {
+        "role": "agent",
+        "text": "Absolutely, we'll have someone come check your lines. Can I get your name and address, sweetheart?",
+        "phase": "confirmation"
+      },
+      {
+        "role": "caller",
+        "text": "It's Dorothy Harmon, I'm at 88 Elm Court. My number is 555-0234.",
+        "phase": "confirmation"
+      },
+      {
+        "role": "agent",
+        "text": "Okay Dorothy, so — call 911 first, tell them you smell gas at 88 Elm Court. We'll send our plumber out today to inspect your gas lines once the fire department clears you.",
+        "phase": "summarize_book"
+      },
+      {
+        "role": "caller",
+        "text": "Thank you so much, dear. I'll call them right now.",
+        "phase": "summarize_book"
+      },
+      {
+        "role": "agent",
+        "text": "You're doing great, Dorothy. Stay outside and stay safe, okay?",
+        "phase": "goodbye"
+      }
+    ],
+    "booking_details": {
+      "service": "emergency service",
+      "date": "today",
+      "time": "ASAP",
+      "caller_name": "Dorothy Harmon",
+      "phone": "555-0234"
+    },
+    "metadata": {
+      "turn_count": 13,
+      "has_booking": true,
+      "phases_covered": ["greeting", "emergency_escalation", "confirmation", "summarize_book", "goodbye"]
+    }
+  },
+  {
+    "id": "train_167",
+    "scenario": {
+      "problem": "emergency",
+      "personality": "non_native",
+      "path": "emergency_escalation"
+    },
+    "turns": [
+      {
+        "role": "agent",
+        "text": "Smith Plumbing, how can I help?",
+        "phase": "greeting"
+      },
+      {
+        "role": "caller",
+        "text": "Hello, yes, please — water is come from ceiling. Very much water, is falling down everywhere in my kitchen.",
+        "phase": "emergency_escalation"
+      },
+      {
+        "role": "agent",
+        "text": "Okay, water coming from the ceiling — that's a lot of water. First, do you know where the water shutoff is? A big handle, maybe under the sink or in the basement?",
+        "phase": "emergency_escalation"
+      },
+      {
+        "role": "caller",
+        "text": "Shutoff? I don't know this word. The water is very fast, I put the bucket but it fills up.",
+        "phase": "emergency_escalation"
+      },
+      {
+        "role": "agent",
+        "text": "Okay — look for a big handle, like a lever. Under the sink, or maybe in the basement. Turn it to stop the water. Big handle, turn it.",
+        "phase": "emergency_escalation"
+      },
+      {
+        "role": "caller",
+        "text": "Under sink... okay, I see a handle, the silver one? I turn it? Okay... okay I turn it. The water is... is less now. Slower.",
+        "phase": "emergency_escalation"
+      },
+      {
+        "role": "agent",
+        "text": "Good, that's good! The water is slower, that helps. We'll send someone to your house very soon to fix it. What is your name?",
+        "phase": "emergency_escalation"
+      },
+      {
+        "role": "caller",
+        "text": "My name is Yun-seo Park. I am at 1540 Oak Street, apartment 3B.",
+        "phase": "confirmation"
+      },
+      {
+        "role": "agent",
+        "text": "Yun-seo, got it — 1540 Oak Street, apartment 3B. And a phone number for you?",
+        "phase": "confirmation"
+      },
+      {
+        "role": "caller",
+        "text": "Yes, 555-0391.",
+        "phase": "confirmation"
+      },
+      {
+        "role": "agent",
+        "text": "Okay Yun-seo, so our plumber is coming to 1540 Oak Street, 3B, very soon — emergency water from ceiling. Keep towels on the floor if you can.",
+        "phase": "summarize_book"
+      },
+      {
+        "role": "caller",
+        "text": "Yes, towels, okay. Thank you very much, please come fast.",
+        "phase": "summarize_book"
+      },
+      {
+        "role": "agent",
+        "text": "We'll be there very fast. You did good turning that handle.",
+        "phase": "goodbye"
+      }
+    ],
+    "booking_details": {
+      "service": "emergency service",
+      "date": "today",
+      "time": "ASAP",
+      "caller_name": "Yun-seo Park",
+      "phone": "555-0391"
+    },
+    "metadata": {
+      "turn_count": 13,
+      "has_booking": true,
+      "phases_covered": ["greeting", "emergency_escalation", "confirmation", "summarize_book", "goodbye"]
+    }
+  },
+  {
+    "id": "train_168",
+    "scenario": {
+      "problem": "emergency",
+      "personality": "confused",
+      "path": "emergency_escalation"
+    },
+    "turns": [
+      {
+        "role": "agent",
+        "text": "Smith Plumbing, what can I help you with?",
+        "phase": "greeting"
+      },
+      {
+        "role": "caller",
+        "text": "Hi, um, I'm not sure if this is the right place to call but there's this weird smell in my house? I can't really tell what it is. It's kind of... I don't know, it's just off.",
+        "phase": "emergency_escalation"
+      },
+      {
+        "role": "agent",
+        "text": "Okay, weird smell — can you describe it a little more? Does it smell like rotten eggs, or is it more of a musty sewage kind of thing?",
+        "phase": "emergency_escalation"
+      },
+      {
+        "role": "caller",
+        "text": "Hmm, it might be rotten eggs? Or maybe not, I honestly can't tell. It started maybe an hour ago. It's strongest in the kitchen near the stove I think.",
+        "phase": "emergency_escalation"
+      },
+      {
+        "role": "agent",
+        "text": "Near the stove, okay — do you have a gas stove? And do you hear any hissing sounds at all, even faint?",
+        "phase": "emergency_escalation"
+      },
+      {
+        "role": "caller",
+        "text": "Yeah it is a gas stove actually. Hissing? Let me listen... I don't think so, but I'm not really sure. Should I be worried?",
+        "phase": "emergency_escalation"
+      },
+      {
+        "role": "agent",
+        "text": "With a gas stove and a rotten egg smell, we treat that as a possible gas leak just to be safe. I need you to leave the house right now — don't touch the stove or any light switches — and call 911 from outside.",
+        "phase": "emergency_escalation"
+      },
+      {
+        "role": "caller",
+        "text": "Oh wow, okay. I didn't think it was that serious. Alright, I'm heading out the back door. Okay, I'm outside now.",
+        "phase": "emergency_escalation"
+      },
+      {
+        "role": "agent",
+        "text": "Good, you're outside, that's the right move. Call 911 and let them know — gas smell near the stove. After they clear you, we can send a plumber to inspect the gas line. What's your name?",
+        "phase": "confirmation"
+      },
+      {
+        "role": "caller",
+        "text": "It's Kevin Liu. I'm at 220 Maple Drive. Phone's 555-0478.",
+        "phase": "confirmation"
+      },
+      {
+        "role": "agent",
+        "text": "Kevin Liu, 220 Maple Drive, 555-0478. So call 911 first for the gas smell, then we'll send someone out today to check your gas lines once you get the all-clear.",
+        "phase": "summarize_book"
+      },
+      {
+        "role": "caller",
+        "text": "Got it. Thanks for taking it seriously, I wasn't sure what to do.",
+        "phase": "summarize_book"
+      },
+      {
+        "role": "agent",
+        "text": "That's what we're here for. Stay outside and stay safe, Kevin.",
+        "phase": "goodbye"
+      }
+    ],
+    "booking_details": {
+      "service": "emergency service",
+      "date": "today",
+      "time": "ASAP",
+      "caller_name": "Kevin Liu",
+      "phone": "555-0478"
+    },
+    "metadata": {
+      "turn_count": 13,
+      "has_booking": true,
+      "phases_covered": ["greeting", "emergency_escalation", "confirmation", "summarize_book", "goodbye"]
+    }
+  },
+  {
+    "id": "train_169",
+    "scenario": {
+      "problem": "emergency",
+      "personality": "rushed",
+      "path": "emergency_escalation"
+    },
+    "turns": [
+      {
+        "role": "agent",
+        "text": "Smith Plumbing, go ahead.",
+        "phase": "greeting"
+      },
+      {
+        "role": "caller",
+        "text": "Hey, I've got a water heater that's leaking badly — like there's a steady stream of water coming from the bottom and it's pooling all over my utility room. How fast can you get someone here?",
+        "phase": "emergency_escalation"
+      },
+      {
+        "role": "agent",
+        "text": "Water heater leaking from the bottom, got it. First — can you turn off the cold water supply valve on top of the heater? Should be a handle right on the pipe going in.",
+        "phase": "emergency_escalation"
+      },
+      {
+        "role": "caller",
+        "text": "Already did that. I also killed the breaker for it since it's electric. Water's still draining out but at least it's not refilling.",
+        "phase": "emergency_escalation"
+      },
+      {
+        "role": "agent",
+        "text": "Smart, you did exactly the right things — water supply off, power off. Is the water getting near any other electrical outlets or panels down there?",
+        "phase": "emergency_escalation"
+      },
+      {
+        "role": "caller",
+        "text": "No, the panel's on the other wall and the water's draining toward the floor drain. It's contained for now but I need this fixed today. I've got no hot water.",
+        "phase": "emergency_escalation"
+      },
+      {
+        "role": "agent",
+        "text": "Okay, sounds like you've got it under control for the moment. We can get someone out to you same-day, probably within a couple hours. Name and address?",
+        "phase": "confirmation"
+      },
+      {
+        "role": "caller",
+        "text": "Tara Nguyen, 905 Pine Ridge Road. 555-0562. Just text me when they're on the way.",
+        "phase": "confirmation"
+      },
+      {
+        "role": "agent",
+        "text": "Got it — Tara Nguyen, 905 Pine Ridge, 555-0562. Emergency water heater replacement, plumber heading out within a couple hours, and we'll text you when they're en route.",
+        "phase": "summarize_book"
+      },
+      {
+        "role": "caller",
+        "text": "Perfect. Thanks.",
+        "phase": "summarize_book"
+      },
+      {
+        "role": "agent",
+        "text": "You're all set, Tara. We'll get you taken care of today.",
+        "phase": "goodbye"
+      }
+    ],
+    "booking_details": {
+      "service": "emergency service",
+      "date": "today",
+      "time": "ASAP",
+      "caller_name": "Tara Nguyen",
+      "phone": "555-0562"
+    },
+    "metadata": {
+      "turn_count": 11,
+      "has_booking": true,
+      "phases_covered": ["greeting", "emergency_escalation", "confirmation", "summarize_book", "goodbye"]
+    }
+  },
+  {
+    "id": "train_170",
+    "scenario": {
+      "problem": "emergency",
+      "personality": "default",
+      "path": "emergency_escalation"
+    },
+    "turns": [
+      {
+        "role": "agent",
+        "text": "Smith Plumbing, how can I help you today?",
+        "phase": "greeting"
+      },
+      {
+        "role": "caller",
+        "text": "Hi there. I've got a pipe that burst in my basement. There's water spraying out pretty good. I shut the valve nearest to it but it's still going.",
+        "phase": "emergency_escalation"
+      },
+      {
+        "role": "agent",
+        "text": "Okay, burst pipe in the basement and you shut the nearby valve but it's still going. Can you find the main water shutoff for the whole house? That should stop it completely.",
+        "phase": "emergency_escalation"
+      },
+      {
+        "role": "caller",
+        "text": "Yeah, good call — let me check. I think it's by the water meter. Okay, turning it now... alright, the spraying stopped.",
+        "phase": "emergency_escalation"
+      },
+      {
+        "role": "agent",
+        "text": "Good, that did the trick. Now, is the water anywhere near your electrical panel or any outlets down there?",
+        "phase": "emergency_escalation"
+      },
+      {
+        "role": "caller",
+        "text": "No, the panel's upstairs actually. The water's just sitting on the concrete floor, maybe half an inch. I've got a shop vac I can use.",
+        "phase": "emergency_escalation"
+      },
+      {
+        "role": "agent",
+        "text": "Perfect, the shop vac will help a lot. Since the water's off and you're clear of electrical stuff, you're in good shape. We'll get a plumber out there as soon as possible today.",
+        "phase": "emergency_escalation"
+      },
+      {
+        "role": "caller",
+        "text": "That'd be great. Sooner the better obviously since I've got no water in the house now.",
+        "phase": "confirmation"
+      },
+      {
+        "role": "agent",
+        "text": "Totally understand, we'll prioritize you. Can I grab your name, number, and address?",
+        "phase": "confirmation"
+      },
+      {
+        "role": "caller",
+        "text": "Sure. Brian Kowalski, 555-0619. I'm at 3317 Cedar Lane.",
+        "phase": "confirmation"
+      },
+      {
+        "role": "agent",
+        "text": "Alright Brian — burst pipe in the basement at 3317 Cedar Lane, main water's off, and we're sending a plumber out ASAP today. We'll give you a call when they're headed your way.",
+        "phase": "summarize_book"
+      },
+      {
+        "role": "caller",
+        "text": "Sounds good. Appreciate the help walking me through the shutoff too.",
+        "phase": "summarize_book"
+      },
+      {
+        "role": "agent",
+        "text": "Of course, that's what we're here for. Hang tight, Brian, help's on the way.",
+        "phase": "goodbye"
+      }
+    ],
+    "booking_details": {
+      "service": "emergency service",
+      "date": "today",
+      "time": "ASAP",
+      "caller_name": "Brian Kowalski",
+      "phone": "555-0619"
+    },
+    "metadata": {
+      "turn_count": 13,
+      "has_booking": true,
+      "phases_covered": ["greeting", "emergency_escalation", "confirmation", "summarize_book", "goodbye"]
+    }
+  }
+]

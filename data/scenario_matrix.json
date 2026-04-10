@@ -1,0 +1,42 @@
+{
+  "problems": [
+    {"id": "clogged_drain", "label": "Clogged Drain", "description": "Kitchen or bathroom drain backed up", "urgency": "normal", "typical_service": "drain cleaning"},
+    {"id": "leak_repair", "label": "Leak Repair", "description": "Pipe or fixture leaking water", "urgency": "high", "typical_service": "leak repair"},
+    {"id": "water_heater", "label": "Water Heater", "description": "No hot water, leaking tank, or pilot light issues", "urgency": "normal", "typical_service": "water heater service"},
+    {"id": "toilet_repair", "label": "Toilet Repair", "description": "Running, clogged, or leaking toilet", "urgency": "normal", "typical_service": "toilet repair"},
+    {"id": "faucet_install", "label": "Faucet Install", "description": "New faucet installation or replacement", "urgency": "low", "typical_service": "faucet installation"},
+    {"id": "sewer_line", "label": "Sewer Line", "description": "Main sewer line backup or damage", "urgency": "high", "typical_service": "sewer line service"},
+    {"id": "garbage_disposal", "label": "Garbage Disposal", "description": "Disposal jammed, leaking, or not working", "urgency": "low", "typical_service": "garbage disposal repair"},
+    {"id": "emergency", "label": "Emergency", "description": "Burst pipe, flooding, or gas smell", "urgency": "emergency", "typical_service": "emergency service"}
+  ],
+  "caller_personalities": [
+    {"id": "default", "label": "Default", "behavior": "Normal caller, cooperative, clear communication"},
+    {"id": "rushed", "label": "Rushed", "behavior": "In a hurry, gives short answers, wants fastest slot, may interrupt"},
+    {"id": "chatty", "label": "Chatty", "behavior": "Talks a lot, shares backstory, goes on tangents, friendly but slow to get to the point"},
+    {"id": "confused", "label": "Confused", "behavior": "Unsure what's wrong, vague descriptions, needs help identifying the problem"},
+    {"id": "angry", "label": "Angry", "behavior": "Frustrated, had a bad experience before, complains, needs to be heard before scheduling"},
+    {"id": "elderly", "label": "Elderly", "behavior": "Speaks slowly, may repeat themselves, needs clear simple language, appreciates patience"},
+    {"id": "non_native", "label": "Non-Native English", "behavior": "Speaks English as second language, may use wrong terms, needs extra patience and clarification"}
+  ],
+  "conversation_paths": [
+    {"id": "happy_path", "label": "Happy Path Booking", "description": "Caller books an appointment smoothly", "ends_with_booking": true},
+    {"id": "no_slots", "label": "No Available Slots", "description": "Requested time unavailable, agent offers alternatives", "ends_with_booking": true},
+    {"id": "cancellation", "label": "Cancellation", "description": "Caller wants to cancel existing appointment", "ends_with_booking": false},
+    {"id": "question_only", "label": "Question Only", "description": "Caller just has a question, no booking needed", "ends_with_booking": false},
+    {"id": "emergency_escalation", "label": "Emergency Escalation", "description": "Urgent issue requiring immediate dispatch", "ends_with_booking": true},
+    {"id": "caller_hangup", "label": "Caller Hangup", "description": "Caller ends call before booking completes", "ends_with_booking": false},
+    {"id": "diy_recommendation", "label": "DIY Recommendation", "description": "Simple issue agent can help resolve over phone", "ends_with_booking": false},
+    {"id": "changes_mind", "label": "Caller Changes Mind", "description": "Caller initially declines, then decides to book", "ends_with_booking": true}
+  ],
+  "phases": [
+    {"id": "greeting", "order": 1, "fsm_state": "greet", "description": "Business greeting, set tone"},
+    {"id": "problem_determination", "order": 2, "fsm_state": "ask_service", "description": "Listen, clarify, identify service needed"},
+    {"id": "solution_proposal", "order": 3, "fsm_state": null, "description": "Suggest approach — DIY or send plumber"},
+    {"id": "time_preference", "order": 4, "fsm_state": "ask_time", "description": "Ask when they want the appointment"},
+    {"id": "availability_check", "order": 5, "fsm_state": "find_slots", "description": "Calendar lookup (automatic, no conversation)"},
+    {"id": "match_propose", "order": 6, "fsm_state": "offer_slots", "description": "Present available time slots"},
+    {"id": "confirmation", "order": 7, "fsm_state": "confirm_booking", "description": "Collect name/phone, read back all details"},
+    {"id": "summarize_book", "order": 8, "fsm_state": "book_appointment", "description": "Final summary, insert into calendar"},
+    {"id": "goodbye", "order": 9, "fsm_state": "exit", "description": "Warm close, use caller name"}
+  ]
+}

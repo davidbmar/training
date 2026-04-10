@@ -1,0 +1,390 @@
+[
+  {
+    "id": "train_131",
+    "scenario": {
+      "problem": "clogged_drain",
+      "personality": "default",
+      "path": "no_slots"
+    },
+    "turns": [
+      {"role": "agent", "text": "Smith Plumbing, this is Sarah, how can I help you today?", "phase": "greeting"},
+      {"role": "caller", "text": "Hi yeah, I've got a clogged drain in my kitchen sink. Water's just sitting there.", "phase": "problem_determination"},
+      {"role": "agent", "text": "Oh no, a clogged kitchen drain — that's no fun. How long has it been backing up on you?", "phase": "problem_determination"},
+      {"role": "caller", "text": "Since yesterday morning. I tried some Drano but it didn't really help.", "phase": "problem_determination"},
+      {"role": "agent", "text": "Yeah, sometimes those store-bought ones just don't cut it. Let me get one of our guys out there to take a look — do you have a day in mind that works best?", "phase": "solution_proposal"},
+      {"role": "caller", "text": "Tuesday would be ideal, like around ten in the morning.", "phase": "time_preference"},
+      {"role": "agent", "text": "So Tuesday at ten — let me check on that for you. Hmm, unfortunately Tuesday's completely booked up. I do have Monday at nine, Wednesday at eleven, or Friday at two. Any of those work?", "phase": "match_propose"},
+      {"role": "caller", "text": "Ugh, no Tuesday at all? What about Tuesday afternoon, like after one?", "phase": "match_propose"},
+      {"role": "agent", "text": "I wish I could, but Tuesday's packed all day. Wednesday at eleven would be the closest — that's just a day later. Would that work for you?", "phase": "match_propose"},
+      {"role": "caller", "text": "Wednesday... I have a meeting at eleven. Could you do Wednesday but maybe later, like one or two?", "phase": "match_propose"},
+      {"role": "agent", "text": "Let me see here — oh, I can do Wednesday at one-thirty. How's that sound?", "phase": "match_propose"},
+      {"role": "caller", "text": "One-thirty Wednesday, yeah that actually works. Let's do that.", "phase": "match_propose"},
+      {"role": "agent", "text": "Perfect, Wednesday at one-thirty it is. Can I grab your name and a good callback number?", "phase": "confirmation"},
+      {"role": "caller", "text": "It's Dave Rodriguez, and my number is 555-0178.", "phase": "confirmation"},
+      {"role": "agent", "text": "Great, so Dave, I've got you down for a drain cleaning this Wednesday at one-thirty PM. We'll give you a call about thirty minutes before we head out.", "phase": "summarize_book"},
+      {"role": "caller", "text": "Sounds good, thank you.", "phase": "goodbye"},
+      {"role": "agent", "text": "You're welcome, Dave. We'll get that drain flowing again for you — have a good one!", "phase": "goodbye"}
+    ],
+    "booking_details": {
+      "service": "drain_cleaning",
+      "date": "Wednesday",
+      "time": "1:30 PM",
+      "caller_name": "Dave Rodriguez",
+      "phone": "555-0178"
+    },
+    "metadata": {
+      "turn_count": 17,
+      "has_booking": true,
+      "phases_covered": ["greeting", "problem_determination", "solution_proposal", "time_preference", "match_propose", "confirmation", "summarize_book", "goodbye"]
+    }
+  },
+  {
+    "id": "train_132",
+    "scenario": {
+      "problem": "leak_repair",
+      "personality": "rushed",
+      "path": "no_slots"
+    },
+    "turns": [
+      {"role": "agent", "text": "Smith Plumbing, this is Sarah, what can I do for you?", "phase": "greeting"},
+      {"role": "caller", "text": "Yeah hi, I need someone out here like right now, I've got water leaking under my bathroom sink.", "phase": "problem_determination"},
+      {"role": "agent", "text": "Oh gosh, a leak under the bathroom sink — is it actively dripping right now?", "phase": "problem_determination"},
+      {"role": "caller", "text": "Yeah it's dripping pretty steady. I've got a bucket under it but I need this fixed today if possible.", "phase": "problem_determination"},
+      {"role": "agent", "text": "Okay, I totally understand the urgency. Let me see what we have available today for you.", "phase": "solution_proposal"},
+      {"role": "caller", "text": "Yeah please, the sooner the better honestly.", "phase": "time_preference"},
+      {"role": "agent", "text": "So today's actually fully booked, I'm sorry. The earliest I can get someone out is tomorrow morning at eight AM — would that work?", "phase": "match_propose"},
+      {"role": "caller", "text": "Tomorrow? No, I can't — this is leaking now. There's nothing today? Not even late?", "phase": "match_propose"},
+      {"role": "agent", "text": "I hear you, let me look one more time... I really don't have anything today, but I can put you first on the list tomorrow at eight sharp, that's the absolute earliest.", "phase": "match_propose"},
+      {"role": "caller", "text": "What about like super early tomorrow, like seven? I gotta get to work by nine.", "phase": "match_propose"},
+      {"role": "agent", "text": "Our guys start at eight, but I can make sure you're the very first stop — eight AM on the dot. You'd be done well before nine, a leak repair is usually pretty quick.", "phase": "match_propose"},
+      {"role": "caller", "text": "Alright fine, eight AM tomorrow. But if anything opens up today, call me, okay?", "phase": "match_propose"},
+      {"role": "agent", "text": "Absolutely, I'll put you on our cancellation list too so if anything frees up today we'll call you right away. Can I get your name and number?", "phase": "confirmation"},
+      {"role": "caller", "text": "Monica Tran, 555-0234. Please do call if something opens.", "phase": "confirmation"},
+      {"role": "agent", "text": "You got it, Monica. So I have you for a leak repair tomorrow morning at eight AM, and you're first on the cancellation list for today.", "phase": "summarize_book"},
+      {"role": "caller", "text": "Okay thanks.", "phase": "goodbye"},
+      {"role": "agent", "text": "Hang in there, Monica — keep that bucket handy and we'll get it sorted first thing. Bye now!", "phase": "goodbye"}
+    ],
+    "booking_details": {
+      "service": "leak_repair",
+      "date": "tomorrow",
+      "time": "8:00 AM",
+      "caller_name": "Monica Tran",
+      "phone": "555-0234"
+    },
+    "metadata": {
+      "turn_count": 17,
+      "has_booking": true,
+      "phases_covered": ["greeting", "problem_determination", "solution_proposal", "time_preference", "match_propose", "confirmation", "summarize_book", "goodbye"]
+    }
+  },
+  {
+    "id": "train_133",
+    "scenario": {
+      "problem": "water_heater",
+      "personality": "chatty",
+      "path": "happy_path"
+    },
+    "turns": [
+      {"role": "agent", "text": "Smith Plumbing, this is Sarah, how can I help?", "phase": "greeting"},
+      {"role": "caller", "text": "Oh hi Sarah! So glad I got through, I've been meaning to call for like a week now. Our water heater — it's just not keeping up anymore, you know? Like the shower goes cold after maybe five minutes and with three kids that's just, it's a nightmare honestly.", "phase": "problem_determination"},
+      {"role": "agent", "text": "Oh I can only imagine with three kids — five minutes of hot water is nothing! How old is the water heater, do you know?", "phase": "problem_determination"},
+      {"role": "caller", "text": "I think it's been here since we bought the house, so maybe twelve years? My husband keeps saying he'll look at it but you know how that goes, ha! So I figured I'd just call you guys.", "phase": "problem_determination"},
+      {"role": "agent", "text": "Ha, yeah, twelve years is getting up there — smart to have a pro take a look. Let me get someone scheduled to come check it out, what days are generally good for you?", "phase": "solution_proposal"},
+      {"role": "caller", "text": "Oh gosh, well that's the thing. Mornings are crazy with the school drop-off, I don't get home until like nine-fifteen. And then Tuesdays and Thursdays I work at the school library from noon to three. So it's kind of a mess, sorry!", "phase": "time_preference"},
+      {"role": "agent", "text": "No that's totally fine! So it sounds like we need something after nine-fifteen, and avoid Tuesday and Thursday afternoons. Let me see what I've got — how about Monday at ten?", "phase": "match_propose"},
+      {"role": "caller", "text": "Monday... oh wait, this Monday? I think I have a dentist thing Monday morning. What else do you have?", "phase": "match_propose"},
+      {"role": "agent", "text": "No problem! I also have Wednesday at nine-thirty or Friday at eleven. Either of those sound doable?", "phase": "match_propose"},
+      {"role": "caller", "text": "Oh Wednesday could work, but nine-thirty is cutting it close with the drop-off. Could you do like ten or ten-thirty on Wednesday? That gives me time to get back and at least throw on some coffee, you know.", "phase": "match_propose"},
+      {"role": "agent", "text": "Wednesday at ten works perfectly, I've got that slot open. Let's grab that one before it goes!", "phase": "match_propose"},
+      {"role": "caller", "text": "Oh yes, let's do it! Wednesday at ten. You're the best, Sarah.", "phase": "match_propose"},
+      {"role": "agent", "text": "Aw, happy to help! Can I get your name and a phone number for the appointment?", "phase": "confirmation"},
+      {"role": "caller", "text": "It's Jennifer Kowalski, and my cell is 555-0392. Oh and the address is—do you need the address?", "phase": "confirmation"},
+      {"role": "agent", "text": "We'll grab the address when we confirm the day before, no worries! So Jennifer, you're all set for a water heater inspection this Wednesday at ten AM.", "phase": "summarize_book"},
+      {"role": "caller", "text": "Wonderful! Thank you so much, Sarah, you've been so sweet. Fingers crossed it's an easy fix!", "phase": "goodbye"},
+      {"role": "agent", "text": "Fingers crossed! We'll take good care of you, Jennifer. Have a great rest of your day!", "phase": "goodbye"}
+    ],
+    "booking_details": {
+      "service": "water_heater_inspection",
+      "date": "Wednesday",
+      "time": "10:00 AM",
+      "caller_name": "Jennifer Kowalski",
+      "phone": "555-0392"
+    },
+    "metadata": {
+      "turn_count": 17,
+      "has_booking": true,
+      "phases_covered": ["greeting", "problem_determination", "solution_proposal", "time_preference", "match_propose", "confirmation", "summarize_book", "goodbye"]
+    }
+  },
+  {
+    "id": "train_134",
+    "scenario": {
+      "problem": "toilet_repair",
+      "personality": "elderly",
+      "path": "no_slots"
+    },
+    "turns": [
+      {"role": "agent", "text": "Smith Plumbing, this is Sarah, how can I help you today?", "phase": "greeting"},
+      {"role": "caller", "text": "Yes, hello dear. I'm calling because my toilet, it keeps running. It won't stop running. I have to jiggle the handle every time.", "phase": "problem_determination"},
+      {"role": "agent", "text": "Oh I'm sorry about that — a running toilet can really drive you crazy, and it runs up the water bill too. We can definitely get that fixed up for you.", "phase": "problem_determination"},
+      {"role": "caller", "text": "Oh good, good. My son usually helps me with these things but he's out of town.", "phase": "problem_determination"},
+      {"role": "agent", "text": "Well we'll take good care of you, don't worry. Let me find a time to send someone out — is there a day that works best?", "phase": "solution_proposal"},
+      {"role": "caller", "text": "Well I'm home most days, so whenever you can, dear.", "phase": "time_preference"},
+      {"role": "agent", "text": "Okay great! I have three openings this week — Tuesday at nine in the morning, Thursday at one in the afternoon, or Friday at eleven in the morning. Which sounds best?", "phase": "match_propose"},
+      {"role": "caller", "text": "I'm sorry, could you say those again? I want to make sure I heard right.", "phase": "match_propose"},
+      {"role": "agent", "text": "Of course! Tuesday at nine AM, Thursday at one PM, or Friday at eleven AM.", "phase": "match_propose"},
+      {"role": "caller", "text": "Tuesday at nine... that's pretty early. What was the Thursday one again?", "phase": "match_propose"},
+      {"role": "agent", "text": "Thursday at one in the afternoon — so right after lunch.", "phase": "match_propose"},
+      {"role": "caller", "text": "One in the afternoon, Thursday. Yes, I think that would be fine. That gives me time to get ready and have my lunch.", "phase": "match_propose"},
+      {"role": "agent", "text": "Thursday at one o'clock, perfect. Can I get your name and a phone number, ma'am?", "phase": "confirmation"},
+      {"role": "caller", "text": "It's Dorothy Perkins. My number is 555-0147.", "phase": "confirmation"},
+      {"role": "agent", "text": "Wonderful, Dorothy. So we have you down for a toilet repair this Thursday at one PM. Our technician will call you about thirty minutes before he arrives.", "phase": "summarize_book"},
+      {"role": "caller", "text": "Oh that's very nice, thank you so much dear. I appreciate it.", "phase": "goodbye"},
+      {"role": "agent", "text": "You're so welcome, Dorothy. We'll get that toilet fixed right up for you — take care now!", "phase": "goodbye"}
+    ],
+    "booking_details": {
+      "service": "toilet_repair",
+      "date": "Thursday",
+      "time": "1:00 PM",
+      "caller_name": "Dorothy Perkins",
+      "phone": "555-0147"
+    },
+    "metadata": {
+      "turn_count": 17,
+      "has_booking": true,
+      "phases_covered": ["greeting", "problem_determination", "solution_proposal", "time_preference", "match_propose", "confirmation", "summarize_book", "goodbye"]
+    }
+  },
+  {
+    "id": "train_135",
+    "scenario": {
+      "problem": "faucet_install",
+      "personality": "default",
+      "path": "happy_path"
+    },
+    "turns": [
+      {"role": "agent", "text": "Smith Plumbing, this is Sarah, what can I help you with?", "phase": "greeting"},
+      {"role": "caller", "text": "Hi, I just bought a new kitchen faucet and I need someone to install it. I'm not really handy with that stuff.", "phase": "problem_determination"},
+      {"role": "agent", "text": "No worries, that's what we're here for! A faucet install is pretty straightforward. What brand did you get?", "phase": "problem_determination"},
+      {"role": "caller", "text": "It's a Moen, one of those pull-down ones. Already have it in the box.", "phase": "problem_determination"},
+      {"role": "agent", "text": "Oh nice, Moen makes great stuff. Let me get you on the schedule — any particular day or time work best for you?", "phase": "solution_proposal"},
+      {"role": "caller", "text": "I'm pretty flexible honestly, maybe sometime this week?", "phase": "time_preference"},
+      {"role": "agent", "text": "I've got a few options for you — Monday at two PM, Wednesday at nine AM, Thursday at eleven, or Friday at three. What sounds good?", "phase": "match_propose"},
+      {"role": "caller", "text": "Hmm, that's a lot of options. How long does a faucet install usually take?", "phase": "match_propose"},
+      {"role": "agent", "text": "Usually about an hour, sometimes a little more depending on the setup. So if you went with the nine AM Wednesday you'd be done before lunch.", "phase": "match_propose"},
+      {"role": "caller", "text": "Wednesday morning could work... actually, what was the Thursday one? Eleven?", "phase": "match_propose"},
+      {"role": "agent", "text": "Yep, Thursday at eleven — so you'd be wrapped up by noon or so.", "phase": "match_propose"},
+      {"role": "caller", "text": "Let's do Thursday at eleven. That way I can sleep in a little, ha.", "phase": "match_propose"},
+      {"role": "agent", "text": "Ha, can't argue with that! Thursday at eleven it is. Can I get your name and number?", "phase": "confirmation"},
+      {"role": "caller", "text": "Brian Cho, 555-0261.", "phase": "confirmation"},
+      {"role": "agent", "text": "Alright Brian, you're booked for a faucet installation this Thursday at eleven AM. Make sure you have that Moen ready to go and we'll handle the rest.", "phase": "summarize_book"},
+      {"role": "caller", "text": "Will do. Thanks a lot, Sarah.", "phase": "goodbye"},
+      {"role": "agent", "text": "Anytime, Brian! Talk to you Thursday. Bye!", "phase": "goodbye"}
+    ],
+    "booking_details": {
+      "service": "faucet_installation",
+      "date": "Thursday",
+      "time": "11:00 AM",
+      "caller_name": "Brian Cho",
+      "phone": "555-0261"
+    },
+    "metadata": {
+      "turn_count": 17,
+      "has_booking": true,
+      "phases_covered": ["greeting", "problem_determination", "solution_proposal", "time_preference", "match_propose", "confirmation", "summarize_book", "goodbye"]
+    }
+  },
+  {
+    "id": "train_136",
+    "scenario": {
+      "problem": "sewer_line",
+      "personality": "angry",
+      "path": "no_slots"
+    },
+    "turns": [
+      {"role": "agent", "text": "Smith Plumbing, this is Sarah, how can I help?", "phase": "greeting"},
+      {"role": "caller", "text": "Yeah, I've got sewage backing up into my basement. This is the third time this year and I'm losing it.", "phase": "problem_determination"},
+      {"role": "agent", "text": "Oh my gosh, sewage in the basement — I'm so sorry, that's awful. It sounds like there might be a main sewer line issue if it keeps happening.", "phase": "problem_determination"},
+      {"role": "caller", "text": "That's what the last guy said too but nobody actually fixed it. I need someone out here who knows what they're doing.", "phase": "problem_determination"},
+      {"role": "agent", "text": "I completely understand your frustration. Let me get our sewer line specialist scheduled for you — when are you looking to have someone come out?", "phase": "solution_proposal"},
+      {"role": "caller", "text": "This week. As soon as possible. I've got raw sewage sitting in my basement.", "phase": "time_preference"},
+      {"role": "agent", "text": "I hear you, and I want to get you in fast. Unfortunately our sewer line specialist is booked solid this entire week. The earliest I have is next Monday at eight AM, or I can put you on our cancellation list in case something opens sooner.", "phase": "match_propose"},
+      {"role": "caller", "text": "Next week? Are you serious? I have sewage in my house right now!", "phase": "match_propose"},
+      {"role": "agent", "text": "I know, and I'm sorry — I wish I had something sooner. I'm putting you at the very top of the cancellation list right now, so if anything opens up this week you'll be the first call I make. For next week I've got Monday at eight or Wednesday at ten.", "phase": "match_propose"},
+      {"role": "caller", "text": "This is ridiculous. Fine, put me down for Monday and on that cancellation list. But Monday at eight, not some afternoon slot.", "phase": "match_propose"},
+      {"role": "agent", "text": "Monday at eight AM, absolutely — first thing, you're the first appointment of the day. And you're number one on the cancellation list, I promise.", "phase": "match_propose"},
+      {"role": "caller", "text": "Yeah, you better call me if something opens. I'm not waiting a week with sewage in my house if I don't have to.", "phase": "match_propose"},
+      {"role": "agent", "text": "You have my word. Can I grab your name and the best number to reach you?", "phase": "confirmation"},
+      {"role": "caller", "text": "Tony Marchetti. 555-0419. Call my cell anytime, I don't care if it's six AM.", "phase": "confirmation"},
+      {"role": "agent", "text": "Got it, Tony. You're booked for sewer line service next Monday at eight AM, and you're top of the cancellation list if anything opens this week. We'll call your cell.", "phase": "summarize_book"},
+      {"role": "caller", "text": "Fine. Thanks.", "phase": "goodbye"},
+      {"role": "agent", "text": "Hang in there, Tony — we're going to get this taken care of for you. Talk soon.", "phase": "goodbye"}
+    ],
+    "booking_details": {
+      "service": "sewer_line_service",
+      "date": "next Monday",
+      "time": "8:00 AM",
+      "caller_name": "Tony Marchetti",
+      "phone": "555-0419"
+    },
+    "metadata": {
+      "turn_count": 17,
+      "has_booking": true,
+      "phases_covered": ["greeting", "problem_determination", "solution_proposal", "time_preference", "match_propose", "confirmation", "summarize_book", "goodbye"]
+    }
+  },
+  {
+    "id": "train_137",
+    "scenario": {
+      "problem": "garbage_disposal",
+      "personality": "non_native",
+      "path": "happy_path"
+    },
+    "turns": [
+      {"role": "agent", "text": "Smith Plumbing, this is Sarah, how can I help you?", "phase": "greeting"},
+      {"role": "caller", "text": "Hello yes, I have problem with the, uh, the thing in the sink? The one that chops the food. It makes very bad noise.", "phase": "problem_determination"},
+      {"role": "agent", "text": "Oh, the garbage disposal! Yeah, a bad noise is usually not a good sign. Is it still turning on or has it stopped completely?", "phase": "problem_determination"},
+      {"role": "caller", "text": "It turn on but the noise is very loud, like metal, you know? And it shakes.", "phase": "problem_determination"},
+      {"role": "agent", "text": "Okay yeah, sounds like something might be stuck in there or a part is loose. We should definitely have someone look at it — let's get you scheduled. What day is good for you?", "phase": "solution_proposal"},
+      {"role": "caller", "text": "Um, I am not sure. I work most days. Maybe... the end of the week?", "phase": "time_preference"},
+      {"role": "agent", "text": "Sure, end of the week. Would you prefer morning or afternoon?", "phase": "match_propose"},
+      {"role": "caller", "text": "What is... morning is like before twelve, yes? I think afternoon is better. I finish work at two.", "phase": "match_propose"},
+      {"role": "agent", "text": "Yes exactly, afternoon — after twelve. I have Thursday at three o'clock or Friday at two-thirty. Which is better for you?", "phase": "match_propose"},
+      {"role": "caller", "text": "Thursday... that is, uh, the day before Friday, yes? I think Friday is more easy for me. Two-thirty, that is good.", "phase": "match_propose"},
+      {"role": "agent", "text": "Friday at two-thirty, perfect! That gives you time to get home from work. Can I get your name and phone number?", "phase": "match_propose"},
+      {"role": "caller", "text": "Yes, my name is Hien Nguyen. H-I-E-N. Phone is 555-0588.", "phase": "confirmation"},
+      {"role": "agent", "text": "Hien, got it. So you're all set for garbage disposal repair this Friday at two-thirty PM. Our guy will call you before he comes.", "phase": "summarize_book"},
+      {"role": "caller", "text": "Okay, very good. He will call before? Good, good. Thank you, Sarah.", "phase": "goodbye"},
+      {"role": "agent", "text": "You're welcome, Hien! We'll see you Friday. Have a good day!", "phase": "goodbye"}
+    ],
+    "booking_details": {
+      "service": "garbage_disposal_repair",
+      "date": "Friday",
+      "time": "2:30 PM",
+      "caller_name": "Hien Nguyen",
+      "phone": "555-0588"
+    },
+    "metadata": {
+      "turn_count": 15,
+      "has_booking": true,
+      "phases_covered": ["greeting", "problem_determination", "solution_proposal", "time_preference", "match_propose", "confirmation", "summarize_book", "goodbye"]
+    }
+  },
+  {
+    "id": "train_138",
+    "scenario": {
+      "problem": "leak_repair",
+      "personality": "confused",
+      "path": "no_slots"
+    },
+    "turns": [
+      {"role": "agent", "text": "Smith Plumbing, this is Sarah, what can I do for you?", "phase": "greeting"},
+      {"role": "caller", "text": "Hi, um, I think I need a plumber? There's water coming from somewhere under my kitchen sink but I'm not totally sure where.", "phase": "problem_determination"},
+      {"role": "agent", "text": "Sounds like you might have a leak under there — that's definitely something we can take a look at. Is the water pooling up or just a little damp?", "phase": "problem_determination"},
+      {"role": "caller", "text": "It's like... there's a puddle? I put towels down. I don't know if it's the pipes or what.", "phase": "problem_determination"},
+      {"role": "agent", "text": "Okay, our guys will figure out exactly where it's coming from, no worries. Let's get you on the schedule — what day works for you?", "phase": "solution_proposal"},
+      {"role": "caller", "text": "Um, I don't know. What do you have? I'm kind of all over the place this week.", "phase": "time_preference"},
+      {"role": "agent", "text": "No problem, let me just throw out some options. I have Wednesday at ten, Thursday at two, or next Monday at nine. Any of those ring a bell?", "phase": "match_propose"},
+      {"role": "caller", "text": "Hmm. Wednesday... is that the day after tomorrow? I lose track. What day is it today?", "phase": "match_propose"},
+      {"role": "agent", "text": "Ha, I get it — today's Monday, so Wednesday would be two days from now. Or Thursday is three days out.", "phase": "match_propose"},
+      {"role": "caller", "text": "Okay so Wednesday... I might have something Wednesday morning but I'm not sure. Actually, could you do Thursday but in the morning instead of two?", "phase": "match_propose"},
+      {"role": "agent", "text": "Let me look — Thursday morning... I've got a ten-thirty on Thursday, would that work?", "phase": "match_propose"},
+      {"role": "caller", "text": "Ten-thirty Thursday. Yeah, I think that's fine. Actually wait — is that this Thursday? Yeah okay, let's do that.", "phase": "match_propose"},
+      {"role": "agent", "text": "This Thursday at ten-thirty, you got it! Can I get your name and a good number to reach you?", "phase": "confirmation"},
+      {"role": "caller", "text": "Oh sure, it's Karen Whitfield. My number is, um, 555-0633.", "phase": "confirmation"},
+      {"role": "agent", "text": "Great, Karen. You're all set for a leak inspection this Thursday at ten-thirty AM. We'll call before we head over.", "phase": "summarize_book"},
+      {"role": "caller", "text": "Okay, that sounds good. Thanks for being patient with me, ha.", "phase": "goodbye"},
+      {"role": "agent", "text": "Oh, not at all! We'll get that leak sorted out for you, Karen. Have a great day!", "phase": "goodbye"}
+    ],
+    "booking_details": {
+      "service": "leak_inspection",
+      "date": "Thursday",
+      "time": "10:30 AM",
+      "caller_name": "Karen Whitfield",
+      "phone": "555-0633"
+    },
+    "metadata": {
+      "turn_count": 17,
+      "has_booking": true,
+      "phases_covered": ["greeting", "problem_determination", "solution_proposal", "time_preference", "match_propose", "confirmation", "summarize_book", "goodbye"]
+    }
+  },
+  {
+    "id": "train_139",
+    "scenario": {
+      "problem": "water_heater",
+      "personality": "default",
+      "path": "happy_path"
+    },
+    "turns": [
+      {"role": "agent", "text": "Smith Plumbing, this is Sarah, how can I help you today?", "phase": "greeting"},
+      {"role": "caller", "text": "Hi there, my water heater is making a popping sound and the water isn't getting as hot as it used to.", "phase": "problem_determination"},
+      {"role": "agent", "text": "Uh oh, popping sounds usually mean sediment buildup — definitely worth having someone check it out. How old is the unit?", "phase": "problem_determination"},
+      {"role": "caller", "text": "Maybe eight or nine years? It's a forty-gallon tank, gas.", "phase": "problem_determination"},
+      {"role": "agent", "text": "Got it, yeah at that age a good flush and inspection is a smart call. Let me see what's available — do you have a preference on the day?", "phase": "solution_proposal"},
+      {"role": "caller", "text": "Sometime this week would be great, mornings are better for me but I could make afternoon work too.", "phase": "time_preference"},
+      {"role": "agent", "text": "Alright, I've got four options this week — Tuesday at nine, Wednesday at eleven, Thursday at nine-thirty, or Friday at two. What's catching your eye?", "phase": "match_propose"},
+      {"role": "caller", "text": "Hmm. Tuesday at nine is pretty soon, that might work. What was the Thursday one again?", "phase": "match_propose"},
+      {"role": "agent", "text": "Thursday at nine-thirty — so still a morning slot, just a little later.", "phase": "match_propose"},
+      {"role": "caller", "text": "Nine-thirty... that's actually better than nine because I can get the kids on the bus first. But is Wednesday still an option if I change my mind?", "phase": "match_propose"},
+      {"role": "agent", "text": "Wednesday at eleven is still open, but I'd say grab the Thursday nine-thirty if that fits best — those morning slots go fast.", "phase": "match_propose"},
+      {"role": "caller", "text": "Yeah, let's lock in Thursday at nine-thirty. That works best with my schedule.", "phase": "match_propose"},
+      {"role": "agent", "text": "Thursday at nine-thirty, done! Can I get your name and phone number?", "phase": "confirmation"},
+      {"role": "caller", "text": "Mark Sullivan, 555-0715.", "phase": "confirmation"},
+      {"role": "agent", "text": "Alright Mark, you're booked for a water heater inspection and service this Thursday at nine-thirty AM. We'll give you a heads-up call before we come out.", "phase": "summarize_book"},
+      {"role": "caller", "text": "Awesome, appreciate it. Thanks Sarah.", "phase": "goodbye"},
+      {"role": "agent", "text": "You bet, Mark! See you Thursday. Bye!", "phase": "goodbye"}
+    ],
+    "booking_details": {
+      "service": "water_heater_service",
+      "date": "Thursday",
+      "time": "9:30 AM",
+      "caller_name": "Mark Sullivan",
+      "phone": "555-0715"
+    },
+    "metadata": {
+      "turn_count": 17,
+      "has_booking": true,
+      "phases_covered": ["greeting", "problem_determination", "solution_proposal", "time_preference", "match_propose", "confirmation", "summarize_book", "goodbye"]
+    }
+  },
+  {
+    "id": "train_140",
+    "scenario": {
+      "problem": "emergency",
+      "personality": "rushed",
+      "path": "happy_path"
+    },
+    "turns": [
+      {"role": "agent", "text": "Smith Plumbing, this is Sarah, how can I help?", "phase": "greeting"},
+      {"role": "caller", "text": "I've got a burst pipe in my laundry room, water is going everywhere! I need someone NOW.", "phase": "problem_determination"},
+      {"role": "agent", "text": "Oh no, okay — first thing, can you find the main water shutoff valve and turn it off? That'll stop the flooding while we get someone to you.", "phase": "problem_determination"},
+      {"role": "caller", "text": "My husband's doing that right now. How fast can you get here?", "phase": "problem_determination"},
+      {"role": "agent", "text": "Good, that'll help a lot. This is an emergency so I'm going to fast-track you — let me check our emergency availability right now.", "phase": "solution_proposal"},
+      {"role": "caller", "text": "Please hurry, there's water all over the floor.", "phase": "time_preference"},
+      {"role": "agent", "text": "Okay, I've got an emergency slot — I can have someone to you within the next two hours, so between now and noon. Does that work or do you need me to try to get someone even sooner?", "phase": "match_propose"},
+      {"role": "caller", "text": "Two hours? Is that the fastest? We're shut off from all water right now.", "phase": "match_propose"},
+      {"role": "agent", "text": "Let me see if our tech who's out on a call nearby can come to you first — I might be able to get him there within the hour. Can I put you on a brief hold?", "phase": "match_propose"},
+      {"role": "caller", "text": "Yeah, yeah, do whatever you gotta do.", "phase": "match_propose"},
+      {"role": "agent", "text": "Okay I just spoke with Mike, he can be there in about forty-five minutes — so around eleven-fifteen. He's finishing up a quick job nearby.", "phase": "match_propose"},
+      {"role": "caller", "text": "Forty-five minutes, okay. Yeah, send him. That's fine, just get him here.", "phase": "match_propose"},
+      {"role": "agent", "text": "He's on his way right after his current stop. Can I get your name, address, and phone real quick?", "phase": "confirmation"},
+      {"role": "caller", "text": "Lisa Park, 555-0891. We're at 742 Elm Street.", "phase": "confirmation"},
+      {"role": "agent", "text": "Lisa, Mike will be at 742 Elm Street around eleven-fifteen for the emergency pipe repair. He'll call when he's on his way.", "phase": "summarize_book"},
+      {"role": "caller", "text": "Thank you so much, we'll be here.", "phase": "goodbye"},
+      {"role": "agent", "text": "Hang tight, Lisa — Mike's great, he'll get you taken care of. Keep that water off until he gets there!", "phase": "goodbye"}
+    ],
+    "booking_details": {
+      "service": "emergency_pipe_repair",
+      "date": "today",
+      "time": "11:15 AM",
+      "caller_name": "Lisa Park",
+      "phone": "555-0891"
+    },
+    "metadata": {
+      "turn_count": 17,
+      "has_booking": true,
+      "phases_covered": ["greeting", "problem_determination", "solution_proposal", "time_preference", "match_propose", "confirmation", "summarize_book", "goodbye"]
+    }
+  }
+]

@@ -1,0 +1,480 @@
+[
+  {
+    "id": "train_149",
+    "scenario": {
+      "problem": "clogged_drain",
+      "personality": "default",
+      "path": "cancellation"
+    },
+    "turns": [
+      {
+        "role": "agent",
+        "text": "Smith Plumbing, this is Lisa. How can I help you today?",
+        "phase": "greeting"
+      },
+      {
+        "role": "caller",
+        "text": "Hi, yeah, I need to cancel my appointment. I had one scheduled for this Friday for a clogged drain.",
+        "phase": "problem_determination"
+      },
+      {
+        "role": "agent",
+        "text": "Oh okay, cancel the Friday drain appointment. Can I ask what happened — did the issue clear up on its own?",
+        "phase": "cancellation"
+      },
+      {
+        "role": "caller",
+        "text": "Yeah actually, we tried some drain cleaner and it's flowing fine now. So we don't really need anyone to come out.",
+        "phase": "cancellation"
+      },
+      {
+        "role": "agent",
+        "text": "That's great it resolved itself! Is there anything else plumbing-wise we can help with, or maybe a different time to do a quick checkup?",
+        "phase": "cancellation"
+      },
+      {
+        "role": "caller",
+        "text": "No, I think we're all good for now. Just go ahead and cancel it.",
+        "phase": "cancellation"
+      },
+      {
+        "role": "agent",
+        "text": "All done, that Friday appointment is canceled. Give us a call anytime if it acts up again!",
+        "phase": "goodbye"
+      },
+      {
+        "role": "caller",
+        "text": "Will do, thanks!",
+        "phase": "goodbye"
+      }
+    ],
+    "booking_details": null,
+    "metadata": {
+      "turn_count": 8,
+      "has_booking": false,
+      "phases_covered": ["greeting", "problem_determination", "cancellation", "goodbye"]
+    }
+  },
+  {
+    "id": "train_150",
+    "scenario": {
+      "problem": "leak_repair",
+      "personality": "angry",
+      "path": "cancellation"
+    },
+    "turns": [
+      {
+        "role": "agent",
+        "text": "Smith Plumbing, this is Lisa. What can I do for you?",
+        "phase": "greeting"
+      },
+      {
+        "role": "caller",
+        "text": "Yeah I need to cancel my appointment and honestly I'm pretty frustrated.",
+        "phase": "problem_determination"
+      },
+      {
+        "role": "agent",
+        "text": "Oh no, I'm sorry to hear that. What's going on?",
+        "phase": "problem_determination"
+      },
+      {
+        "role": "caller",
+        "text": "Last time your guy was supposed to show up between ten and noon and he didn't get here until almost two. I sat around my whole day waiting. I have a leak appointment scheduled for Wednesday and I just — I'm done.",
+        "phase": "cancellation"
+      },
+      {
+        "role": "agent",
+        "text": "I completely understand, that's really frustrating and I'm sorry that happened. Would it help if I got you the first slot of the day so there's no waiting around?",
+        "phase": "cancellation"
+      },
+      {
+        "role": "caller",
+        "text": "No. I already called someone else. Just cancel the Wednesday appointment.",
+        "phase": "cancellation"
+      },
+      {
+        "role": "agent",
+        "text": "Totally understand, I'll get that canceled right now. And I'll pass your feedback along to our manager — that's not the experience we want for anyone.",
+        "phase": "cancellation"
+      },
+      {
+        "role": "caller",
+        "text": "Good, I appreciate that at least. Thank you.",
+        "phase": "goodbye"
+      },
+      {
+        "role": "agent",
+        "text": "Of course. I hope if you ever give us another shot we can make it right. Take care.",
+        "phase": "goodbye"
+      }
+    ],
+    "booking_details": null,
+    "metadata": {
+      "turn_count": 9,
+      "has_booking": false,
+      "phases_covered": ["greeting", "problem_determination", "cancellation", "goodbye"]
+    }
+  },
+  {
+    "id": "train_151",
+    "scenario": {
+      "problem": "water_heater",
+      "personality": "elderly",
+      "path": "cancellation"
+    },
+    "turns": [
+      {
+        "role": "agent",
+        "text": "Smith Plumbing, this is Lisa. How are you doing today?",
+        "phase": "greeting"
+      },
+      {
+        "role": "caller",
+        "text": "Oh hello dear. I'm doing alright, thank you. I'm calling because I need to cancel an appointment I have coming up. It's for my water heater.",
+        "phase": "problem_determination"
+      },
+      {
+        "role": "agent",
+        "text": "Okay, the water heater appointment. Is everything alright with it, or did something change?",
+        "phase": "cancellation"
+      },
+      {
+        "role": "caller",
+        "text": "Well my daughter, she lives over in Greenfield, and she said her husband knows a fellow who can come look at it. So she's going to handle the whole thing for me, which is very sweet of her.",
+        "phase": "cancellation"
+      },
+      {
+        "role": "agent",
+        "text": "Oh that is sweet! Well, would you maybe want to keep ours on the books just in case, or are you all set?",
+        "phase": "cancellation"
+      },
+      {
+        "role": "caller",
+        "text": "No, I think she's got it all figured out. You go ahead and cancel it, honey. And I'm sorry for the trouble.",
+        "phase": "cancellation"
+      },
+      {
+        "role": "agent",
+        "text": "No trouble at all, don't you worry! I've got that canceled for you. You call us anytime, okay?",
+        "phase": "goodbye"
+      },
+      {
+        "role": "caller",
+        "text": "Thank you so much dear, you've been very kind. Bye bye now.",
+        "phase": "goodbye"
+      },
+      {
+        "role": "agent",
+        "text": "Bye bye, you take care!",
+        "phase": "goodbye"
+      }
+    ],
+    "booking_details": null,
+    "metadata": {
+      "turn_count": 9,
+      "has_booking": false,
+      "phases_covered": ["greeting", "problem_determination", "cancellation", "goodbye"]
+    }
+  },
+  {
+    "id": "train_152",
+    "scenario": {
+      "problem": "toilet_repair",
+      "personality": "rushed",
+      "path": "cancellation"
+    },
+    "turns": [
+      {
+        "role": "agent",
+        "text": "Smith Plumbing, this is Lisa.",
+        "phase": "greeting"
+      },
+      {
+        "role": "caller",
+        "text": "Hey, quick thing — I need to cancel my Thursday appointment for the toilet repair.",
+        "phase": "problem_determination"
+      },
+      {
+        "role": "agent",
+        "text": "Thursday toilet repair, got it. Do you want to move it to a different day instead?",
+        "phase": "cancellation"
+      },
+      {
+        "role": "caller",
+        "text": "Nope, just cancel it. We're good.",
+        "phase": "cancellation"
+      },
+      {
+        "role": "agent",
+        "text": "Done, you're all set. Have a good one!",
+        "phase": "goodbye"
+      },
+      {
+        "role": "caller",
+        "text": "Thanks, bye.",
+        "phase": "goodbye"
+      }
+    ],
+    "booking_details": null,
+    "metadata": {
+      "turn_count": 6,
+      "has_booking": false,
+      "phases_covered": ["greeting", "problem_determination", "cancellation", "goodbye"]
+    }
+  },
+  {
+    "id": "train_153",
+    "scenario": {
+      "problem": "faucet_install",
+      "personality": "chatty",
+      "path": "cancellation"
+    },
+    "turns": [
+      {
+        "role": "agent",
+        "text": "Smith Plumbing, this is Lisa. How can I help?",
+        "phase": "greeting"
+      },
+      {
+        "role": "caller",
+        "text": "Hi Lisa! So okay, I have an appointment next Tuesday for a faucet install, but I need to cancel it. And I know this is going to sound a little crazy but hear me out.",
+        "phase": "problem_determination"
+      },
+      {
+        "role": "agent",
+        "text": "Ha, okay I'm listening! Tuesday faucet install — what happened?",
+        "phase": "cancellation"
+      },
+      {
+        "role": "caller",
+        "text": "So my brother-in-law, right, he sends me this YouTube video. And it's like a twenty-minute tutorial on how to install a kitchen faucet. And I watched it and I was like, that actually doesn't look that hard? So then I went down the rabbit hole and watched like five more videos and I bought the tools and everything. I'm going to do it myself!",
+        "phase": "cancellation"
+      },
+      {
+        "role": "agent",
+        "text": "Oh wow, good for you! YouTube is something else. Well hey, if you hit a snag or anything, is there a time that works to have us come as a backup?",
+        "phase": "cancellation"
+      },
+      {
+        "role": "caller",
+        "text": "That's so nice of you but no, I'm committed to this. My brother-in-law said he'd FaceTime me through it if I get stuck. I've got a whole plan. I even bought the plumber's tape, the wrench, everything.",
+        "phase": "cancellation"
+      },
+      {
+        "role": "agent",
+        "text": "Sounds like you're all set then! I'll cancel that Tuesday appointment. And seriously, if anything goes sideways, just give us a ring.",
+        "phase": "cancellation"
+      },
+      {
+        "role": "caller",
+        "text": "I absolutely will, you'll be my first call if water starts spraying everywhere. Thanks Lisa!",
+        "phase": "goodbye"
+      },
+      {
+        "role": "agent",
+        "text": "Ha! Hopefully not, but we're here. Good luck with the install!",
+        "phase": "goodbye"
+      }
+    ],
+    "booking_details": null,
+    "metadata": {
+      "turn_count": 9,
+      "has_booking": false,
+      "phases_covered": ["greeting", "problem_determination", "cancellation", "goodbye"]
+    }
+  },
+  {
+    "id": "train_154",
+    "scenario": {
+      "problem": "sewer_line",
+      "personality": "default",
+      "path": "cancellation"
+    },
+    "turns": [
+      {
+        "role": "agent",
+        "text": "Smith Plumbing, this is Lisa. How can I help you?",
+        "phase": "greeting"
+      },
+      {
+        "role": "caller",
+        "text": "Hi, I have an appointment next week for a sewer line inspection and I'd like to cancel it.",
+        "phase": "problem_determination"
+      },
+      {
+        "role": "agent",
+        "text": "Oh okay, the sewer line inspection. Mind if I ask what changed?",
+        "phase": "cancellation"
+      },
+      {
+        "role": "caller",
+        "text": "Yeah, honestly I got a quote from another company that was quite a bit cheaper. So I'm going to go with them.",
+        "phase": "cancellation"
+      },
+      {
+        "role": "agent",
+        "text": "I totally get it, price matters. Just so you know, we do offer price matching in a lot of cases — would you want me to have our manager take a look at the other quote?",
+        "phase": "cancellation"
+      },
+      {
+        "role": "caller",
+        "text": "Hmm, I actually already booked with them. I appreciate the offer though.",
+        "phase": "cancellation"
+      },
+      {
+        "role": "agent",
+        "text": "No worries at all, I'll get that canceled for you. And hey, keep us in mind for next time — we're always happy to take a look at competing quotes.",
+        "phase": "goodbye"
+      },
+      {
+        "role": "caller",
+        "text": "That's good to know actually, I'll remember that. Thanks a lot.",
+        "phase": "goodbye"
+      },
+      {
+        "role": "agent",
+        "text": "Anytime! Take care.",
+        "phase": "goodbye"
+      }
+    ],
+    "booking_details": null,
+    "metadata": {
+      "turn_count": 9,
+      "has_booking": false,
+      "phases_covered": ["greeting", "problem_determination", "cancellation", "goodbye"]
+    }
+  },
+  {
+    "id": "train_155",
+    "scenario": {
+      "problem": "garbage_disposal",
+      "personality": "non_native",
+      "path": "cancellation"
+    },
+    "turns": [
+      {
+        "role": "agent",
+        "text": "Smith Plumbing, this is Lisa. How can I help?",
+        "phase": "greeting"
+      },
+      {
+        "role": "caller",
+        "text": "Hello, yes. I have appointment, uh, for the garbage disposal. But I no need it anymore.",
+        "phase": "problem_determination"
+      },
+      {
+        "role": "agent",
+        "text": "Oh okay, you want to cancel the garbage disposal appointment. Did someone else fix it for you?",
+        "phase": "cancellation"
+      },
+      {
+        "role": "caller",
+        "text": "Yes, my friend, he know how to fix. He come yesterday and now is working good.",
+        "phase": "cancellation"
+      },
+      {
+        "role": "agent",
+        "text": "Oh that's great, glad it's working! Is there a different time you'd want us to come out, maybe just to double check everything?",
+        "phase": "cancellation"
+      },
+      {
+        "role": "caller",
+        "text": "No no, is okay. He fix very good. Just cancel please.",
+        "phase": "cancellation"
+      },
+      {
+        "role": "agent",
+        "text": "All done, it's canceled! If anything comes up later just give us a call.",
+        "phase": "goodbye"
+      },
+      {
+        "role": "caller",
+        "text": "Okay thank you very much. Goodbye.",
+        "phase": "goodbye"
+      },
+      {
+        "role": "agent",
+        "text": "You're welcome, goodbye!",
+        "phase": "goodbye"
+      }
+    ],
+    "booking_details": null,
+    "metadata": {
+      "turn_count": 9,
+      "has_booking": false,
+      "phases_covered": ["greeting", "problem_determination", "cancellation", "goodbye"]
+    }
+  },
+  {
+    "id": "train_156",
+    "scenario": {
+      "problem": "water_heater",
+      "personality": "confused",
+      "path": "cancellation"
+    },
+    "turns": [
+      {
+        "role": "agent",
+        "text": "Smith Plumbing, this is Lisa. What can I do for you?",
+        "phase": "greeting"
+      },
+      {
+        "role": "caller",
+        "text": "Hi um, I think I need to cancel my appointment? Or maybe change it. I'm not really sure actually.",
+        "phase": "problem_determination"
+      },
+      {
+        "role": "agent",
+        "text": "No problem, let's figure it out! What's the appointment for?",
+        "phase": "problem_determination"
+      },
+      {
+        "role": "caller",
+        "text": "It's for the water heater. It was making that weird noise, remember? Well, it stopped making the noise. But my neighbor said that doesn't mean it's fixed, it might just come back. So I don't know if I should still have someone come look.",
+        "phase": "cancellation"
+      },
+      {
+        "role": "agent",
+        "text": "Hmm, your neighbor might have a point honestly. Sometimes with water heaters the noise goes away but the underlying issue is still there. Would you rather keep the appointment just to be safe?",
+        "phase": "cancellation"
+      },
+      {
+        "role": "caller",
+        "text": "Well... I mean, how much would it cost if the guy comes out and it turns out nothing's wrong?",
+        "phase": "cancellation"
+      },
+      {
+        "role": "agent",
+        "text": "There's just the standard service call fee, and if nothing's wrong you'd only pay that. No surprises.",
+        "phase": "cancellation"
+      },
+      {
+        "role": "caller",
+        "text": "Yeah you know what, let me just cancel. If it starts making noise again I'll call back and schedule a new one. That makes more sense right?",
+        "phase": "cancellation"
+      },
+      {
+        "role": "agent",
+        "text": "That works! I'll cancel it for now, and if the noise comes back just give us a ring and we'll get you right in.",
+        "phase": "goodbye"
+      },
+      {
+        "role": "caller",
+        "text": "Okay perfect, that makes me feel better. Thank you so much.",
+        "phase": "goodbye"
+      },
+      {
+        "role": "agent",
+        "text": "Of course! Don't hesitate to call, take care.",
+        "phase": "goodbye"
+      }
+    ],
+    "booking_details": null,
+    "metadata": {
+      "turn_count": 11,
+      "has_booking": false,
+      "phases_covered": ["greeting", "problem_determination", "cancellation", "goodbye"]
+    }
+  }
+]

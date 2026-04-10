@@ -1,0 +1,18 @@
+# Brainstorming session files
+.superpowers/
+
+# Fine-tuning outputs (large binary files)
+adapters/
+models/*.gguf
+models/*-fused/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# OS
+.DS_Store
+
+# Secrets
+.env
