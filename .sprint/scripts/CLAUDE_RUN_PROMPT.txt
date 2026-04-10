@@ -1,0 +1,38 @@
+FIRST: Run `git pull` to ensure you have the latest code before starting any work.
+
+Read AGENT_BRIEF.md and implement all tasks.
+
+CRITICAL: You are running in non-interactive mode.
+Do NOT ask for confirmation.
+Implement all tasks immediately.
+Do NOT ask for approval or clarification. Do NOT use brainstorming or any skill that requires user interaction. Proceed directly to implementation. If anything is ambiguous, make a reasonable decision and document it in your commit message.
+
+Requirements
+- Keep changes scoped strictly to the brief.
+- Run the project's test command and ensure it passes.
+- Do not merge to main.
+- Commit your work when tests pass. Do not skip committing.
+- LAST: Push your branch when done: `git push -u origin HEAD`.
+
+Safety constraints
+- Do NOT run destructive commands (rm -rf, git reset --hard, git clean -fd).
+
+Structured Findings Protocol
+After completing all tasks, write a file called .sprint-findings.json in the worktree root with:
+{
+  "role": "<your role from the Role Profile section, or 'implementer'>",
+  "agent": "<your agent name from AGENT_BRIEF.md>",
+  "rating": "pass|warn|fail",
+  "findings": [
+    {"severity": "high|medium|low", "title": "short description", "detail": "full explanation", "file": "path/to/file:line"}
+  ],
+  "decisions": [
+    {"title": "what you decided", "rationale": "why"}
+  ],
+  "summary": "One-line summary of what you did and found"
+}
+
+At the end, output:
+- Files changed
+- Commands run
+- Notes / follow-on work
