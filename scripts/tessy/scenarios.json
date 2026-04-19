@@ -1,0 +1,64 @@
+[
+  {
+    "id": "scheduled_leak",
+    "title": "Routine: leak repair scheduling",
+    "turns": [
+      "Hi, I've got a slow leak under my kitchen sink. It's been dripping for a couple days.",
+      "Yeah, it's not emergency — probably just a bad seal. Can someone come look at it?",
+      "Thursday afternoon would work. My name is Sarah Reynolds.",
+      "Sure, it's 148 Elm Street.",
+      "That's right, 5552340199.",
+      "Yes, please confirm."
+    ]
+  },
+  {
+    "id": "emergency_burst",
+    "title": "Emergency: burst pipe in basement",
+    "turns": [
+      "Oh my god, I've got water pouring into my basement! A pipe just burst!",
+      "I don't know, it's spraying everywhere. I shut off the main valve but there's already like two inches of water.",
+      "I'm Mike Chen, 3125558765. Send someone right now please!",
+      "2214 Oakwood Drive. How soon can they get here?"
+    ]
+  },
+  {
+    "id": "reschedule",
+    "title": "Reschedule existing appointment",
+    "turns": [
+      "Hi, I had an appointment on Thursday for my water heater but I need to move it. Something came up at work.",
+      "Could I move it to Friday instead? Later in the day?",
+      "Friday at 3pm is perfect. My name is Linda Park and it's at 88 Parkview Lane.",
+      "Yeah that works, thanks."
+    ]
+  },
+  {
+    "id": "rude_caller",
+    "title": "Rude / impatient caller",
+    "turns": [
+      "Look, I've been on hold for ten minutes. Are you guys actually coming out today or not?",
+      "My toilet's been running all day and I'm about to lose my mind. It's a constant hissing sound.",
+      "Fine. I'm at 401 Maple. The name is Dave. Just get someone over here.",
+      "Tomorrow morning, whatever, as long as it's early."
+    ]
+  },
+  {
+    "id": "confused_caller",
+    "title": "Confused / meandering caller",
+    "turns": [
+      "Uh hi, I don't really know who to call. My dad said you guys do plumbing?",
+      "So there's this thing in the bathroom, the... the disposal? No wait, not disposal, the thing under the sink that drains...",
+      "Oh right, the garbage disposal. Yeah that. It's making a terrible grinding noise.",
+      "I don't actually know — my mom's house. Let me check. It's 9 Harrison Court. And I'm Amy, uh, Amy Nolan.",
+      "Whenever you can come is fine, preferably Friday."
+    ]
+  },
+  {
+    "id": "fast_collector",
+    "title": "Caller gives all info up front",
+    "turns": [
+      "Hi, this is James Wu at 411 Beacon Road, 7025557834. I need to book a drain cleaning for Thursday 10am.",
+      "Yes that's right.",
+      "Please confirm the appointment."
+    ]
+  }
+]

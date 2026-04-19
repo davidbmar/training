@@ -1,0 +1,32 @@
+# LoRA fine-tune of Qwen3.5-4B on TESSY-synthesized phone-agent data.
+# Companion to data/tessy/4b_tessy/{train,valid,test}.jsonl.
+# Used via:  mlx_lm.lora -c configs/tessy/qwen35-4b-tessy.yaml
+
+model: "mlx-community/Qwen3.5-4B-MLX-4bit"
+train: true
+data: "data/tessy/4b_tessy"
+fine_tune_type: "lora"
+optimizer: "adamw"
+
+# LoRA shape — same rank/alpha as the repo's existing phone-agent adapters
+# so regression vs prior Gemma/Phi adapters is apples-to-apples.
+num_layers: 16
+lora_parameters:
+  rank: 8
+  alpha: 16
+  dropout: 0.05
+  scale: 10.0
+
+batch_size: 1
+iters: 300
+learning_rate: 5.0e-5
+steps_per_report: 20
+steps_per_eval: 100
+val_batches: 10
+max_seq_length: 768
+grad_checkpoint: true
+
+adapter_path: "adapters/qwen35-4b-tessy-phone"
+save_every: 100
+mask_prompt: true
+seed: 0

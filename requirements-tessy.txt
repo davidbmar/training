@@ -1,0 +1,14 @@
+# TESSY (Teacher-Student Cooperation Data Synthesis) dependencies.
+# Pinned to versions verified working on Darwin arm64 + Python 3.14 + Apple Silicon GPU (Metal).
+# See scripts/tessy/README.md for venv setup.
+
+# MLX stack (Apple Silicon GPU runtime + LM utilities)
+mlx==0.29.3
+mlx-lm==0.31.2
+
+# Tokenizer / model metadata handling
+transformers==4.57.6
+huggingface_hub==0.36.2
+
+# JSON schema validation for smoke test + later evaluator
+jsonschema==4.25.1

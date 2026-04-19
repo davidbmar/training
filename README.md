@@ -136,7 +136,98 @@ training/
 
 All three are fine-tuned on the same training data — only the chat template conversion differs.
 
+## TESSY (Teacher-Student Cooperation Data Synthesis) — `scripts/tessy/`
+
+A second pipeline lives under `scripts/tessy/` that implements the
+[TESSY paper](https://arxiv.org/abs/2604.14164) on the same phone-agent
+data. Where the original pipeline above does straight self-distillation
+on Phi4-mini / Mistral / Gemma4, TESSY is a teacher-student knowledge
+distillation that produces a Qwen3.5-4B + LoRA adapter optimised for
+streaming prose (response_draft tokens leave the LLM before slot_updates
+are even generated, so TTS can start speaking earlier).
+
+**What's here:**
+
+| File / dir | Purpose |
+|---|---|
+| `scripts/tessy/extract_prompts.py` | Strip assistant turns from `data/mlx_data_slot_rewrite/*.jsonl` to produce prompt-only inputs for synthesis |
+| `scripts/tessy/smoke_teacher_only.py` | 5-row Sprint-0 smoke test for any Qwen3.5 MLX model with strict `<think>`-aware JSON extraction |
+| `scripts/tessy/streaming_json.py` | Incremental parser that yields `response_draft` chars as they arrive (the prose-first contract). Vendored into `~/src/phone-agent-scheduler/phone_agent/streaming_json.py` for production use |
+| `scripts/tessy/json_order.py` | Helper that rewrites the system prompt's "Reply as JSON" example so `response_draft` is the first field |
+| `scripts/tessy/generate_teacher_only.py` | Run Qwen3.5-9B alone over a prompt corpus to produce baseline training data + a teacher cache the TESSY pass can reuse |
+| `scripts/tessy/generate_tessy_data.py` | The TESSY synthesis loop — student writes prose, teacher (or cached teacher) writes slot_updates, stitched into one row |
+| `scripts/tessy/normalize_slots.py` | Slot-value normaliser used by the evaluator (sentinel handling, casefold, address prefix match, etc.) |
+| `scripts/tessy/evaluate.py` | Slot-extraction F1 + JSON validity + p50/p95 latency on the 151-row test split |
+| `scripts/tessy/phone_dogfood.py` | Replay scripted scenarios against any trained adapter for qualitative dogfood |
+| `scripts/tessy/phone_dogfood_streaming.py` | Same but uses `StreamingPhoneJSONParser` and reports time-to-first-prose-token |
+| `scripts/tessy/compare_dogfood.py` | Head-to-head report for two adapters' dogfood transcripts |
+| `scripts/tessy/run_experiment.sh` | One-shot driver: train all four LoRA variants, then evaluate each |
+| `scripts/tessy/scenarios.json` | Six hand-written caller scenarios used in dogfood (routine leak, emergency burst, reschedule, rude caller, confused caller, fast collector) |
+| `scripts/tessy/README.md` | Repo-native dependency story (venv setup, model download instructions) |
+| `configs/tessy/*.yaml` | LoRA training configs for all four variants (4B/2B × TESSY/Teacher-Only) |
+| `requirements-tessy.txt` | Pinned `mlx-lm`, `mlx`, `transformers`, `huggingface-hub`, `jsonschema` versions verified on Apple Silicon Python 3.14 |
+
+**Pipeline at a glance:**
+
+```bash
+# 0. (one-time) set up the venv
+python3 -m venv .venv-tessy && source .venv-tessy/bin/activate
+pip install -r requirements-tessy.txt
+
+# 1. Extract prompt-only rows from the existing slot-rewrite splits
+python3 scripts/tessy/extract_prompts.py \
+    --input data/mlx_data_slot_rewrite/train.jsonl \
+    --output data/tessy/prompts/train.jsonl
+
+# 2. Generate teacher-only baseline (300 rows, ~25 min)
+python3 scripts/tessy/generate_teacher_only.py \
+    --teacher mlx-community/Qwen3.5-9B-MLX-4bit \
+    --prompts data/tessy/prompts/train.jsonl \
+    --output  data/tessy/teacher_only/train.jsonl \
+    --limit   300 --prose-first
+
+# 3. Run TESSY synthesis using cached teacher (300 rows, ~8 min for 4B)
+python3 scripts/tessy/generate_tessy_data.py \
+    --student mlx-community/Qwen3.5-4B-MLX-4bit \
+    --prompts data/tessy/prompts/train.jsonl \
+    --teacher-cache data/tessy/teacher_only/train.jsonl \
+    --output  data/tessy/4b_tessy_streaming/train.jsonl \
+    --prose-first
+
+# 4. LoRA fine-tune (~22 min on 36 GB M-series)
+python3 -m mlx_lm lora -c configs/tessy/qwen35-4b-tessy-streaming.yaml
+
+# 5. Evaluate against the 151-row test split
+python3 scripts/tessy/evaluate.py \
+    --model mlx-community/Qwen3.5-4B-MLX-4bit \
+    --adapter adapters/qwen35-4b-tessy-streaming \
+    --test data/mlx_data_slot_rewrite/test.jsonl \
+    --label qwen35-4b-tessy-streaming \
+    --report data/tessy/eval_report.jsonl
+```
+
+**Headline measurements (from `docs/project-memory/sessions/S-2026-04-18-0937-tessy-first-experiment.md`):**
+
+| Variant | Validation loss | Test JSON validity | Slot F1 | False positives |
+|---|---:|---:|---:|---:|
+| 2B base | — | 59% | 0.000 | 179 |
+| 2B TESSY | 1.461 | 98% | 0.036 | 52 |
+| 2B Teacher-Only | 1.526 | 100% | 0.047 | 81 |
+| 4B base | — | 94% | 0.040 | 97 |
+| **4B TESSY (winner)** | **1.497** | **100%** | **0.056** | **68** |
+| 4B Teacher-Only | 1.626 | 98% | 0.041 | 94 |
+
+The streaming-prose variant trained later (`qwen35-4b-tessy-streaming`)
+got val loss **1.329** — the best of all variants — by emitting the
+JSON in `response_draft`-first order.
+
+**Documentation tree:**
+
+- `docs/project-memory/sessions/S-2026-04-18-0513-tessy-sprint-0.md` — Sprint 0 feasibility gate (MLX runtime + smoke + GO/NO-GO per role)
+- `docs/project-memory/sessions/S-2026-04-18-0937-tessy-first-experiment.md` — Four LoRA adapters trained + evaluated; first measured TESSY-vs-Teacher-Only delta
+- `docs/project-memory/sessions/S-2026-04-19-2028-all-mlx-routing.md` — Integration into `phone-agent-scheduler`: routes every LLM call through the trained adapter, drops Ollama gemma4:26b dependency, eliminates 20 s cold-load timeouts
+
 ## Related Projects
 
-- **[phone-agent-scheduler](../phone-agent-scheduler/)** — the production phone agent that uses these models
+- **[phone-agent-scheduler](../phone-agent-scheduler/)** — the production phone agent that consumes these models. Tonight's work routes its Gateway chat, step_engine fast/strong, and warmup all through the `qwen35-4b-tessy-streaming` adapter trained here. See its `phone_agent/mlx_client.py` for the loader and `phone_agent/streaming_json.py` for the prose-streaming parser (vendored from this repo).
 - Training data will eventually be copied to `phone-agent-scheduler/training/` once the pipeline is validated

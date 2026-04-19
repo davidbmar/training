@@ -1,0 +1,31 @@
+# LoRA fine-tune of Qwen3.5-4B on prose-first TESSY data.
+# This adapter emits JSON with response_draft FIRST so a streaming parser
+# can forward prose to TTS before slot_updates are generated.
+# Companion to data/tessy/4b_tessy_streaming/{train,valid,test}.jsonl.
+
+model: "mlx-community/Qwen3.5-4B-MLX-4bit"
+train: true
+data: "data/tessy/4b_tessy_streaming"
+fine_tune_type: "lora"
+optimizer: "adamw"
+
+num_layers: 16
+lora_parameters:
+  rank: 8
+  alpha: 16
+  dropout: 0.05
+  scale: 10.0
+
+batch_size: 1
+iters: 100
+learning_rate: 5.0e-5
+steps_per_report: 20
+steps_per_eval: 50
+val_batches: 10
+max_seq_length: 768
+grad_checkpoint: true
+
+adapter_path: "adapters/qwen35-4b-tessy-streaming"
+save_every: 50
+mask_prompt: true
+seed: 0
